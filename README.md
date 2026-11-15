@@ -27,9 +27,9 @@ A self-contained 60 GHz mmWave radar module built around TI's **IWR6843AOP** (an
 | Mounting | Three M3 holes |
 | Board | 85.6 × 33.7 mm, 6 layers, 1.6 mm, ENIG, filled and capped vias |
 | Parts | 164 assembled on 46 BOM lines, both sides (`R604` and `C605` left unfitted), plus a 14 × 14 × 6 mm heat sink bonded on by hand |
-| Ambient | Up to about 58 °C at 1.75 W radar power and 43 °C at 2.3 W in still air with the heat sink (model, spec §10) |
+| Ambient | Up to about 58 °C at 1.75 W radar power and 43 °C at 2.3 W in still air with the heat sink (model, spec §10). Target: 30 °C room temperature; in a case, the case decides the margin ([`case/`](case/README.md)) |
 
-Full modes, rails, boot, mechanics, stackup and firmware requirements: **[hardware specification](docs/STG-HW-SPEC-004_IWR-AOP-MODULE.md)**.
+Full modes, rails, boot, mechanics, stackup and firmware requirements: **[hardware specification](docs/STG-HW-SPEC-004_IWR-AOP-MODULE.md)**. Enclosure design: [case notes](case/README.md).
 
 ## Using it
 
@@ -90,7 +90,7 @@ Full pin directions and carrier rules: spec §5.
 
 ![Board dimensions, mounting holes and carrier sockets](docs/images/dimensions.svg)
 
-Back view, mm. Everything is symmetric about the board centrelines (℄). Sockets sit on the hole columns, centred vertically. Keep carrier metal out of the antenna aperture (spec §6).
+Back view, mm. Everything is symmetric about the board centrelines (℄). Sockets sit on the hole columns, centred vertically. Keep carrier metal out of the antenna aperture (spec §6). For CAD work use the board STEP, [`docs/3d/IWR-AOP-MODULE.step`](docs/3d/IWR-AOP-MODULE.step) (origin at the outline's top-left corner); window and heat-path rules for a case are in [`case/`](case/README.md).
 
 ## Cost
 
@@ -131,7 +131,7 @@ The project is self-contained: everything outside the stock KiCad 10 libraries i
 
 ## Status
 
-**Designed and simulated, not yet built.** The board is fully routed. ERC has no errors; DRC reports 0 unconnected and 0 schematic-parity issues, plus 53 accepted findings (spec §7.3). Post-layout extraction and simulation cover rail voltages at the radar balls, sequencing and reset, loop stability, chirp load steps, ripple, USB hot plug and temperature: see [`simulation/`](simulation/README.md). Test firmware runs on a model of the board in [`cosim/`](cosim/README.md): power-up, flashing, resets and the PMIC trim over I²C. Operating conditions and the basis of the models are in spec §10 and the measurements for the first boards in spec §9.
+**Designed and simulated, not yet built.** The board is fully routed. ERC has no errors; DRC reports 0 unconnected and 0 schematic-parity issues, plus 53 accepted findings (spec §7.3). Post-layout extraction and simulation cover rail voltages at the radar balls, sequencing and reset, loop stability, chirp load steps, ripple, USB hot plug and temperature: see [`simulation/`](simulation/README.md). Test firmware runs on a model of the board in [`cosim/`](cosim/README.md): power-up, flashing, resets, the PMIC trim over I²C (limited to 1000–1005 mV), a thermal governor that throttles from 90 °C and stops at 100 °C, and host settings with compiled-in limits. Three TX in one chirp is off by default because it does not fit the 1.0 V window in the replay. Enclosure requirements (heat path, antenna window, keep-outs) are in [`case/`](case/README.md). Operating conditions and the basis of the models are in spec §10 and the measurements for the first boards in spec §9.
 
 ## License
 

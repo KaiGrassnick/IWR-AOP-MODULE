@@ -1,8 +1,8 @@
 # STG-HW-SPEC-004 — IWR-AOP-MODULE design specification
 
-**Document:** STG-HW-SPEC-004 · **Version:** 1.1 · **Date:** 15 November 2026 · **Board revision:** 1.1 (designed and simulated, not yet built)
+**Document:** STG-HW-SPEC-004 · **Version:** 1.2 · **Date:** 15 November 2026 · **Board revision:** 1.1 (designed and simulated, not yet built)
 
-This is the design reference for the module: how it works, how to connect to it, how it's built, and what still has to be measured on the first assembled boards. The board has not been built yet; the simulations behind the design are in [`simulation/`](../simulation/README.md). The [README](../README.md) is the short overview.
+This is the design reference for the module: how it works, how to connect to it, how it's built, and what still has to be measured on the first assembled boards. The board has not been built yet; the simulations behind the design are in [`simulation/`](../simulation/README.md), and test firmware runs on a model of the board in [`cosim/`](../cosim/README.md). What an enclosure needs is in [`case/`](../case/README.md). The [README](../README.md) is the short overview.
 
 All coordinates are KiCad board millimetres, viewed from the top. Parts on the bottom (`B.Cu`) are given at the position a top-view observer sees; the frame is not mirrored.
 
@@ -119,7 +119,7 @@ The ranges cover ferrite inductance from 100 % down to 10 % of its small-signal 
 | Sense capacitor 0.1 µF, crossover 72 kHz | 0.954 V | 43° | 22° with ferrite inductance at 130 %; oscillates with the worst tolerance stack |
 | Sense at the radar only, no blend | 0.968 V | 48° | Ferrite and radar capacitors inside the fast loop |
 
-The as-built values keep the full stability margin, because the PMIC's internal loop is known only through TI's datasheet test. `R628`/`C631` (and `R629`/`C632` on 1.8 V) are 0402 parts and can be changed on a built board once the real loop and the radar's real current edges are measured (§9). Firmware can also add headroom by raising Buck2 by a few 5 mV steps over I²C (§8).
+The as-built values keep the full stability margin, because the PMIC's internal loop is known only through TI's datasheet test. `R628`/`C631` (and `R629`/`C632` on 1.8 V) are 0402 parts and can be changed on a built board once the real loop and the radar's real current edges are measured (§9). Firmware can trim Buck2 over I²C, but only to 1000–1005 mV (§8): raising the setpoint lifts the overshoot when the chirps stop as much as it lifts the dip, and the co-simulation replay takes `1V0_R` to 1.077 V at frame end with a 1025 mV setpoint ([`cosim/`](../cosim/README.md)). Leave Buck2 at 1000 mV until the dip and the overshoot are measured (§9).
 
 ### 3.3 Enable and reset
 
@@ -233,7 +233,7 @@ The renders show the board as assembled, with the heat sink `HS300` bonded to th
 
 **Keep-outs.** `U300` carries two named all-copper keep-outs (`IWR6843AOP_EPlane_Column1`, `IWR6843AOP_EPlane_Column18`) on all six layers. Keep carrier metal, cables and enclosure walls out of the antenna aperture; the antenna faces broadside from the front.
 
-**Heat sink.** `HS300` is a 14 × 14 × 6 mm aluminium pin-fin BGA heat sink (Same Sky HSB03-141406 or Fischer ICK BGA 14 × 14 × 6) on the back, centred under the radar at (149.079, 120.546). TI's thermal guide for this package (SWRA672) puts the heat sink on the back because the front is the antenna. It is bonded by hand after assembly with a thermally conductive silicone adhesive. Everything under its outline is an 0402 part (0.55 mm tall), which sets the bond line; the adhesive fills around the parts and insulates them. The outline is on `B.Fab`. With the 8.5 mm sockets there is at least 1.5 mm between the heat sink and a carrier, so a carrier needs no cut-out. Without it the module still works at low duty (§10). In USB-only use, with nothing under the board, a taller heat sink of the same footprint lowers the temperature further.
+**Heat sink.** `HS300` is a 14 × 14 × 6 mm aluminium pin-fin BGA heat sink (Same Sky HSB03-141406 or Fischer ICK BGA 14 × 14 × 6; the Fischer part is the better of the two, 29 against 39.7 K/W) on the back, centred under the radar at (149.079, 120.546). TI's thermal guide for this package (SWRA672) puts the heat sink on the back because the front is the antenna. It is bonded by hand after assembly with a thermally conductive silicone adhesive. Everything under its outline is an 0402 part (0.55 mm tall), which sets the bond line; the adhesive fills around the parts and insulates them. The outline is on `B.Fab`. With the 8.5 mm sockets there is at least 1.5 mm between the heat sink and a carrier, so a carrier needs no cut-out. Without it the module still works at low duty (§10). In USB-only use, with nothing under the board, a taller heat sink of the same footprint lowers the temperature further.
 
 **Front-side parts and the antenna.** The supervisor, the sense network and some bulk capacitors are on the front, the side the antenna faces. All are outside the E-plane keep-outs, and none rises more than 4° above the plane of the package top as seen from the package edge (the tallest are 0805 and 1206 capacitors 11 mm or more away), so they stay outside the antenna's field of view.
 
@@ -282,12 +282,17 @@ The JLCPCB package and its build script are in [`manufacturing/`](../manufacturi
 3. Pinmux: UARTA RX V16 mode 2, TX U16 mode 5; UARTB TX E2 mode 6; SPIA D2/C2/F2/D1 mode 1; `FRAME_START` K3 mode 13; `SYNC_IN` U12 mode 1. Keep LVDS disabled.
 4. `VBGAP` (A16) has 47 nF; the reference outputs on A9/A10 are decoupled only.
 5. Carrier firmware: follow the rules in §5 (Hi-Z while `3V3_R` is off, open-drain reset only).
-6. PMIC I²C: pinmux G3 (`I2C_SCL`) and G1 (`I2C_SDA`) to mode 2; the LP87524 answers at address 0x60. The pull-ups are on the board. The board needs no I²C writes to run. The bus gives per-buck current readback, the thermal warning and the interrupt flags, and lets firmware trim a rail: Buck2 in 5 mV steps if measured chirp dips call for more headroom on 1.0 V (§3.2).
+6. PMIC I²C: pinmux G3 (`I2C_SCL`) and G1 (`I2C_SDA`) to mode 2; the LP87524 answers at address 0x60. The pull-ups are on the board. The board needs no I²C writes to run. The bus gives per-buck current readback, the thermal warning and the interrupt flags, and lets firmware trim a rail. Keep Buck2 within 1000–1005 mV, and only while the radar runs (§3.2). Write the PMIC only through range-checked calls: a bad write (for example Buck2 under the supervisor threshold) holds the radar in reset, so firmware cannot undo it, and `HOST_DISABLE` does not reload the registers. Only removing 5 V for more than about 0.3 ms recovers the board. Raw register writes belong in a debug build only.
 7. The reset releases about 27 ms after the 5 V input is valid (§3.3).
+8. Thermal protection: read the radar's temperature sensor between frames (about once per second is enough; the board's thermal time constant is minutes). Reduce the frame rate from about 90 °C and stop transmitting at 100 °C or on the PMIC's die-temperature warning, against the 105 °C junction limit. Stop the radar if temperature reads keep failing. Host settings may tighten these limits but not loosen them.
+9. Transmitters: use at most two TX per chirp by default; three TX in one chirp did not fit the 1.0 V window in the co-simulation replay (§10). TDM-MIMO, with the three TX one after another, is not affected.
+10. UART rates: the data UART runs at 460800 Bd (+0.3 % against the CP2105). 921600 Bd is marginal: the radar's SCI makes 892857 Bd (−3.3 %).
+
+The test firmware in [`cosim/firmware/`](../cosim/firmware/) follows items 1, 3, 6 and 8–10 and shows the behaviour on a model of the board ([`cosim/README.md`](../cosim/README.md)). It is a test firmware with a stand-in for TI's radar subsystem, not the product firmware.
 
 ## 9. Bring-up checks
 
-The simulations in [`simulation/`](../simulation/README.md) cover what can be computed from the layout and the datasheets. These are the measurements for the first assembled boards:
+The simulations in [`simulation/`](../simulation/README.md) and [`cosim/`](../cosim/README.md) cover what can be computed from the layout, the datasheets and the test firmware. These are the measurements for the first assembled boards:
 
 1. **Assembly.** Check every part in JLC's placement preview, especially `U300` (BGA), `U600`, `U601`, `U117`, `U200`, `U301`, `D200`/`D201`/`D202` and the sockets. Bond `HS300` after the board has passed its electrical checks.
 2. **Rails.** At the test pads, check `SYS_5V`, `1V8_R`, `1V0_R`, `3V3_R` and `1V2_R` and the start-up order. `TP608`/`TP609` give the buck outputs `1V0_RAW`/`1V8_RAW`; under load they sit above the radar-side pads by the ferrite and copper drop (about 36 mV on 1.0 V at 2.5 A).
@@ -297,12 +302,12 @@ The simulations in [`simulation/`](../simulation/README.md) cover what can be co
    - With `HOST_DISABLE` applied, `TP603` falls before `1V2_R` and `1V0_R` leave their ranges (GPIO2).
    - Run three transmitters at the maximum-duty chirp profile, hot and cold, with the scope triggered on `TP603` falling: no resets during frames.
    - Boot from flash and in UART flashing mode.
-5. **Chirp load step.** `TP605` (`1V0_R`) and `TP606` (`1V8_R`) AC-coupled during three-transmitter chirps, compared with the table in §3.2.
+5. **Chirp load step.** `TP605` (`1V0_R`) and `TP606` (`1V8_R`) AC-coupled during frames, compared with the table in §3.2: the dip at chirp start and the overshoot at frame end, with two TX per chirp and with three. Set any Buck2 trim from these, not from the DC level, and put the measured current edge times into `cosim/replay/replay_rails.py`.
 6. **Back-power.** No `3V3_R` lift or latch-up from the CP2105 driving through `R208` while the PMIC starts.
 7. **Rail quality.** `1V0_R`/`1V8_R` switching ripple during chirps against SWRS237C Table 7-2, and no ringing after a load step on `TP608`/`TP609`.
-8. **Temperature.** Radar junction temperature from the on-chip sensor at the intended duty cycle, in the intended mounting, compared with §10.
+8. **Temperature.** Radar junction temperature from the on-chip sensor at the intended duty cycle, in the intended mounting, compared with §10. Check that the firmware's throttle and stop thresholds (§8) act at the temperatures it reports.
 9. **Current.** Input current per mode, peak and inrush. Don't publish a rating from datasheet values alone.
-10. **I²C.** Radar firmware reads the PMIC device ID (`TP614`/`TP615`).
+10. **I²C.** Radar firmware reads the PMIC device ID (`TP614`/`TP615`), the per-buck current readback during frames, and the Buck2 trim within 1000–1005 mV.
 11. **Carrier fit.** Socket height, header fit, heat sink clearance, standoffs and keying with purchased parts.
 
 ## 10. Operating conditions and model basis
@@ -319,7 +324,8 @@ The simulations in [`simulation/`](../simulation/README.md) cover what can be co
   | 2.3 W (three transmitters, high duty; estimate) | 62 K | 43 °C | 21 °C |
 
   The heat sink figure used is the less favourable of the two named parts (39.7 K/W in natural convection). Airflow, or a housing wall against the heat sink, lowers the rise further; a sealed housing with no heat path raises it.
-- **1.0 V transient response.** Two-transmitter steps and any edge of 100 µs or slower stay inside 0.95–1.05 V. A full 0.1 → 2.5 A three-transmitter step with an edge of 10 µs or faster reaches 0.91–0.94 V for 7–11 µs in the model. This is the chosen balance between transient response and loop stability (§3.2); the same model gives 0.875 V for the filter of TI's EVM. TI does not publish the edge rate of the radar's supply current.
+- **Room temperature.** The project requires normal use up to 30 °C room temperature. With `HS300` in open air that leaves 28 K of margin at 1.75 W and 13 K at 2.3 W. The air inside a case is warmer than the room, so the case decides how much of that margin is left; [`case/`](../case/README.md) compares heat sinks, a thermal pad to metal, airflow and a sealed box. The firmware's thermal governor (§8) is the safety net in every mounting.
+- **1.0 V transient response.** Two-transmitter steps and any edge of 100 µs or slower stay inside 0.95–1.05 V. A full 0.1 → 2.5 A three-transmitter step with an edge of 10 µs or faster reaches 0.91–0.94 V for 7–11 µs in the model. This is the chosen balance between transient response and loop stability (§3.2); the same model gives 0.875 V for the filter of TI's EVM. TI does not publish the edge rate of the radar's supply current. The co-simulation replays whole frames: with the default profile and no trim, `1V0_R` stays inside 0.95–1.05 V in 3 of 4 cases (worst 1.052 V for 3 µs at frame end); three TX in one chirp with 1 µs edges spans 145 mV peak to peak, more than the 100 mV window, which is why the firmware allows it only on request (§8).
 - **Model basis.** The LP87524 control loop is internal and undocumented; the model is calibrated to TI's datasheet load-step test. The FB pin input resistance is taken as 100 kΩ or more (22 Ω in series then costs under 0.3 mV). Ferrite inductance under DC bias is swept, not known. The antenna is inside the radar package and TI does not publish its geometry, so the RF design rests on TI's keep-out and edge-gap rules (§6), which the layout follows, and not on a field simulation.
 - **Nothing is measured yet.** Every figure in this document is from datasheets, layout extraction or simulation.
 - Supply limit: `U301` MX25L3233F (C190802) is an extended part with thin JLC stock (38 on 2 October 2026, 3 on 5 October 2026). Check stock before each assembly order.
