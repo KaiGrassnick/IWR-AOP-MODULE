@@ -106,8 +106,8 @@ def carrier_boot(c):
     clean(c, b)
 
 
-def _stream(c, name, trim, cfg=(), seconds=1.05):
-    b = c.board = fresh()
+def _stream(c, name, trim, cfg=(), seconds=1.05, debug=False):
+    b = c.board = fresh(debug=debug)
     b.preflash()
     b.plug_usb()
     booted(b)
@@ -156,7 +156,15 @@ def stream_trim(c):
 
 def stress_3tx(c):
     cfg = ["chirpReset", "chirpCfg 0 0 0 0 0 0 0 7", "frameCfg 0 0 64 0 100"]
-    b = _stream(c, "c_3tx_simultaneous_trim_1005", 1005, cfg)
+    n = fresh()
+    n.preflash()
+    n.plug_usb()
+    booted(n)
+    for line in cfg:
+        n.cli(line)
+    out = n.cli("sensorStart", 0.3)
+    c.expect("Error -53" in out, "three TX at once refused by default (radar.tx3_enable 0)")
+    b = _stream(c, "c_3tx_simultaneous_trim_1005", 1005, ["cfg radar.tx3_enable 1"] + cfg)
     clean(c, b)
 
 
@@ -319,6 +327,183 @@ def usb_dropout(c):
     clean(c, b)
 
 
+# ------------------------------------------------------------------------------ thermal and host limits
+# The board's thermal time constant is about 150 s (sim/bss.py). To keep runs short the thermal
+# scenarios compress it to 2 s and the firmware's hold time from its 20 s default to 300 ms, the
+# same ratio, so the governor sees the same dynamics 75 times faster. The temperature read interval
+# goes to its minimum of 100 ms (7.5 s at real speed, coarser than the 1 s default).
+TAU_FAST = 2.0
+RTH_BARE = 37.4          # K/W, no heat sink (thermal_summary.txt: 46.7 K at 1.25 W)
+HEAVY = ["chirpReset", "chirpCfg 0 0 0 0 0 0 0 3", "chirpCfg 1 1 0 0 0 0 0 6", "chirpCfg 2 2 0 0 0 0 0 5",
+         "frameCfg 0 2 43 0 33", "cfg thermal.hold_ms 300", "cfg thermal.read_ms 100"]
+# 2 TX per chirp, 129 chirps every 33 ms: 1.49 W
+
+
+THERMAL_RUNS = {}
+
+
+def plot_thermal():
+    """Radar temperature in the two governor scenarios, with the thresholds."""
+    if not THERMAL_RUNS:
+        return
+    import matplotlib
+    matplotlib.use("Agg")
+    import matplotlib.pyplot as plt
+    fig, ax = plt.subplots(figsize=(9, 4.2), dpi=130)
+    for (label, tr), color in zip(THERMAL_RUNS.items(), ("#2a78d6", "#eb6834")):
+        ax.plot([t for t, _ in tr], [x for _, x in tr], color=color, lw=1.4, label=label)
+    for y, txt in ((90, "throttle 90 C"), (100, "stop 100 C"), (105, "junction limit 105 C")):
+        ax.axhline(y, color="#6b6b6b", lw=0.9, ls="--")
+        ax.annotate(txt, (0.995, y), xycoords=("axes fraction", "data"), ha="right", va="bottom", fontsize=8,
+                    color="#4a4a4a")
+    ax.set_xlabel(f"simulated time (s); thermal time constant compressed to {TAU_FAST:.0f} s from about 150 s")
+    ax.set_ylabel("radar temperature (C)")
+    ax.set_title("Thermal governor: 2 TX per chirp, 129 chirps every 33 ms (1.49 W unthrottled)", fontsize=10,
+                 loc="left")
+    ax.grid(color="#e4e4e4", lw=0.6)
+    for sp in ("top", "right"):
+        ax.spines[sp].set_visible(False)
+    ax.legend(frameon=False, fontsize=9, loc="lower right")
+    fig.tight_layout()
+    fig.savefig(RES / "thermal_governor.png")
+    plt.close(fig)
+
+
+def hot_board(c, ambient, rth=None, cfg=HEAVY, start=True):
+    b = c.board = fresh(ambient=ambient, rth=rth, thermal_tau=TAU_FAST)
+    b.preflash()
+    b.plug_usb()
+    booted(b)
+    for line in cfg:
+        c.expect("Done" in b.cli(line), f"'{line}'")
+    if start:
+        c.expect("Done" in b.cli("sensorStart", 0.3), "sensorStart")
+    return b
+
+
+def thermal_lines(b, start=0):
+    return [l.strip() for l in b.eci.data[start:].decode("latin-1").splitlines() if l.startswith("thermal:")]
+
+
+def tj_max(b, t_from=0.0):
+    return max((x for t, x in b.bss.temp_trace if t >= t_from), default=b.bss.ambient)
+
+
+def thermal_throttle(c):
+    b = hot_board(c, 55.0)
+    c.note(f"ambient 55 C, heat sink fitted: unthrottled the radar would settle at "
+           f"{55 + b.bss.rth * 1.485:.0f} C")
+    b.run(10.0)
+    c.note("firmware: " + " | ".join(thermal_lines(b)))
+    fr = b.frames_from(b.sci_port)
+    tel = fr[-1]["telemetry"]
+    c.expect(tel["throttle_level"] >= 1 and tel["safe_state"] == 1,
+             f"still streaming, throttled to level {tel['throttle_level']} (frame period x{1 << tel['throttle_level']})")
+    c.expect(tj_max(b) < 91.0, f"radar peaks at {tj_max(b):.1f} C, settles at {b.bss.tj:.1f} C (throttle at 90 C)")
+    c.expect(not any("stop" in l for l in thermal_lines(b)), "never had to stop")
+    c.expect(len(fr) > 150, f"{len(fr)} packets in 10 s: the host keeps getting data, at a lower rate")
+    THERMAL_RUNS["55 C ambient, heat sink: throttles once"] = b.bss.temp_trace
+    clean(c, b)
+
+
+def thermal_stop(c):
+    b = hot_board(c, 66.0, rth=RTH_BARE)
+    c.note(f"ambient 66 C, no heat sink: even idle the radar sits at {66 + RTH_BARE * b.bss.idle_power():.0f} C")
+    b.run(8.0)
+    lines = thermal_lines(b)
+    c.note("firmware: " + " | ".join(lines))
+    c.expect(any("stop temperature" in l for l in lines) and not b.bss.running,
+             "radar stopped at 100 C after throttling to level 2")
+    c.expect(tj_max(b) < 100.5, f"peak {tj_max(b):.2f} C (stop at 100, junction limit 105)")
+    c.expect("stopped (hot)" in b.cli("thermal"), "stays stopped while the radar is above the resume temperature (90 C)")
+    # the room cools down
+    b.bss._thermal_update()
+    b.bss.ambient = 55.0
+    n0 = len(b.eci.data)
+    t0 = b.sim.t
+    b.run(8.0)
+    lines = thermal_lines(b, n0)
+    c.note("after ambient drops to 55 C: " + " | ".join(lines))
+    c.expect(any("restarted" in l for l in lines) and b.bss.running, "restarts by itself once under 90 C, at level 2")
+    c.expect(tj_max(b, t0) < 100.5, f"peak after restart {tj_max(b, t0):.1f} C")
+    THERMAL_RUNS["66 C, no heat sink (55 C from 8 s): stops, restarts"] = b.bss.temp_trace
+    clean(c, b)
+
+
+def thermal_hot_start(c):
+    b = hot_board(c, 66.0, rth=RTH_BARE, start=False)
+    b.bss.tj = 95.0
+    out = b.cli("sensorStart", 0.3)
+    c.expect("too warm to start" in out and not b.bss.running, "sensorStart at 95 C: waits instead of transmitting")
+    b.run(2.0)
+    c.expect(not b.bss.running and not b.bss.frames, "no frames while the radar stays over 90 C")
+    c.expect("Done" in b.cli("sensorStop") and "idle" in b.cli("thermal"), "sensorStop cancels the wait")
+    clean(c, b)
+
+
+def host_limits(c):
+    b = hot_board(c, 50.0, cfg=[], start=False)
+    out = b.cli("cfg")
+    c.note("cfg: " + " | ".join(l.strip() for l in out.splitlines()[1:-2]))
+    for line, code, what in (("cfg thermal.stop_c 105", -51, "stop temperature above 100 C"),
+                             ("cfg thermal.throttle_c 95", -51, "throttle temperature above 90 C"),
+                             ("cfg thermal.hold_ms 50", -51, "hold time under 100 ms"),
+                             ("cfg pmic.trim_mv 25", -51, "1V0 trim over 5 mV"),
+                             ("cfg thermal.read_ms 10000", -51, "temperature read interval over 5 s"),
+                             ("cfg radar.tx3_enable 2", -51, "tx3_enable other than 0 or 1"),
+                             ("cfg thermal.throttle_c 86", -52, "throttle closer than 3 K to release (85 C)"),
+                             ("cfg thermal.governor 0", -50, "unknown key (no switch to turn the governor off)")):
+        c.expect(f"Error {code}" in b.cli(line), f"refused: {what}")
+    for line, code, what in (("frameCfg 0 2 43 0 20", -54, "chirps over 50 % of the frame"),
+                             ("frameCfg 0 2 1 0 5", -55, "frame period under 10 ms")):
+        b.cli(line)
+        c.expect(f"Error {code}" in b.cli("sensorStart", 0.3), f"sensorStart refused: {what}")
+    # a host may tighten the limits, and the governor then uses them
+    c.note(f"ambient 50 C, heat sink: radar idle settles at {50 + b.bss.rth * b.bss.idle_power():.1f} C")
+    for line in ("cfg thermal.release_c 65", "cfg thermal.throttle_c 70", "cfg thermal.resume_c 71",
+                 "cfg thermal.stop_c 74", "cfg thermal.hold_ms 300"):
+        c.expect("Done" in b.cli(line), f"accepted: '{line}'")
+    for line in HEAVY[:-2] + HEAVY[-1:]:
+        b.cli(line)
+    b.cli("sensorStart", 0.3)
+    b.run(6.0)
+    lines = thermal_lines(b)
+    c.note("firmware: " + " | ".join(lines))
+    c.expect(any("level 1" in l for l in lines) and any("stop temperature" in l for l in lines),
+             "with the host's limits it throttles at 70 C and stops at 74 C")
+    c.expect(tj_max(b) < 74.5, f"peak {tj_max(b):.1f} C")
+    clean(c, b)
+
+
+def pmic_thermal(c):
+    b = hot_board(c, 25.0)
+    b.run(0.5)
+    b.bss.pmic_extra = 120.0      # stand-in for a hot carrier next to the PMIC
+    b.run(1.5)
+    lines = thermal_lines(b)
+    c.expect(any("PMIC thermal warning" in l for l in lines) and not b.bss.running,
+             "LP87524 TDIE_WARN (die over 137 C) stops the radar within 10 frames")
+    b.bss.pmic_extra = 0.0
+    b.run(1.0)
+    c.expect(b.bss.running and any("restarted" in l for l in thermal_lines(b)), "restarts once the warning clears")
+    c.note("firmware: " + " | ".join(thermal_lines(b)))
+    clean(c, b)
+
+
+def temp_fail(c):
+    b = hot_board(c, 25.0)
+    b.run(0.3)
+    b.bss.fail_temp = True
+    b.run(0.5)
+    lines = thermal_lines(b)
+    c.expect(any("unreadable" in l for l in lines) and not b.bss.running,
+             "three failed temperature reads stop the radar: no reading, no RF")
+    c.expect("stopped (fault)" in b.cli("thermal"), "state 'stopped (fault)' until the host starts it again")
+    b.bss.fail_temp = False
+    c.expect("Done" in b.cli("sensorStart", 0.3) and b.bss.running, "sensorStart after the fault runs again")
+    clean(c, b)
+
+
 def baud_table(c):
     """SCI baud rates the radar can make (no fractional divider) vs a CP2105 receiver."""
     cp = 48e6
@@ -338,7 +523,7 @@ SCENARIOS = [
     ("carrier_boot", "Carrier power (J400/J401) only, CLI over the carrier UART", carrier_boot),
     ("stream_default", "Default TDM-MIMO profile, 10 frames, no 1V0 trim", stream_default),
     ("stream_trim", "Same with the 1V0 trim to 1005 mV while running", stream_trim),
-    ("stress_3tx", "Three TX at once (LDO bypass), 64 chirps per frame, trim 1005 mV", stress_3tx),
+    ("stress_3tx", "Three TX at once: refused by default, runs once the host enables it", stress_3tx),
     ("guards", "Firmware limits on PMIC writes", guards),
     ("bad_pmic_write", "Debug build: raw write puts Buck2 at 855 mV", bad_write),
     ("flash_uart", "UniFlash-style programming in SOP 101, then boot", flash_uart),
@@ -347,6 +532,12 @@ SCENARIOS = [
     ("host_disable", "Carrier pulses HOST_DISABLE while streaming with trim", host_disable),
     ("carrier_reset", "Carrier pulses HOST_NRESET while streaming with trim", carrier_reset),
     ("usb_dropout", "USB dropouts of 0.1 ms and 1 ms while streaming with trim", usb_dropout),
+    ("thermal_throttle", "55 C ambient, heavy profile: governor halves the frame rate", thermal_throttle),
+    ("thermal_stop", "66 C ambient, no heat sink: stop at 100 C, restart when cooler", thermal_stop),
+    ("thermal_hot_start", "sensorStart while the radar is already at 95 C", thermal_hot_start),
+    ("host_limits", "Host config: what it can change, what it cannot", host_limits),
+    ("pmic_thermal", "PMIC die temperature warning while streaming", pmic_thermal),
+    ("temp_fail", "Radar temperature reads fail while streaming", temp_fail),
     ("uart_baud", "UART baud rates the SCI can make", baud_table),
 ]
 
@@ -379,6 +570,7 @@ def main(names):
         out += block + [""]
     summary = [f"Co-simulation results: {sum(1 for _ in out if _.startswith('==='))} scenarios, {n_fail} failed", ""] + out
     if not names:
+        plot_thermal()
         (RES / "cosim_summary.txt").write_text("\n".join(summary) + "\n")
     return n_fail
 

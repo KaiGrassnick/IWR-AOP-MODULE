@@ -17,6 +17,7 @@ typedef struct {
     bool bss_ready, rf_init, running;
     uint32_t frames_done, last_frame, last_error, errors;
     int32_t temp_mc;
+    uint32_t period_scale; /* thermal throttle: frame period multiplier (1, 2, 4) */
 } radar_state_t;
 
 extern radar_cfg_t radar_cfg;

@@ -1,5 +1,7 @@
 /* SCI (UART) driver, SWRU522E chapter 26. */
 #include <stdarg.h>
+#include <stdbool.h>
+#include <string.h>
 
 #include "soc.h"
 
@@ -123,6 +125,11 @@ void uprintf(sci_t *s, const char *fmt, ...)
         fmt++;
         char pad = ' ';
         int width = 0;
+        bool left = false;
+        if (*fmt == '-') {
+            left = true;
+            fmt++;
+        }
         if (*fmt == '0') {
             pad = '0';
             fmt++;
@@ -146,9 +153,18 @@ void uprintf(sci_t *s, const char *fmt, ...)
         case 'X':
             put_uint(s, va_arg(ap, uint32_t), 16, width, pad);
             break;
-        case 's':
-            sci_puts(s, va_arg(ap, const char *));
+        case 's': {
+            const char *str = va_arg(ap, const char *);
+            int n = (int)strlen(str);
+            if (!left)
+                for (; n < width; width--)
+                    sci_putc(s, ' ');
+            sci_puts(s, str);
+            if (left)
+                for (; n < width; width--)
+                    sci_putc(s, ' ');
             break;
+        }
         case 'c':
             sci_putc(s, (char)va_arg(ap, int));
             break;

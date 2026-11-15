@@ -7,6 +7,7 @@
 #include "bss_msg.h"
 #include "pmic.h"
 #include "radar.h"
+#include "safety.h"
 #include "soc.h"
 
 radar_cfg_t radar_cfg;
@@ -159,6 +160,23 @@ int radar_start(void)
         return BSS_ERR_STATE;
     if (radar.running)
         return BSS_OK;
+    /* hard limits (board.h): TX per chirp, frame duty, period */
+    uint32_t chirp_us10 = radar_cfg.idle_10ns + radar_cfg.ramp_end_10ns, nchirps = 0;
+    for (uint32_t i = radar_cfg.frame_chirp_start; i <= radar_cfg.frame_chirp_end && i < 8; i++) {
+        uint32_t m = radar_cfg.chirp_tx_mask[i] & radar_cfg.tx_mask, n = 0;
+        for (; m; m &= m - 1u)
+            n++;
+        if (n > (cfg_tx3 ? 3u : SAFE_MAX_TX_PER_CHIRP))
+            return SAFE_ERR_TX;
+        nchirps++;
+    }
+    if (radar_cfg.period_us < SAFE_MIN_PERIOD_US)
+        return SAFE_ERR_PERIOD;
+    uint64_t active_10ns = (uint64_t)chirp_us10 * nchirps * radar_cfg.loops;
+    if (active_10ns * 100u > (uint64_t)radar_cfg.period_us * 100u * SAFE_MAX_DUTY_PCT)
+        return SAFE_ERR_DUTY;
+    if (!radar.period_scale)
+        radar.period_scale = 1;
     uint32_t ch[] = {radar_cfg.rx_mask, radar_cfg.tx_mask};
     if ((st = radar_send(BSS_CHANNEL_CFG, ch, 2, 0, 0)))
         return st;
@@ -185,7 +203,7 @@ int radar_start(void)
             return st;
     }
     uint32_t fr[] = {radar_cfg.frame_chirp_start, radar_cfg.frame_chirp_end, radar_cfg.loops, radar_cfg.frames,
-                     radar_cfg.period_us};
+                     radar_cfg.period_us * radar.period_scale};
     if ((st = radar_send(BSS_FRAME_CFG, fr, 5, 0, 0)))
         return st;
     if (radar_cfg.buck2_mv_running) {
