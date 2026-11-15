@@ -1,0 +1,143 @@
+* LP87524J-Q1 behavioral model (timing / sequencing / supervision only)
+*
+* Built from SNVSAW2B (datasheet) and SNVU663A Table 3-8..3-10 (J-variant OTP).
+* NOT a switching model: each buck is an ideal current-limited regulator that
+* injects current straight into its output node. Use it for start-up order,
+* PGOOD / GPIO2 reset timing, shutdown, UVLO and OVP-latch behaviour.
+*
+* Modelled (J OTP):
+*   Buck0 3.30 V  start 5 ms  stop 0 ms   ILIM 2.5 A
+*   Buck1 1.20 V  start 5 ms  stop 0 ms   ILIM 2.5 A
+*   Buck2 1.00 V  start 2 ms  stop 0 ms   ILIM 5 A
+*   Buck3 1.80 V  start 0 ms  stop 1 ms   ILIM 3.5 A
+*   slew 3.8 mV/us, 230 ohm discharge when off (active while VANA > 1.2 V)
+*   GPIO2: open drain, follows EN1, release 5 ms after EN1 rises, 0 ms on fall
+*   PGOOD: open drain, window -40/+50 mV (typ), 7 us invalid filter,
+*          11 ms valid debounce, disabled bucks ignored, ramping bucks = invalid
+*   UVLO 2.63 V rising / 2.60 V falling, OVP 5.8 V typ (param), 20 us debounce,
+*   OVP is LATCHED (interrupt can only be cleared over I2C, none on this board)
+*   EN1 threshold 0.8 V (between VIL 0.4 / VIH 1.2), 500 k internal pulldown
+*
+* Unknown / assumed (params):
+*   totp   time from VANA>UVLO to READ OTP done (default 1 ms, not in datasheet)
+*   rdis   1 = discharge resistors active (EN_RDISx default 1 per register map)
+*   ovp    OVP rising threshold (5.6 min, 5.8 typ, 6.1 max)
+*   uvwin/ovwin PGOOD window
+
+.subckt LP87524J vana en1 fb0 fb1 fb2 fb3 out0 out1 out2 out3 gpio2 pgood
++ params: totp=1m rdis=1 ovp=5.8 uvwin=0.040 ovwin=0.050 pgdly=11m
+
+Ren1 en1 0 500k
+
+* ---- supply supervision ----------------------------------------------------
+* UVLO with hysteresis (latch node uv: 1 = above UVLO)
+Cuv uv 0 1
+Buv 0 uv I = (V(vana) > 2.63 ? 1e6*(1-V(uv)) : 0) - (V(vana) < 2.60 ? 1e6*V(uv) : 0)
+* OVP debounced 20 us then latched until UVLO
+Covd ovd 0 1
+Bovd 0 ovd I = (V(vana) > {ovp} ? 1 : -1e6*V(ovd))
+Col ol 0 1
+Bol 0 ol I = (V(ovd) > 20u ? 1e6*(1-V(ol)) : 0) - (V(uv) < 0.5 ? 1e6*V(ol) : 0)
+* OTP read timer
+Cto to 0 1
+Bto 0 to I = (V(uv) > 0.5 ? 1 : -1e6*V(to))
+Bready ready_r 0 V = (V(uv) > 0.5 && V(to) > {totp}) ? 1 : 0
+Rreadyf ready_r ready 1k
+Creadyf ready 0 1n
+
+* ---- enable and its timers ------------------------------------------------------
+* EN1 3 us debounce
+Cend end 0 1
+Bend 0 end I = (V(en1) > 0.8 ? 1 : -1e6*V(end))
+Ben en_r 0 V = (V(ready) > 0.5 && V(end) > 3u && V(ol) < 0.5) ? 1 : 0
+Renf en_r en 1k
+Cenf en 0 1n
+* time since en rose
+Cton ton 0 1
+Bton 0 ton I = (V(en) > 0.5 ? 1 : -1e6*V(ton))
+* time since en fell
+Ctof tof 0 1
+Btof 0 tof I = (V(en) < 0.5 ? 1 : -1e6*V(tof))
+
+* buck on-states (shutdown delay 0 for 0/1/2, 1 ms for 3; UVLO/OVP = immediate off)
+Bon0 on0_r 0 V = (V(en) > 0.5 && V(ton) > 5m) ? 1 : 0
+Ron0f on0_r on0 1k
+Con0f on0 0 1n
+Bon1 on1_r 0 V = (V(en) > 0.5 && V(ton) > 5m) ? 1 : 0
+Ron1f on1_r on1 1k
+Con1f on1 0 1n
+Bon2 on2_r 0 V = (V(en) > 0.5 && V(ton) > 2m) ? 1 : 0
+Ron2f on2_r on2 1k
+Con2f on2 0 1n
+Con3 on3 0 1
+Bon3 0 on3 I = (V(en) > 0.5 ? 1e6*(1-V(on3)) : 0) - ((V(tof) > 1m || V(ready) < 0.5 || V(ol) > 0.5) ? 1e6*V(on3) : 0)
+
+* ---- soft-start reference ramps (3.8 mV/us) ----------------------------------
+Cr0 r0 0 1
+Br0 0 r0 I = V(on0) > 0.5 ? 3.8e3*max(0, min(1, (3.30-V(r0))/0.005)) : -1e6*V(r0)
+Cr1 r1 0 1
+Br1 0 r1 I = V(on1) > 0.5 ? 3.8e3*max(0, min(1, (1.20-V(r1))/0.005)) : -1e6*V(r1)
+Cr2 r2 0 1
+Br2 0 r2 I = V(on2) > 0.5 ? 3.8e3*max(0, min(1, (1.00-V(r2))/0.005)) : -1e6*V(r2)
+Cr3 r3 0 1
+Br3 0 r3 I = V(on3) > 0.5 ? 3.8e3*max(0, min(1, (1.80-V(r3))/0.005)) : -1e6*V(r3)
+
+* ---- power stages: current-limited transconductance, max duty = VIN-0.15 V ----
+* The fast loop regulates the local output node; a slow (100 us) outer term adds the
+* measured out->fb drop so the FB pin sits on target in DC (remote sense through the
+* ferrite). Loop dynamics through the ferrite are studied in loadstep_1v0.cir instead.
+Bdr0 dr0r 0 V = V(out0)-V(fb0)
+Rdr0 dr0r dr0 100
+Cdr0 dr0 0 1u
+Bdr1 dr1r 0 V = V(out1)-V(fb1)
+Rdr1 dr1r dr1 100
+Cdr1 dr1 0 1u
+Bdr2 dr2r 0 V = V(out2)-V(fb2)
+Rdr2 dr2r dr2 100
+Cdr2 dr2 0 1u
+Bdr3 dr3r 0 V = V(out3)-V(fb3)
+Rdr3 dr3r dr3 100
+Cdr3 dr3 0 1u
+Vs0 o0i out0 0
+Bp0 0 o0i I = V(on0) > 0.5 ? max(-2.5, min(2.5, 200*(min(V(r0), V(vana)-0.15) + V(dr0) - V(out0)))) : 0
+Vs1 o1i out1 0
+Bp1 0 o1i I = V(on1) > 0.5 ? max(-2.5, min(2.5, 200*(min(V(r1), V(vana)-0.15) + V(dr1) - V(out1)))) : 0
+Vs2 o2i out2 0
+Bp2 0 o2i I = V(on2) > 0.5 ? max(-5.0, min(5.0, 200*(min(V(r2), V(vana)-0.15) + V(dr2) - V(out2)))) : 0
+Vs3 o3i out3 0
+Bp3 0 o3i I = V(on3) > 0.5 ? max(-3.5, min(3.5, 200*(min(V(r3), V(vana)-0.15) + V(dr3) - V(out3)))) : 0
+* input current: output power / efficiency (85 %) drawn from VANA/VIN_Bx
+Bin vana 0 I = (max(0,V(out0)*I(Vs0)) + max(0,V(out1)*I(Vs1)) + max(0,V(out2)*I(Vs2)) + max(0,V(out3)*I(Vs3))) / (0.85*max(V(vana), 1.0)) + 1m*min(1,V(vana)/3)
+* discharge resistors
+Bd0 out0 0 I = (V(on0) < 0.5 && V(vana) > 1.2 && {rdis} > 0.5) ? V(out0)/230 : 0
+Bd1 out1 0 I = (V(on1) < 0.5 && V(vana) > 1.2 && {rdis} > 0.5) ? V(out1)/230 : 0
+Bd2 out2 0 I = (V(on2) < 0.5 && V(vana) > 1.2 && {rdis} > 0.5) ? V(out2)/230 : 0
+Bd3 out3 0 I = (V(on3) < 0.5 && V(vana) > 1.2 && {rdis} > 0.5) ? V(out3)/230 : 0
+
+* ---- PGOOD ----------------------------------------------------------------------
+* per buck: off -> ignored(1); ramping -> 0; settled -> window check
+Bk0 k0_r 0 V = (1-V(on0)) + V(on0)*0.5*(1+tanh((V(r0)-(3.30-0.001))/2e-4))*0.5*(1+tanh((V(fb0)-(3.30-{uvwin}))/1e-3))*0.5*(1+tanh(((3.30+{ovwin})-V(fb0))/1e-3))
+Rk0f k0_r k0 1k
+Ck0f k0 0 1n
+Bk1 k1_r 0 V = (1-V(on1)) + V(on1)*0.5*(1+tanh((V(r1)-(1.20-0.001))/2e-4))*0.5*(1+tanh((V(fb1)-(1.20-{uvwin}))/1e-3))*0.5*(1+tanh(((1.20+{ovwin})-V(fb1))/1e-3))
+Rk1f k1_r k1 1k
+Ck1f k1 0 1n
+Bk2 k2_r 0 V = (1-V(on2)) + V(on2)*0.5*(1+tanh((V(r2)-(1.00-0.001))/2e-4))*0.5*(1+tanh((V(fb2)-(1.00-{uvwin}))/1e-3))*0.5*(1+tanh(((1.00+{ovwin})-V(fb2))/1e-3))
+Rk2f k2_r k2 1k
+Ck2f k2 0 1n
+Bk3 k3_r 0 V = (1-V(on3)) + V(on3)*0.5*(1+tanh((V(r3)-(1.80-0.001))/2e-4))*0.5*(1+tanh((V(fb3)-(1.80-{uvwin}))/1e-3))*0.5*(1+tanh(((1.80+{ovwin})-V(fb3))/1e-3))
+Rk3f k3_r k3 1k
+Ck3f k3 0 1n
+* time any monitor has been invalid (7 us filter)
+Cbad bad 0 1
+Bbad 0 bad I = (V(k0)*V(k1)*V(k2)*V(k3) < 0.5) ? 1 : -1e6*V(bad)
+* PGOOD latch: low once invalid > 7 us; released after valid for pgdly
+Cgd gd 0 1
+Bgd 0 gd I = (V(k0)*V(k1)*V(k2)*V(k3) > 0.5 ? 1 : -1e9*V(gd))
+Cpg pgs 0 1
+Bpg 0 pgs I = (V(bad) > 7u ? -1e6*V(pgs) : 0) + (V(gd) > {pgdly} ? 1e6*(1-V(pgs)) : 0)
+* open drain drivers (20 ohm on), only while VANA > 1.2 V and OTP loaded
+Bpgood pgood 0 I = (V(ready) > 0.5 && V(pgs) < 0.5) ? V(pgood)/20 : 0
+* GPIO2: low while en low or within 5 ms of en rising; low on OVP latch
+Bgp2 gpio2 0 I = (V(ready) > 0.5 && (V(en) < 0.5 || V(ton) < 5m || V(ol) > 0.5)) ? V(gpio2)/20 : 0
+.ends LP87524J

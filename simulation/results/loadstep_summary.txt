@@ -1,0 +1,17 @@
+Calibration (TI test, 22u+22u, 0.1->2 A/1 us): kp = 37.9 A/V gives -40 mV; crossover 132 kHz, phase margin 68 deg
+
+Board 1.0 V rail, 0.1 -> 2.5 A in 1 us at the radar (3-TX peak, SWRS237C Table 7-3 note 2)
+ ferrite L   sense  dip at radar  overshoot  rings       fc     PM
+       5nH   after      -52.4 mV    52.4 mV      0     87k    53°  stable  DC at radar 1.0000 V
+       5nH  before      -95.8 mV    95.8 mV      1    105k    94°  stable  DC at radar 0.9375 V
+      20nH   after      -54.0 mV    54.0 mV      0     91k    52°  stable  DC at radar 1.0000 V
+      20nH  before     -100.8 mV   100.8 mV      1     91k    97°  stable  DC at radar 0.9375 V
+      50nH   after      -66.8 mV    69.0 mV     47    166k     2°  OSCILLATES (104 mVpp at 350-400 us)  DC at radar 1.0029 V
+      50nH  before     -113.7 mV   113.7 mV      1     79k   107°  stable  DC at radar 0.9375 V
+     150nH   after     -405.9 mV   480.3 mV     29    126k   -70°  OSCILLATES (947 mVpp at 350-400 us)  DC at radar 0.9985 V
+     150nH  before     -160.4 mV   160.4 mV      3    263k    69°  stable  DC at radar 0.9375 V
+     300nH   after     -760.3 mV   903.7 mV     21    100k   -92°  OSCILLATES (1830 mVpp at 350-400 us)  DC at radar 1.0247 V
+     300nH  before     -212.8 mV   212.8 mV      5    263k    68°  stable  DC at radar 0.9375 V
+
+Limits: PGOOD undervoltage trips at -29 mV (min) / -40 mV (typ) / -53 mV (max) for > 4-10 us;
+        radar VIN_13RF in LDO-bypass mode needs >= 0.95 V (SWRS237C 7.4).

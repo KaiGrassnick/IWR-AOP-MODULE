@@ -1,0 +1,13 @@
+USB-C hot plug into USB_VBUS (2 uF ceramic, no TVS); limit: LM66200 VIN abs max 6.0 V
+cable                         peak USB_VBUS
+0.3 m, 0.25 uH, 60 mohm             7.94 V  OVER 6 V abs max
+1 m, 0.7 uH, 120 mohm               8.04 V  OVER 6 V abs max
+2 m, 1.4 uH, 200 mohm               7.98 V  OVER 6 V abs max
+
+Load release 1.3 A -> 0.3 A at the 5 V input; limit: LP87524 VANA OVP 5.6 V min (latches off)
+supply                                  peak SYS_5V
+USB 5.00 V, 1 m cable                      4.957 V  below 5.6 V
+USB 5.25 V (USB max), 1 m cable            5.207 V  below 5.6 V
+USB 5.50 V (charger high), 1 m cable       5.457 V  below 5.6 V
+carrier 5.50 V (spec max), 10 cm wiring     5.480 V  below 5.6 V
+carrier 5.50 V, 50 cm wiring               5.468 V  below 5.6 V
