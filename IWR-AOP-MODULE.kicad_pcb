@@ -43030,6 +43030,17 @@
 			(uuid "f4225f67-025b-41cd-898d-20a20fa93956")
 		)
 		(embedded_fonts no)
+		(model "${KIPRJMOD}/libraries/IWR-AOP-MODULE.3dshapes/HeatSink_PinFin_14x14x6mm.step"
+			(offset
+				(xyz 0 0 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 0)
+			)
+		)
 	)
 	(footprint "Capacitor_SMD:C_0402_1005Metric"
 		(layer "B.Cu")

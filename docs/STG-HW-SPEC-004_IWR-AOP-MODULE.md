@@ -205,7 +205,7 @@ All logic is 3.3 V (`3V3_R`); none of it is 5 V tolerant. Carrier rules:
 ![Top](images/board-top.png)
 ![Back](images/board-back.png)
 
-The renders show the board as assembled, before the heat sink `HS300` is bonded to the back.
+The renders show the board as assembled, with the heat sink `HS300` bonded to the back.
 
 | Item | Value |
 |---|---|
