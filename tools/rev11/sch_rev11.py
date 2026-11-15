@@ -228,11 +228,15 @@ def rails():
     retext("RC fallback", "R604 DNP: PGOOD is observed (TP613), not a reset source.\\nC605 DNP, footprint kept.\\nR600/601: I2C pull-ups to 3V3_R; bus master is the radar (R605/R606).")
     retext("open-drain reset sinks", "Reset sinks on AOP_NRESET (all open-drain):\\nU601 supervisor (all four rails), PMIC GPIO2 (falls with EN1),\\nSW400, J301.10, carrier through R417.")
 
-    # extra bulk at the buck outputs: 2 x 22 uF local on each rail. A third cap on 1.0 V would take the
-    # rail total past the LP87524 limit of 100 uF per phase (SNVSAW2B 6.5), so it is left out.
-    d = "Buck output bulk at the PMIC, inside the regulation loop (2 x 22 uF local; rail total stays under the 100 uF LP87524 limit)."
+    # extra bulk at the buck outputs: 2 x 22 uF local on each rail
+    d = "Buck output bulk at the PMIC, inside the regulation loop (2 x 22 uF local)."
     s.cap("C624", "C626", 156.21, 167.64, "1V0_RAW", Description=d)
     s.cap("C624", "C628", 186.69, 213.36, "1V8_RAW", Description=d)
+    # radar-side bulk after the ferrites: 2 x 22 uF more, as on the TI EVM (22 + 22 + 10 uF behind each bead).
+    # They sit on the front on the wide 1V0_R feed, 9 mm and more from the radar package.
+    d = "1.0 V bulk on the radar side of the ferrites; lowers the ferrite/capacitor impedance that sets the chirp load-step dip."
+    s.cap("C624", "C630", 186.69, 167.64, "1V0_R", Description=d)
+    s.cap("C624", "C633", 217.17, 167.64, "1V0_R", Description=d)
     # second 1.0 V ferrite in parallel: halves DC drop and bias per bead
     s.clone("FB600", "FB602", 204.47, 180.34, Description="In parallel with FB600: 11 mohm total, 1.25 A per bead at the 2.5 A 3-TX peak.")
     s.label("1V0_RAW", 200.66, 180.34, 180); s.label("1V0_R", 208.28, 180.34, 0)

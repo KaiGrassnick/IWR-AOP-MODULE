@@ -1,0 +1,12 @@
+First-order board thermal model: bare board in still air, both faces h = 10 W/m2/K, no housing or heat sink
+Copper coverage: F.Cu 86 %, In1.Cu 92 %, In2.Cu 12 %, In3.Cu 16 %, In4.Cu 92 %, B.Cu 85 %; 238 vias; board area 22.6 cm2
+
+case                                    board under radar  radar Tj rise  PMIC Tj rise  hottest board  max ambient
+radar idle / low duty (0.6 W)                     19.2 K        23.6 K       19.5 K        19.9 K        81 C
+2 TX, 24 % duty (1.25 W, Table 7-4)               37.5 K        46.7 K       39.2 K        39.5 K        58 C
+2 TX, 48 % duty (1.75 W, Table 7-4)               51.6 K        64.4 K       54.3 K        54.7 K        41 C
+3 TX, high duty (2.3 W, estimate)                 67.1 K        83.9 K       71.0 K        71.3 K        21 C
+
+Rises are above ambient. 'max ambient' keeps the radar junction at or under 105 C and the PMIC under 125 C.
+The radar dominates: a bare module in still air is limited by the board's own surface area.
+Mounting on a carrier or against a housing wall lowers these numbers; the backside pad TH300 is there for that.

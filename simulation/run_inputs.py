@@ -24,7 +24,13 @@ def ng(txt):
     d = np.loadtxt(f); f.unlink(); return d
 
 
-def hotplug(lcab, rcab, vsrc=5.0, cbulk_src=100e-6):
+def hotplug(lcab, rcab, vsrc=5.0, cbulk_src=100e-6, rev11=True):
+    damper = """* Rev 1.1: C204 10 uF 50 V X7R (8 uF at 5 V) + R210 0.47 ohm damper, D202 SMF5.0A TVS
+C204 USB_VBUS dmp 8u
+R210 dmp 0 0.47
+D202 0 USB_VBUS DTVS
+.model DTVS D(BV=6.7 IBV=1m RS=0.35 CJO=600p)
+""" if rev11 else ""
     d = ng(f"""* USB-C hot plug
 * charger output: bulk {cbulk_src*1e6:.0f} uF already at {vsrc} V
 Cs src 0 {cbulk_src} ic={vsrc}
@@ -43,7 +49,7 @@ R202e c2 0 5m
 * CP2105 VBUS divider R200/R201
 R200 USB_VBUS sense 24k
 R201 sense 0 47k
-.tran 2n 40u 0 2n uic
+{damper}.tran 2n 80u 0 2n uic
 .control
 run
 wrdata {RES}/in_tmp.txt v(USB_VBUS)
@@ -83,13 +89,19 @@ wrdata {RES}/in_tmp.txt v(SYS_5V)
 
 
 def main():
-    L = ["USB-C hot plug into USB_VBUS (2 uF ceramic, no TVS); limit: LM66200 VIN abs max 6.0 V",
-         f"{'cable':28} {'peak USB_VBUS':>14}"]
-    for name, lc, rc in [("0.3 m, 0.25 uH, 60 mohm", 0.25e-6, 0.06),
-                         ("1 m, 0.7 uH, 120 mohm", 0.7e-6, 0.12),
-                         ("2 m, 1.4 uH, 200 mohm", 1.4e-6, 0.20)]:
-        pk = hotplug(lc, rc)
-        L.append(f"{name:28} {pk:11.2f} V  {'OVER 6 V abs max' if pk > 6 else 'ok'}")
+    L = ["USB-C hot plug into USB_VBUS; limit: LM66200 VIN abs max 6.0 V",
+         "Rev 1.1 has the C204 + R210 damper and the D202 TVS; Rev 1.0 had 2 uF of ceramic only",
+         f"{'source, cable':40} {'Rev 1.1 peak':>13} {'Rev 1.0 peak':>13}"]
+    ok = True
+    for name, lc, rc, vs in [("5.0 V, 0.3 m, 0.25 uH, 60 mohm", 0.25e-6, 0.06, 5.0),
+                             ("5.0 V, 1 m, 0.7 uH, 120 mohm", 0.7e-6, 0.12, 5.0),
+                             ("5.0 V, 2 m, 1.4 uH, 200 mohm", 1.4e-6, 0.20, 5.0),
+                             ("5.25 V (USB max), 1 m", 0.7e-6, 0.12, 5.25),
+                             ("5.5 V (charger high), 1 m", 0.7e-6, 0.12, 5.5)]:
+        pk, pk0 = hotplug(lc, rc, vs), hotplug(lc, rc, vs, rev11=False)
+        ok &= pk < 6.0
+        L.append(f"{name:40} {pk:10.2f} V {pk0:10.2f} V  {'OVER 6 V abs max' if pk > 6 else 'ok'}")
+    L.append(("PASS" if ok else "FAIL") + "  hot-plug peak under 6.0 V for every source and cable")
     L += ["", "Load release 1.3 A -> 0.3 A at the 5 V input; limit: LP87524 VANA OVP 5.6 V min (latches off)",
           f"{'supply':38} {'peak SYS_5V':>12}"]
     for name, vs, ls, rs in [("USB 5.00 V, 1 m cable", 5.00, 0.7e-6, 0.12),

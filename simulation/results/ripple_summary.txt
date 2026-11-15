@@ -1,8 +1,10 @@
 Switching ripple, fundamental at 4 MHz (Table 7-2 gives the limit at 4.4 MHz)
-rail   ferrite L  at PMIC (uVrms)  at radar (uVrms)  limit
-1V0_R       20nH             1262              37.9   13 uV  FAIL
-1V0_R      150nH             1280              16.8   13 uV  FAIL
-1V0_R      300nH             1279               3.0   13 uV  PASS
-1V8_R       20nH             1919              52.0   19 uV  FAIL
-1V8_R      150nH             1945              17.8   19 uV  PASS
-1V8_R      300nH             1938               0.5   19 uV  PASS
+rail      bead L  at PMIC (uVrms)  at radar (uVrms)  limit
+1V0_R      100 %              636               0.6   13 uV  PASS
+1V0_R       50 %              635               1.2   13 uV  PASS
+1V0_R       25 %              634               2.3   13 uV  PASS
+1V0_R       10 %              632               5.8   13 uV  PASS
+1V8_R      100 %              968               0.5   19 uV  PASS
+1V8_R       50 %              967               0.9   19 uV  PASS
+1V8_R       25 %              967               1.6   19 uV  PASS
+1V8_R       10 %              965               4.2   19 uV  PASS

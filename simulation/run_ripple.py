@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
-"""Switching ripple at the radar on 1V0_R and 1V8_R vs SWRS237C Table 7-2.
+"""Switching ripple at the radar on 1V0_R and 1V8_R vs SWRS237C Table 7-2 (Rev 1.1).
 
 Ideal synchronous buck at 4 MHz (fixed duty, open loop, steady state from initial
-conditions) driving L60x 0.47 uH -> C61x 22 uF -> FB60x -> radar-end capacitors.
-Capacitor ESR/ESL and the ferrite model are assumptions (marked below).
+conditions) driving L60x 0.47 uH -> 2 x 22 uF -> ferrite(s) -> radar-end capacitors.
+The ferrite is Murata's equivalent circuit (spice/bead_blm18kg121.lib) with its inductance
+swept down for DC bias; capacitor ESR/ESL are assumptions (marked below).
 """
 import pathlib, subprocess, sys
 import numpy as np
@@ -12,11 +13,13 @@ HERE = pathlib.Path(__file__).resolve().parent
 SP, RES = HERE / "spice", HERE / "results"
 
 # rail: (Vout, load A, radar-end C, spec uVrms at 4.4 MHz from Table 7-2)
-RAILS = {"1V0_R": (1.0, 0.8, 48.7e-6, 13), "1V8_R": (1.8, 0.6, 44.3e-6, 19)}
+# plus the number of ferrites in parallel
+RAILS = {"1V0_R": (1.0, 0.8, 92.7e-6, 13, 2), "1V8_R": (1.8, 0.6, 44.3e-6, 19, 1)}
 
 
-def run(rail, lfb, rfbp=120.0):
-    vo, il, cr, spec = RAILS[rail]
+def run(rail, k):
+    vo, il, cr, spec, nb = RAILS[rail]
+    beads = "\n".join(f"XB{i} raw2 out BEAD120 params: k={k}" for i in range(nb))
     vin, fs = 5.0, 4e6
     d = vo / vin + 0.004  # small loss allowance
     cir = SP / "_ripple.cir"
@@ -26,21 +29,19 @@ Vin vin 0 {vin}
 Vsw sw 0 PULSE(0 {vin} 0 2n 2n {d/fs - 2e-9} {1/fs})
 L60x sw raw 0.47u ic={il}
 R60xdcr raw raw2 0.02
-* C61x 22 uF 1210 X7R, ESR 3 mohm, ESL 0.5 nH [ASSUMED]
-C61x raw2 c1e 22u ic={vo}
-R61x c1e c1l 3m
-L61x c1l 0 0.5n
-* FB60x: DCR 25 mohm, L_lf {lfb*1e9:.0f} nH [ASSUMED], loss resistor {rfbp} ohm
-RFB raw2 fbm 0.025
-LFB fbm out {lfb} ic={il}
-RFBP raw2 out {rfbp}
+.include bead_blm18kg121.lib
+* buck output: 2 x 22 uF, each ESR 3 mohm, ESL 0.5 nH [ASSUMED]
+C61x raw2 c1e 44u ic={vo}
+R61x c1e c1l 1.5m
+L61x c1l 0 0.25n
+{beads}
 * radar-end MLCCs, ~1 mohm, 0.15 nH, plus via/plane 0.2 nH [ASSUMED]
 CR out cre {cr} ic={vo}
 RR cre crl 1m
 LR crl 0 0.35n
 Iload out 0 {il}
 .options reltol=1e-4
-.tran 1n 60u 0 1n uic
+.tran 1n 400u 0 1n uic
 .control
 run
 linearize v(out) v(raw2)
@@ -54,7 +55,7 @@ wrdata {RES}/rp_tmp.txt v(out) v(raw2)
         print(r.stdout[-2000:], r.stderr[-2000:]); sys.exit("ngspice failed")
     dd = np.loadtxt(f); f.unlink()
     t = dd[:, 0]
-    m = t > 40e-6
+    m = t > 360e-6
     out, raw = dd[m, 1], dd[m, 3]
     n = len(out); dt = t[1] - t[0]
     # rms of the fundamental at fs (sinusoid amplitude / sqrt2) via single-bin DFT on whole periods
@@ -69,11 +70,11 @@ wrdata {RES}/rp_tmp.txt v(out) v(raw2)
 
 def main():
     lines = ["Switching ripple, fundamental at 4 MHz (Table 7-2 gives the limit at 4.4 MHz)",
-             f"{'rail':6} {'ferrite L':>9} {'at PMIC (uVrms)':>16} {'at radar (uVrms)':>17} {'limit':>6}"]
+             f"{'rail':6} {'bead L':>9} {'at PMIC (uVrms)':>16} {'at radar (uVrms)':>17} {'limit':>6}"]
     for rail in RAILS:
-        for lfb in [20e-9, 150e-9, 300e-9]:
-            o, rw, pp, spec = run(rail, lfb)
-            lines.append(f"{rail:6} {lfb*1e9:7.0f}nH {rw:16.0f} {o:17.1f} {spec:4d} uV  {'PASS' if o < spec else 'FAIL'}")
+        for k in [1.0, 0.5, 0.25, 0.1]:
+            o, rw, pp, spec = run(rail, k)
+            lines.append(f"{rail:6} {k*100:7.0f} % {rw:16.0f} {o:17.1f} {spec:4d} uV  {'PASS' if o < spec else 'FAIL'}")
     out = "\n".join(lines)
     (RES / "ripple_summary.txt").write_text(out + "\n")
     print(out)

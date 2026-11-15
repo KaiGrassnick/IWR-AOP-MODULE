@@ -21,7 +21,7 @@ NRESET_VIH, NRESET_VIL = 1.57, 0.65
 
 
 def deck(name, tstop, sources, params):
-    p = dict(r604=0.001, c605=0, rdis=1, rio="10k", tcp=0)
+    p = dict(r604="1e9", c605=0, rdis=1, rio="10k", tcp=0)
     p.update(params)
     ptxt = "\n".join(f".param {k}={v}" for k, v in p.items())
     c605 = "" if p["c605"] else "* C605 DNP\n"
@@ -83,18 +83,18 @@ VUSB_SRC USB_CONN_VBUS 0 0
 * HOST_DISABLE: 3.3 V push-pull from 40 ms to 55 ms
 VDIS hd 0 PWL(0 0 40m 0 40.01m 3.3 55m 3.3 55.01m 0)
 RDIS hd HOST_DISABLE 50
-* carrier open-drain reset pulse on J400.8 at 75-76 ms
+* carrier open-drain reset pulse on J400.8 at 100-101 ms
 SHR HOST_NRESET 0 hrc 0 SWOD
-VHRC hrc 0 PWL(0 0 75m 0 75.01m 1 76m 1 76.01m 0)
+VHRC hrc 0 PWL(0 0 100m 0 100.01m 1 101m 1 101.01m 0)
 .model SWOD SW(VT=0.5 VH=0.1 RON=20 ROFF=1e9)
 """
 
 
 def rails_settled(t, v, after):
-    """time at which every rail is inside the PGOOD window (-29 mV worst) and stays there"""
+    """time at which every rail is inside the PMIC regulation band (+-2 %, at least +-20 mV)"""
     ok = np.ones_like(t, bool)
     for r, n in RAIL_NOM.items():
-        ok &= np.abs(v[r] - n) < 0.029
+        ok &= np.abs(v[r] - n) < max(0.02, 0.02 * n)
     return first(t, ok, after)
 
 
@@ -130,37 +130,44 @@ def report_powerdown(tag, t, v, t_ev, lines):
     for r, mn in RAIL_MIN.items():
         t_out[r] = first(t, v[r] < mn, t_ev)
         lines.append(f"[{tag}]   {r:6} below datasheet min ({mn} V) at {ms(t_out[r])}")
-    first_out = min([x for x in t_out.values() if x is not None], default=None)
-    ok = t_rst is not None and (first_out is None or t_rst <= first_out)
-    return [(f"{tag}: reset asserted before any rail leaves its operating range", ok)]
+    core = min([t_out[r] for r in ("1V2_R", "1V0_R", "1V8_R") if t_out[r] is not None], default=None)
+    ok = t_rst is not None and (core is None or t_rst <= core)
+    out = [(f"{tag}: reset asserted before any core rail (1.2/1.0/1.8 V) leaves its operating range", ok)]
+    if t_out["3V3_R"] is not None and t_rst is not None:
+        lag = t_rst - t_out["3V3_R"]
+        lines.append(f"[{tag}]   reset comes {lag*1e6:.0f} us after 3V3_R passes 3.13 V (supervisor threshold 3.07 V sits "
+                     f"under the radar minimum so that tolerance cannot cause nuisance resets)" if lag > 0 else
+                     f"[{tag}]   reset comes {-lag*1e6:.0f} us before 3V3_R passes 3.13 V")
+        out.append((f"{tag}: reset within 1 ms of 3V3_R leaving its range", lag < 1e-3))
+    return out
 
 
 def main():
     lines, checks = [], []
 
     # A: USB power-up, then unplug at 60 ms
-    t, v = run("usb", "80m", USB_PLUG.format(vusb=5.0, tun="60m", tun2="60.01m"))
+    t, v = run("usb", "100m", USB_PLUG.format(vusb=5.0, tun="80m", tun2="80.01m"))
     checks += [("A " + c, ok) for c, ok in report_powerup("A usb", t, v, lines)]
     pre = v["3V3_R"][(t > 1e-3) & (t < 5.5e-3)].max()
     lines.append(f"[A usb] max 3V3_R before Buck0 starts (CP2105 back-power through R208): {pre:.3f} V")
-    checks += report_powerdown("A usb unplug", t, v, 60e-3, lines)
+    checks += report_powerdown("A usb unplug", t, v, 80e-3, lines)
 
     # B: carrier power-up, HOST_DISABLE 40-55 ms, carrier reset pulse 75-76 ms
-    t, v = run("carrier", "110m", CARRIER)
+    t, v = run("carrier", "130m", CARRIER)
     checks += [("B " + c, ok) for c, ok in report_powerup("B carrier", t, v, lines)]
     checks += report_powerdown("B HOST_DISABLE", t, v, 40e-3, lines)
     checks += [("B " + c, ok) for c, ok in report_powerup("B re-enable", t, v, lines, t0=55.02e-3)]
-    m = (t > 75.2e-3) & (t < 75.9e-3)
+    m = (t > 100.2e-3) & (t < 100.9e-3)
     vlow = v["AOP_NRESET"][m].max()
     lines.append(f"[B carrier reset] AOP_NRESET during J400.8 low: {vlow:.3f} V (needs < 0.65 V)")
     checks.append(("B carrier reset through R417 reaches radar VIL", vlow < NRESET_VIL))
-    t_back = first(t, v["AOP_NRESET"] > NRESET_VIH, 76.01e-3)
+    t_back = first(t, v["AOP_NRESET"] > NRESET_VIH, 101.01e-3)
     lines.append(f"[B carrier reset] released {ms(t_back)}")
 
-    # C: fallback option (R604 removed, C605 1 uF fitted), USB plug + unplug
-    t, v = run("fallback", "80m", USB_PLUG.format(vusb=5.0, tun="60m", tun2="60.01m"), r604="1e9", c605="1u")
-    checks += [("C fallback " + c, ok) for c, ok in report_powerup("C fallback", t, v, lines)]
-    checks += report_powerdown("C fallback unplug", t, v, 60e-3, lines)
+    # C: option R604 fitted (PGOOD also resets, Rev 1.0 behaviour), USB plug + unplug
+    t, v = run("r604", "100m", USB_PLUG.format(vusb=5.0, tun="80m", tun2="80.01m"), r604="0.001")
+    checks += [("C R604 option " + c, ok) for c, ok in report_powerup("C R604 fitted", t, v, lines)]
+    checks += report_powerdown("C R604 fitted unplug", t, v, 80e-3, lines)
 
     # D: back-power sensitivity: discharge resistor off / weak radar IO load / CP2105 TX timing
     for rd, rio in [(1, "1e6"), (0, "10k"), (0, "1e6")]:
@@ -171,7 +178,7 @@ def main():
     # E: short USB interruption (connector bump): VBUS gone for 1 ms at 60 ms, then back
     src = USB_PLUG.format(vusb=5.0, tun="60m", tun2="60.01m").replace(
         "60.01m 0)", "60.01m 0 61m 0 61.01m 5.0)")
-    t, v = run("dip", "100m", src)
+    t, v = run("dip", "110m", src)
     bad = (v["AOP_NRESET"] > NRESET_VIH) & ((v["1V2_R"] < RAIL_MIN["1V2_R"]) | (v["1V8_R"] < RAIL_MIN["1V8_R"])
                                            | (v["1V0_R"] < RAIL_MIN["1V0_R"])) & (t > 60e-3)
     dur = bad.sum() * 2e-6

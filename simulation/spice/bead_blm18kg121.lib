@@ -1,0 +1,16 @@
+* BLM18KG121TH1 chip ferrite bead, 120 ohm at 100 MHz, 3 A, 0603
+* Equivalent circuit with the element values of Murata's published SPICE model for this part
+* (valid 1 MHz - 3 GHz, 25 C, no DC bias, small signal).  The series inductances are scaled by
+* the parameter k so that the loss of inductance under DC bias can be swept: a ferrite bead
+* carrying a large share of its rated current keeps only a fraction of its small-signal value.
+* R4 is the DC resistance (22 mohm typical, 30 mohm maximum in the datasheet).
+.subckt BEAD120 a b params: k=1 rdc=0.022
+R1 a 1 103.2
+L1 a 1 {1.925e-7*k}
+C1 a 2 1.158e-12
+R2 1 2 26.11
+L2 1 2 {4.165e-7*k}
+R3 2 3 21.78
+L3 2 3 {1.224e-7*k}
+R4 3 b {rdc}
+.ends BEAD120
