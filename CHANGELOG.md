@@ -23,7 +23,7 @@ Design revision after a review backed by post-layout extraction and simulation (
 - Ferrites are BLM18KG260TN1D (26 Ω, 6 A, 7 mΩ) in place of the 120 Ω part: the dip from a fast chirp current edge is roughly halved and the ripple limit is still met.
 - PMIC PGOOD is no longer a reset source (`R604` not fitted); its window is the same size as a chirp load step.
 - PMIC I²C pull-ups go to `3V3_R`.
-- All simulations run on the extracted copper of the routed board; specification rewritten, with the remaining limits in §10.
+- All simulations run on the extracted copper of the routed board; specification rewritten, with operating conditions and the model basis in §10.
 - Renders, 3D model and BOM cost table regenerated; `manufacturing/` and `tools/render/` scripts run on Linux as well as macOS.
 
 ## [1.0] - 2026-10-05

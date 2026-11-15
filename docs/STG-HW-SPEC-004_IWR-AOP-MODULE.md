@@ -85,7 +85,7 @@ The OTP order brings 1.8 V up before 3.3 V, as the IWR6843AOP requires (errata M
 | 1.0 V | `R628` 22 Ω from `1V0_R` near the radar balls to `FB_B2` | `C631` 1 µF from `1V0_RAW` to `FB_B2` | 7 kHz |
 | 1.8 V | `R629` 22 Ω from `1V8_R` at `TP606` to `FB_B3` | `C632` 1 µF from `1V8_RAW` to `FB_B3` | 7 kHz |
 
-Below the crossover the PMIC regulates the voltage at the radar; above it the loop sees only its own output capacitors, as TI characterised it. Phase margin in the model is 71° or more across ferrite inductance from 10 to 130 % and capacitor spread. The network can be turned into the TI EVM arrangement by removing `R628`/`R629` and fitting 0 Ω in place of `C631`/`C632`.
+Below the crossover the PMIC regulates the voltage at the radar; above it the loop sees only its own output capacitors, as TI characterised it. Phase margin in the model is 62° or more across ferrite inductance from 10 to 100 %, and 51° or more with the worst stack of ferrite and capacitor tolerances (smallest margin of all unity-gain crossings). The network can be turned into the TI EVM arrangement by removing `R628`/`R629` and fitting 0 Ω in place of `C631`/`C632`.
 
 **Voltage at the radar balls** (extracted copper at 85 °C, peak current, PMIC DC accuracy at its worst, ground return included):
 
@@ -107,7 +107,19 @@ The 2 % PMIC accuracy is the largest term on every rail. The current is assumed 
 | Idle to full peak | 1 µs | 0.911–0.935 V | 1.750–1.775 V |
 | Two transmitters (0.5 → 2.0 A) | 10 µs | 0.959 V | n/a |
 
-The ranges cover ferrite inductance from 100 % down to 10 % of its small-signal value. The 1.8 V rail stays inside its limits in every case. The 1.0 V rail stays inside 0.95–1.05 V for two-transmitter steps and for any edge of 100 µs or slower; a full three-transmitter step with an edge of 10 µs or faster dips to 0.91–0.94 V for about 6 µs. With a 10 µs edge and half the ferrite inductance the figure is 0.934 V; the filter of the TI EVM gives 0.875 V under the same conditions. The buck output never comes near the supervisor threshold, so a dip cannot reset the radar. Firmware can add headroom by raising Buck2 by a few 5 mV steps over I²C (§8).
+The ranges cover ferrite inductance from 100 % down to 10 % of its small-signal value. The 1.8 V rail stays inside its limits in every case. The 1.0 V rail stays inside 0.95–1.05 V for two-transmitter steps and for any edge of 100 µs or slower; a full three-transmitter step with an edge of 10 µs or faster dips to 0.91–0.94 V for 7–11 µs. With a 10 µs edge and half the ferrite inductance the figure is 0.934 V; the filter of the TI EVM gives 0.875 V under the same conditions, and that board is TI's working reference. The buck output never comes near the supervisor threshold, so a dip cannot reset the radar.
+
+**Why the sense network is not faster.** The dip is set by how quickly the loop sees the voltage at the radar, and a faster sense path trades directly against loop stability. Modelled alternatives for the same step (10 µs edge, half ferrite inductance):
+
+| Variant | 1.0 V minimum | Phase margin | Verdict |
+|---|---|---|---|
+| As built: 22 Ω + 1 µF, crossover 7 kHz | 0.934 V | 70° | Stable with every tolerance stack (59° or more) |
+| Radar-side capacitance × 3 | 0.948 V | 73° | About nine more 22 µF parts next to the radar |
+| Four ferrites instead of two | 0.941 V | 70° | Small gain |
+| Sense capacitor 0.1 µF, crossover 72 kHz | 0.954 V | 43° | 22° with ferrite inductance at 130 %; oscillates with the worst tolerance stack |
+| Sense at the radar only, no blend | 0.968 V | 48° | Ferrite and radar capacitors inside the fast loop |
+
+The as-built values keep the full stability margin, because the PMIC's internal loop is known only through TI's datasheet test. `R628`/`C631` (and `R629`/`C632` on 1.8 V) are 0402 parts and can be changed on a built board once the real loop and the radar's real current edges are measured (§9). Firmware can also add headroom by raising Buck2 by a few 5 mV steps over I²C (§8).
 
 ### 3.3 Enable and reset
 
@@ -293,7 +305,7 @@ The simulations in [`simulation/`](../simulation/README.md) cover what can be co
 10. **I²C.** Radar firmware reads the PMIC device ID (`TP614`/`TP615`).
 11. **Carrier fit.** Socket height, header fit, heat sink clearance, standoffs and keying with purchased parts.
 
-## 10. Limits
+## 10. Operating conditions and model basis
 
 - No USB PD; default USB power only.
 - USB and carrier together, 3.3 V on `PWR_IN`, or driving `J400.8` high are outside the design.
@@ -307,8 +319,8 @@ The simulations in [`simulation/`](../simulation/README.md) cover what can be co
   | 2.3 W (three transmitters, high duty; estimate) | 62 K | 43 °C | 21 °C |
 
   The heat sink figure used is the less favourable of the two named parts (39.7 K/W in natural convection). Airflow, or a housing wall against the heat sink, lowers the rise further; a sealed housing with no heat path raises it.
-- **Fast three-transmitter chirp edges.** A full 0.1 → 2.5 A step on 1.0 V with an edge of 10 µs or faster dips to 0.91–0.94 V for about 6 µs in the model (§3.2). Two-transmitter operation and slower edges stay inside the limits. TI does not publish the edge rate of the radar's supply current.
-- **Model limits.** The LP87524 control loop is internal and undocumented; the model is calibrated to TI's datasheet load-step test. The FB pin input resistance is taken as 100 kΩ or more (22 Ω in series then costs under 0.3 mV). Ferrite inductance under DC bias is swept, not known. The antenna pattern has not been simulated; the layout follows TI's keep-out and edge-gap rules.
+- **1.0 V transient response.** Two-transmitter steps and any edge of 100 µs or slower stay inside 0.95–1.05 V. A full 0.1 → 2.5 A three-transmitter step with an edge of 10 µs or faster reaches 0.91–0.94 V for 7–11 µs in the model. This is the chosen balance between transient response and loop stability (§3.2); the same model gives 0.875 V for the filter of TI's EVM. TI does not publish the edge rate of the radar's supply current.
+- **Model basis.** The LP87524 control loop is internal and undocumented; the model is calibrated to TI's datasheet load-step test. The FB pin input resistance is taken as 100 kΩ or more (22 Ω in series then costs under 0.3 mV). Ferrite inductance under DC bias is swept, not known. The antenna is inside the radar package and TI does not publish its geometry, so the RF design rests on TI's keep-out and edge-gap rules (§6), which the layout follows, and not on a field simulation.
 - **Nothing is measured yet.** Every figure in this document is from datasheets, layout extraction or simulation.
 - Supply limit: `U301` MX25L3233F (C190802) is an extended part with thin JLC stock (38 on 2 October 2026, 3 on 5 October 2026). Check stock before each assembly order.
 

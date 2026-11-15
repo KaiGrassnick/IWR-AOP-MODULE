@@ -2,12 +2,12 @@ Controller calibration (TI test, 22u + 22u, 0.1 -> 2 A in 1 us = -40 mV): kp = 3
 
 === 1V0: 0.1 -> 2.5 A at the radar, 2 bead(s), copper 12.4 mohm, radar-side C 92.7 uF.  Radar limits 0.95 - 1.05 V, supervisor trips at 0.9 V at the buck output
 case                                         DC@radar        dip      min      max buck min buck max     fc   PM
-bead L 100 %, 1 us edge                       1.000 V     -90 mV  0.911 V  1.090 V  0.973 V  1.065 V   170k   77  stable
-bead L 100 %, 10 us edge                      1.000 V     -77 mV  0.923 V  1.077 V  0.981 V  1.057 V   170k   77  stable
-bead L 100 %, 100 us edge                     1.000 V     -11 mV  0.989 V  1.011 V  1.000 V  1.038 V   170k   77  stable
-bead L 50 %, 1 us edge                        1.000 V     -75 mV  0.925 V  1.075 V  0.970 V  1.068 V   191k   87  stable
-bead L 50 %, 10 us edge                       1.000 V     -66 mV  0.934 V  1.066 V  0.979 V  1.059 V   191k   87  stable
-bead L 50 %, 100 us edge                      1.000 V     -11 mV  0.989 V  1.011 V  0.999 V  1.039 V   191k   87  stable
+bead L 100 %, 1 us edge                       1.000 V     -90 mV  0.911 V  1.090 V  0.973 V  1.065 V    37k   64  stable
+bead L 100 %, 10 us edge                      1.000 V     -77 mV  0.923 V  1.077 V  0.981 V  1.057 V    37k   64  stable
+bead L 100 %, 100 us edge                     1.000 V     -11 mV  0.989 V  1.011 V  1.000 V  1.038 V    37k   64  stable
+bead L 50 %, 1 us edge                        1.000 V     -75 mV  0.925 V  1.075 V  0.970 V  1.068 V    43k   70  stable
+bead L 50 %, 10 us edge                       1.000 V     -66 mV  0.934 V  1.066 V  0.979 V  1.059 V    43k   70  stable
+bead L 50 %, 100 us edge                      1.000 V     -11 mV  0.989 V  1.011 V  0.999 V  1.039 V    43k   70  stable
 bead L 25 %, 1 us edge                        1.000 V     -69 mV  0.932 V  1.069 V  0.970 V  1.067 V    46k   71  stable
 bead L 25 %, 10 us edge                       1.000 V     -61 mV  0.939 V  1.061 V  0.978 V  1.060 V    46k   71  stable
 bead L 25 %, 100 us edge                      1.000 V     -11 mV  0.989 V  1.011 V  0.999 V  1.039 V    46k   71  stable
@@ -15,38 +15,45 @@ bead L 10 %, 1 us edge                        1.000 V     -65 mV  0.935 V  1.066
 bead L 10 %, 10 us edge                       1.000 V     -58 mV  0.942 V  1.059 V  0.978 V  1.060 V    50k   73  stable
 bead L 10 %, 100 us edge                      1.000 V     -11 mV  0.989 V  1.011 V  0.999 V  1.039 V    50k   73  stable
   component spread (bead L 130 %, sense C -40 %, radar C -30 %, buck C -30 %):
-  worst-case stack, 1 us edge                 1.000 V    -112 mV  0.888 V  1.113 V  0.978 V  1.060 V   214k   75  stable
-  sense C -40 % only                          1.000 V     -88 mV  0.912 V  1.088 V  0.978 V  1.060 V   170k   79  stable
-  bead L 130 %, radar C +30 %                 1.000 V     -89 mV  0.912 V  1.089 V  0.979 V  1.059 V   164k   75  stable
+  worst-case stack, 1 us edge                 1.000 V    -112 mV  0.888 V  1.113 V  0.978 V  1.060 V    43k   60  stable
+  sense C -40 % only                          1.000 V     -88 mV  0.912 V  1.088 V  0.978 V  1.060 V    37k   59  stable
+  bead L 130 %, radar C +30 %                 1.000 V     -89 mV  0.912 V  1.089 V  0.979 V  1.059 V    30k   62  stable
   for comparison, 10 us edge, bead L 50 %:
-  this board                                  1.000 V     -66 mV  0.934 V  1.066 V  0.979 V  1.059 V   191k   87  stable
+  this board                                  1.000 V     -66 mV  0.934 V  1.066 V  0.979 V  1.059 V    43k   70  stable
   TI EVM filter (120 ohm beads, local sense)  0.942 V    -123 mV  0.875 V  1.064 V  0.970 V  1.030 V   152k   71  stable
-  2-TX profile 0.5 -> 2.0 A, 10 us, L 50 %    1.000 V     -41 mV  0.959 V  1.041 V  0.993 V  1.043 V   191k   87  stable
+  2-TX profile 0.5 -> 2.0 A, 10 us, L 50 %    1.000 V     -41 mV  0.959 V  1.041 V  0.993 V  1.043 V    43k   70  stable
+  alternatives not built, 10 us edge, bead L 50 % (last two lines: 1 us edge, component spread as above):
+  radar-side C x3 (278 uF)                    1.000 V     -52 mV  0.948 V  1.052 V  0.986 V  1.052 V    24k   73  stable
+  four beads                                  1.000 V     -59 mV  0.941 V  1.059 V  0.978 V  1.058 V    46k   70  stable
+  sense C 0.1 uF (crossover 72 kHz)           1.000 V     -46 mV  0.954 V  1.046 V  0.998 V  1.042 V    43k   43  stable
+  sense at the radar, no blend                1.000 V     -32 mV  0.968 V  1.032 V  1.001 V  1.040 V    58k   48  stable
+  sense C 0.1 uF, bead L 130 %                1.000 V     -58 mV  0.942 V  1.059 V  1.002 V  1.043 V    44k   22  ringing
+  sense C 0.1 uF, worst-case stack            0.997 V    -118 mV  0.882 V  1.223 V  0.964 V  1.149 V   191k  109  UNSTABLE
 
 === 1V8: 0.1 -> 0.85 A at the radar, 1 bead(s), copper 13.7 mohm, radar-side C 44.3 uF.  Radar limits 1.71 - 1.9 V, supervisor trips at 1.653 V at the buck output
 case                                         DC@radar        dip      min      max buck min buck max     fc   PM
-bead L 100 %, 1 us edge                       1.800 V     -50 mV  1.750 V  1.851 V  1.794 V  1.824 V   158k   74  stable
-bead L 100 %, 10 us edge                      1.800 V     -37 mV  1.764 V  1.837 V  1.797 V  1.820 V   158k   74  stable
-bead L 100 %, 100 us edge                     1.800 V      -4 mV  1.796 V  1.804 V  1.802 V  1.816 V   158k   74  stable
-bead L 50 %, 1 us edge                        1.800 V     -38 mV  1.763 V  1.838 V  1.790 V  1.827 V   170k   80  stable
-bead L 50 %, 10 us edge                       1.800 V     -27 mV  1.774 V  1.827 V  1.796 V  1.822 V   170k   80  stable
-bead L 50 %, 100 us edge                      1.800 V      -4 mV  1.796 V  1.804 V  1.802 V  1.816 V   170k   80  stable
-bead L 25 %, 1 us edge                        1.800 V     -30 mV  1.771 V  1.830 V  1.789 V  1.828 V   191k   98  stable
-bead L 25 %, 10 us edge                       1.800 V     -23 mV  1.777 V  1.824 V  1.795 V  1.822 V   191k   98  stable
-bead L 25 %, 100 us edge                      1.800 V      -4 mV  1.796 V  1.804 V  1.801 V  1.816 V   191k   98  stable
+bead L 100 %, 1 us edge                       1.800 V     -50 mV  1.750 V  1.851 V  1.794 V  1.824 V    44k   62  stable
+bead L 100 %, 10 us edge                      1.800 V     -37 mV  1.764 V  1.837 V  1.797 V  1.820 V    44k   62  stable
+bead L 100 %, 100 us edge                     1.800 V      -4 mV  1.796 V  1.804 V  1.802 V  1.816 V    44k   62  stable
+bead L 50 %, 1 us edge                        1.800 V     -38 mV  1.763 V  1.838 V  1.790 V  1.827 V    54k   68  stable
+bead L 50 %, 10 us edge                       1.800 V     -27 mV  1.774 V  1.827 V  1.796 V  1.822 V    54k   68  stable
+bead L 50 %, 100 us edge                      1.800 V      -4 mV  1.796 V  1.804 V  1.802 V  1.816 V    54k   68  stable
+bead L 25 %, 1 us edge                        1.800 V     -30 mV  1.771 V  1.830 V  1.789 V  1.828 V    63k   72  stable
+bead L 25 %, 10 us edge                       1.800 V     -23 mV  1.777 V  1.824 V  1.795 V  1.822 V    63k   72  stable
+bead L 25 %, 100 us edge                      1.800 V      -4 mV  1.796 V  1.804 V  1.801 V  1.816 V    63k   72  stable
 bead L 10 %, 1 us edge                        1.800 V     -26 mV  1.775 V  1.826 V  1.790 V  1.827 V    68k   72  stable
 bead L 10 %, 10 us edge                       1.800 V     -21 mV  1.779 V  1.822 V  1.795 V  1.823 V    68k   72  stable
 bead L 10 %, 100 us edge                      1.800 V      -4 mV  1.796 V  1.804 V  1.801 V  1.816 V    68k   72  stable
   component spread (bead L 130 %, sense C -40 %, radar C -30 %, buck C -30 %):
-  worst-case stack, 1 us edge                 1.800 V     -66 mV  1.734 V  1.866 V  1.799 V  1.822 V   198k   74  stable
-  sense C -40 % only                          1.800 V     -50 mV  1.751 V  1.850 V  1.797 V  1.821 V   152k   77  stable
-  bead L 130 %, radar C +30 %                 1.800 V     -50 mV  1.750 V  1.851 V  1.797 V  1.821 V   152k   74  stable
+  worst-case stack, 1 us edge                 1.800 V     -66 mV  1.734 V  1.866 V  1.799 V  1.822 V    50k   51  stable
+  sense C -40 % only                          1.800 V     -50 mV  1.751 V  1.850 V  1.797 V  1.821 V    44k   53  stable
+  bead L 130 %, radar C +30 %                 1.800 V     -50 mV  1.750 V  1.851 V  1.797 V  1.821 V    35k   55  stable
   for comparison, 10 us edge, bead L 50 %:
-  this board                                  1.800 V     -27 mV  1.774 V  1.827 V  1.796 V  1.822 V   170k   80  stable
+  this board                                  1.800 V     -27 mV  1.774 V  1.827 V  1.796 V  1.822 V    54k   68  stable
   TI EVM filter (120 ohm beads, local sense)  1.770 V     -68 mV  1.728 V  1.838 V  1.789 V  1.811 V   146k   70  stable
 
-1V0: fastest edges dip to 0.911 V at the radar for some tens of microseconds (below the 0.95 V DC limit). This is the ferrite-capacitor filter and the feed copper; it is smaller than with the TI EVM filter and depends on how fast the radar really steps its current.
-1V8: fastest edges dip to 1.750 V at the radar for some tens of microseconds (inside the 1.71 V DC limit). This is the ferrite-capacitor filter and the feed copper; it is smaller than with the TI EVM filter and depends on how fast the radar really steps its current.
+1V0: fastest edges dip to 0.911 V at the radar for about 10 microseconds (below the 0.95 V DC limit). This is the ferrite-capacitor filter and the feed copper; it is smaller than with the TI EVM filter and depends on how fast the radar really steps its current.
+1V8: fastest edges dip to 1.750 V at the radar for about 10 microseconds (inside the 1.71 V DC limit). This is the ferrite-capacitor filter and the feed copper; it is smaller than with the TI EVM filter and depends on how fast the radar really steps its current.
 
 CHECKS
   PASS  1V0: loop stable for every bead inductance and edge (PM > 45 deg, no ringing)

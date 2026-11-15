@@ -54,7 +54,7 @@ Summaries are written to `results/*_summary.txt` and `results/netlist_checks.txt
 - **Netlist.** 150 of 150 checks pass.
 - **DC drop.** Ferrite outputs to radar balls: 12.4 mΩ on 1.0 V, 13.7 mΩ on 1.8 V. With remote sense, the worst ball is 11.8 mV under the regulation point on 1.0 V at 2.5 A and 10.1 mV on 1.8 V at 0.85 A. Worst-case voltage at the balls, with PMIC accuracy and ground return: 0.964 V (minimum 0.95), 1.752 V (1.71), 1.155 V (1.14) and 3.229 V (3.135).
 - **Sequencing and reset.** 1V8 is up at 4.3 ms, 1V0 at 6.1 ms, 1V2 and 3V3 at 9.1–9.6 ms. Reset releases 20 ms after the last rail settles. With HOST_DISABLE it asserts in 12 µs, before any rail leaves its range. On a USB unplug it asserts 17 µs after 3V3_R passes 3.13 V and about 230 µs before the first core rail leaves its range. A 1 ms dropout never releases reset with a core rail down. A carrier reset reaches the radar as 0.31 V.
-- **Stability.** Phase margin is 71° or more for every ferrite inductance and component spread tried. DC returns to target at the radar after a step.
+- **Stability.** Phase margin is 62° or more for every ferrite inductance, and 51° or more with the worst stack of component tolerances (smallest margin of all unity-gain crossings). DC returns to target at the radar after a step.
 - **Load steps on 1.8 V.** Inside the radar limits for every edge: 1.750 V at worst for a 1 µs edge (minimum 1.71 V).
 - **Load steps on 1.0 V, two transmitters or slow edges.** 0.959 V for a 0.5 → 2.0 A step with a 10 µs edge; 0.989 V for the full 0.1 → 2.5 A step with a 100 µs edge (minimum 0.95 V).
 - **No resets from load steps.** The buck output stays above the supervisor threshold in every case, including 1 µs edges.
@@ -63,16 +63,16 @@ Summaries are written to `results/*_summary.txt` and `results/netlist_checks.txt
 - **Load release.** At most 5.48 V on SYS_5V, under the 5.6 V PMIC OVP minimum.
 - **Temperature with the heat sink.** Radar junction rise 17 K at 0.6 W, 34 K at 1.25 W, 48 K at 1.75 W and 62 K at 2.3 W, for a maximum ambient of 88, 71, 58 and 43 °C. Without the heat sink the limits are 81, 58, 41 and 21 °C.
 
-**Remaining limit**
+**Design trade-off**
 
-- **Full three-transmitter step with a fast edge on 1.0 V.** For 0.1 → 2.5 A with a 1–10 µs edge, 1V0_R dips to 0.911–0.942 V and stays under 0.95 V for about 6 µs. With a 10 µs edge and half the ferrite inductance the figure is 0.934 V; the filter of the TI EVM, on this board's copper, gives 0.875 V under the same conditions. TI does not publish how fast the radar's supply current steps; spec §9 has the measurement, and firmware can raise Buck2 in 5 mV steps for headroom.
+- **Full three-transmitter step with a fast edge on 1.0 V.** For 0.1 → 2.5 A with a 1–10 µs edge, 1V0_R dips to 0.911–0.942 V and stays under 0.95 V for 7–11 µs. With a 10 µs edge and half the ferrite inductance the figure is 0.934 V; the filter of the TI EVM, on this board's copper, gives 0.875 V under the same conditions. TI does not publish how fast the radar's supply current steps; spec §9 has the measurement, and firmware can raise Buck2 in 5 mV steps for headroom. `loadstep_summary.txt` lists the alternatives that were modelled and not built: three times the radar-side capacitance (0.948 V), four ferrites (0.941 V), a 0.1 µF sense capacitor (0.954 V, but 22° phase margin at 130 % ferrite inductance and oscillation with the worst tolerance stack) and sensing only at the radar (0.968 V, 48°). A faster sense path buys dip only by spending stability margin, so the board keeps the 7 kHz blend; spec §3.2 has the table.
 
 ## What this cannot show
 
 These need the assembled board or tools and models that aren't available here:
 
 - **RF.** Antenna pattern and the effect of nearby parts, the board edge and a housing. This needs a 3D field solver and TI's package model.
-- **The radar's real supply current waveform**, which decides the remaining limit above.
+- **The radar's real supply current waveform**, which decides how deep the 1.0 V dip above really is.
 - **The real LP87524 loop.** The model matches one datasheet point.
 - **Switching-edge effects**: EMI, ground bounce and coupling at the buck switch nodes. The extraction here is DC and lumped.
 - **Thermal in the real mounting**: convection in an enclosure and contact resistance to a carrier.

@@ -129,7 +129,7 @@ The project is self-contained: everything outside the stock KiCad 10 libraries i
 
 ## Status
 
-**Designed and simulated, not yet built.** The board is fully routed. ERC has no errors; DRC reports 0 unconnected and 0 schematic-parity issues, plus 53 accepted findings (spec §7.3). Post-layout extraction and simulation cover rail voltages at the radar balls, sequencing and reset, loop stability, chirp load steps, ripple, USB hot plug and temperature: see [`simulation/`](simulation/README.md). The remaining limits are in spec §10 and the measurements for the first boards in spec §9.
+**Designed and simulated, not yet built.** The board is fully routed. ERC has no errors; DRC reports 0 unconnected and 0 schematic-parity issues, plus 53 accepted findings (spec §7.3). Post-layout extraction and simulation cover rail voltages at the radar balls, sequencing and reset, loop stability, chirp load steps, ripple, USB hot plug and temperature: see [`simulation/`](simulation/README.md). Operating conditions and the basis of the models are in spec §10 and the measurements for the first boards in spec §9.
 
 ## License
 

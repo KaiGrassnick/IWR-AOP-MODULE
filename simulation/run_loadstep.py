@@ -136,12 +136,15 @@ def metrics(d):
 
 
 def margin(d):
+    """Crossover frequency and phase margin.  The filter gives the loop gain up to three unity
+    crossings; the one with the smallest margin is reported."""
     f, mag, ph = d[:, 0], d[:, 1], np.degrees(d[:, 3])
-    i = np.where((mag[:-1] >= 1) & (mag[1:] < 1))[0]
+    i = np.where((mag[:-1] >= 1) != (mag[1:] >= 1))[0]
     if not len(i):
         return None, None
-    i = i[-1]                                   # last crossing: everything above it has gain < 1
-    return f[i], (ph[i] + 180 + 180) % 360 - 180
+    pm = np.abs((ph[i] + 360) % 360 - 180)
+    j = pm.argmin()
+    return f[i[j]], pm[j]
 
 
 def main():
@@ -190,6 +193,13 @@ def main():
         row("  TI EVM filter (120 ohm beads, local sense)", rail, sense="local", k=0.5, tr=10e-6, bead="BEAD120")
         if rail == "1V0":
             row("  2-TX profile 0.5 -> 2.0 A, 10 us, L 50 %", rail, k=0.5, tr=10e-6, i0=0.5, ipk=2.0)
+            L.append("  alternatives not built, 10 us edge, bead L 50 % (last two lines: 1 us edge, component spread as above):")
+            row("  radar-side C x3 (278 uF)", rail, k=0.5, tr=10e-6, cr=r["cr"] * 3)
+            row("  four beads", rail, k=0.5, tr=10e-6, nbead=4)
+            row("  sense C 0.1 uF (crossover 72 kHz)", rail, k=0.5, tr=10e-6, cs=0.1e-6)
+            row("  sense at the radar, no blend", rail, k=0.5, tr=10e-6, sense="after")
+            row("  sense C 0.1 uF, bead L 130 %", rail, k=1.3, tr=10e-6, cs=0.1e-6)
+            row("  sense C 0.1 uF, worst-case stack", rail, k=1.3, cs=0.06e-6, cr=r["cr"] * 0.7, craw=31e-6)
         L.append("")
     # verdicts
     checks = []
@@ -207,7 +217,7 @@ def main():
                        all(m["vmin"] >= r["vmin"] - 0.02 and m["vmax"] <= r["vmax"] + 0.02 for m in slow)))
         fast = [m for (rl, k, tr), (m, pm) in res.items() if rl == rail and tr <= 10e-6]
         worst = min(m["vmin"] for m in fast)
-        L.append(f"{rail}: fastest edges dip to {worst:.3f} V at the radar for some tens of microseconds "
+        L.append(f"{rail}: fastest edges dip to {worst:.3f} V at the radar for about 10 microseconds "
                  f"({'below' if worst < r['vmin'] else 'inside'} the {r['vmin']} V DC limit). This is the ferrite-capacitor "
                  f"filter and the feed copper; it is smaller than with the TI EVM filter and depends on how fast the radar "
                  f"really steps its current.")
