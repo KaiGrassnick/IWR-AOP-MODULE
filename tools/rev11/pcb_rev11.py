@@ -530,6 +530,16 @@ def stage6(b, comps, nets, rt):
     for x, y in ((157.4, 114.4), (158.3, 114.6), (157.3, 113.7), (165.0, 111.5), (168.5, 112.0), (171.5, 110.5),
                  (172.5, 108.5)):
         rt.via_near("1V0_R", None, x, y, maxd=0.9, avoid_existing=0.8, optional=True)
+    # The search puts one of these 4 um into C620 pad 1.  The sliver joins the two mask openings and
+    # makes KiCad's 3D export drop the back solder mask, so that via sits 0.15 mm clear of the pad.
+    for t in b.GetTracks():
+        if t.Type() == pcbnew.PCB_VIA_T and t.GetNetname() == "1V0_R":
+            q = t.GetPosition()
+            if abs(MM(q.x) - 158.125) < 0.01 and abs(MM(q.y) - 113.425) < 0.01:
+                t.SetPosition(pcbnew.VECTOR2I(NM(158.725), NM(113.305)))
+                break
+    else:
+        sys.exit("1V0_R stitching via next to C620 not found")
     refill(b)
 
 
@@ -563,6 +573,9 @@ def stage7(b, comps, nets, rt):
     for fld in f.GetFields():
         fld.SetVisible(False)
         fld.SetLayer(pcbnew.B_Fab)
+    m = pcbnew.FP_3DMODEL()  # built by tools/heatsink_model.py
+    m.m_Filename = "${KIPRJMOD}/libraries/IWR-AOP-MODULE.3dshapes/HeatSink_PinFin_14x14x6mm.step"
+    f.Models().push_back(m)
     refill(b)
 
 
