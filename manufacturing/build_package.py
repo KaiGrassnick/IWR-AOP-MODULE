@@ -2,8 +2,9 @@
 """Build the JLCPCB PCB + PCBA package for IWR-AOP-MODULE from the saved board and schematic.
 
 Writes manufacturing/jlcpcb/: gerbers + drill (zipped), BOM.csv, CPL.csv, ERC/DRC reports, summary.json.
-Run with KiCad's Python:
+Run with KiCad's Python (macOS):
   /Applications/KiCad/KiCad.app/Contents/Frameworks/Python.framework/Versions/Current/bin/python3 build_package.py
+On Linux the system python3 with the kicad package and kicad-cli on PATH works.
 """
 import csv
 from collections import Counter
@@ -23,7 +24,7 @@ OUT = ROOT / 'jlcpcb'
 PROJECT = ROOT.parent
 BOARD = PROJECT / 'IWR-AOP-MODULE.kicad_pcb'
 SCH = PROJECT / 'IWR-AOP-MODULE.kicad_sch'
-CLI = '/opt/homebrew/bin/kicad-cli'
+CLI = shutil.which('kicad-cli') or '/opt/homebrew/bin/kicad-cli'
 NAME = 'IWR-AOP-MODULE'
 LAYERS = ['F.Cu', 'In1.Cu', 'In2.Cu', 'In3.Cu', 'In4.Cu', 'B.Cu', 'F.Paste', 'B.Paste',
           'F.Silkscreen', 'B.Silkscreen', 'F.Mask', 'B.Mask', 'Edge.Cuts']

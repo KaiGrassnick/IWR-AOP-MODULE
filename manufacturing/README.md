@@ -3,7 +3,10 @@
 `jlcpcb/` is generated from the saved board and schematic by `build_package.py`. Rebuild it after any design change:
 
 ```sh
+# macOS
 /Applications/KiCad/KiCad.app/Contents/Frameworks/Python.framework/Versions/Current/bin/python3 build_package.py
+# Linux (KiCad 10 from the distribution or PPA; kicad-cli on PATH)
+python3 build_package.py
 ```
 
 The script refuses to run if the board's zone fills are stale (in KiCad: press B, save, rebuild).
@@ -34,15 +37,15 @@ JLC places its own (LCSC/EasyEDA) footprint for each part, and those footprints 
 | Stackup | Any JLC 6-layer 1.6 mm stack; prefer one with L3 (In2) closer to L2 (In1, GND) than to L4. No impedance control needed |
 | Surface finish | ENIG (0.8 mm-pitch BGA) |
 | Via covering | **Epoxy filled and copper capped (POFV)**. Not ink-plugged |
-| Vias | 195 × 0.45/0.30 mm, 6 × 0.60/0.30 mm, 2 × 0.40/0.25 mm |
-| Minimum track / space | 0.15 mm general; 0.09 mm inside the BGA escape |
+| Vias | 228 × 0.45/0.30 mm, 6 × 0.60/0.30 mm, 3 × 0.40/0.25 mm, 1 × 0.35/0.20 mm |
+| Minimum track / space | 0.15 mm general; 0.09 mm inside the BGA escape; one 0.10 mm track 0.3 mm from the board edge under the radar (`AOP_I2C_SDA`) |
 | Holes | NPTH: 3 × 3.2 mm (M3), 2 × 0.65 mm (USB-C locating pegs). Plated slots: USB-C shell |
 
 ## Assembly
 
-- Standard PCBA, **both sides**: 12 placements on the front, 129 on the back, 39 BOM lines. Test pads, mounting holes and `TH300` are board-only. `C605` is do-not-populate (reset fallback, spec §3.3); the builder leaves it out of the BOM and CPL.
-- Check every part in JLC's placement preview, especially `U300` (BGA), `U600`, `U117`, `U200`, `U301`, `D200`/`D201`, `J200`, `J301` and `J400`/`J401`. `JP300` is a PCB-only solder jumper (no part).
+- Standard PCBA, **both sides**: 35 placements on the front, 129 on the back, 46 BOM lines. Test pads, mounting holes and `TH300` are board-only. `R604` and `C605` are do-not-populate (reset options, spec §3.3); the builder leaves them out of the BOM and CPL.
+- Check every part in JLC's placement preview, especially `U300` (BGA), `U600`, `U601`, `D202`, `U117`, `U200`, `U301`, `D200`/`D201`, `J200`, `J301` and `J400`/`J401`. `JP300` is a PCB-only solder jumper (no part).
 - Some extended capacitors and resistors are deliberate: the PMIC input/output capacitors (TI requires X7R/X7T; no basic part at those values), the 390 pF / 3.9 Ω PMIC snubbers, and the 47 nF `VBGAP` capacitor.
 - Stock to watch (5 October 2026): `U301` MX25L3233F (C190802) 3 in stock, which caps an order at 3 boards; `U600` LP87524J (C701982) 172.
 
-Component prices: [`../docs/bom-cost.csv`](../docs/bom-cost.csv). Actual order cost: [README](../README.md#cost).
+Component prices (revision 1.0 parts only): [`../docs/bom-cost.csv`](../docs/bom-cost.csv). Actual order cost: [README](../README.md#cost).

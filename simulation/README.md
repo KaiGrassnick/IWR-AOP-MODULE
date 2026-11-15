@@ -1,70 +1,79 @@
 # Design simulation
 
-Board-level checks of the Rev 1.0 power, enable, reset and interface logic, run with **ngspice** and Python. They don't replace the bring-up measurements in spec §9. They show which of those measurements matter most and what to look for.
+Checks of the Rev 1.1 board, run from the routed layout and the datasheets with **KiCad 10** (pcbnew Python), **ngspice** and Python. Revision 1.1 has not been built, so this is the evidence behind the design. It goes as far as the available models allow; the last section lists what only a real board can show.
 
 ## What is modelled and how
 
 | Script | Tool | What it checks |
 |---|---|---|
-| `extract_netlist.py` | Python | Reads pad → net from `IWR-AOP-MODULE.kicad_pcb` into `netlist.json`. KiCad 10 isn't needed. DRC schematic parity is 0, so these nets match the schematic. |
-| `check_netlist.py` | Python | Every pin of U117, U600, U301 and U200 and every power and strap ball of U300 against its datasheet pin table. Also strap defaults, divider and contention levels, and output capacitance per rail. |
-| `run_power.py` | ngspice | USB and carrier power-up, the HOST_DISABLE cycle, carrier reset, USB unplug, the §3.3 fallback (R604 out, C605 in), a 1 ms 5 V dropout, and CP2105 back-power through R208. |
-| `run_loadstep.py` | ngspice | A 0.1 → 2.5 A chirp step on the 1.0 V rail, plus loop stability with FB600 inside the FB_B2 sense loop. |
+| `extract_netlist.py` | Python | Reads pad → net from `IWR-AOP-MODULE.kicad_pcb` into `netlist.json`. DRC schematic parity is 0, so these nets match the schematic. |
+| `check_netlist.py` | Python | Every pin of U117, U600, U601, U301 and U200 and every power and strap ball of U300 against its datasheet pin table. Also strap defaults, divider and contention levels, supervisor thresholds with tolerance, the sense network, and output capacitance per rail. |
+| `pdn_extract.py` | pcbnew, scipy | Post-layout DC extraction. Rasterises the real copper of each rail on every layer at 25 µm, adds via barrels and the ferrites, and solves the resistor mesh for the voltage at every radar ball at peak current. Also the ground return, current density and a voltage budget per rail. |
+| `run_power.py` | ngspice | USB and carrier power-up, the HOST_DISABLE cycle, carrier reset, USB unplug, a 1 ms 5 V dropout, the `R604` option, and CP2105 back-power through R208, with the TPS386000 supervisor. |
+| `run_loadstep.py` | ngspice | Chirp load steps on 1.0 V and 1.8 V and loop stability, with the remote-sense network, Murata's ferrite circuit and the extracted copper. Sweeps ferrite inductance, edge rate and component spread, and compares with the TI EVM and Rev 1.0 arrangements. |
 | `run_ripple.py` | ngspice | 4 MHz switching ripple at the radar on 1V0_R and 1V8_R, against SWRS237C Table 7-2. |
-| `run_inputs.py` | ngspice | USB-C hot-plug overshoot on USB_VBUS, and SYS_5V load-release overshoot against the PMIC input OVP. |
-| `plot.py` | matplotlib | Draws `results/power_sequences.png` and `results/loadstep_1v0.png`. |
+| `run_inputs.py` | ngspice | USB-C hot-plug overshoot on USB_VBUS with the damper and TVS, and SYS_5V load-release overshoot against the PMIC input OVP. |
+| `thermal_board.py` | pcbnew, scipy | Steady-state board temperature from the real copper of all six layers and every via, for four radar power levels, bare board in still air. |
+| `plot.py` | matplotlib | Draws `results/power_sequences.png` and `results/loadstep.png`. |
 
-The parts that matter for these checks are modelled from their datasheets (`references/datasheets/`):
+Models (`spice/`, datasheets in `references/datasheets/`):
 
-- **LP87524J-Q1** (`spice/lp87524j_behav.lib`) is a behavioral timing model built from the J OTP tables in SNVU663A. It covers the start delays (B3 0 ms, B2 2 ms, B0/B1 5 ms) and the 3.8 mV/µs ramp. It also models the 1 ms shutdown delay on Buck3 and the 230 Ω discharge resistors. Supervision is modelled as follows:
-  - GPIO2 follows EN1 with a 5 ms release delay.
-  - PGOOD uses a −40/+50 mV window, a 7 µs filter and an 11 ms set delay.
-  - UVLO is 2.63/2.60 V. OVP latches.
-  - EN1 has a 500 kΩ pulldown.
-
-  This model has no switching. Loop dynamics are in `run_loadstep.py` instead.
-- **LM66200** is modelled with a 1 ms delay, a 1.7 ms soft-start, 37 mΩ on-resistance and reverse blocking.
-- **Q402** uses the standard 2N3904 SPICE model.
-- **CP2105** is modelled as a 3.45 V VDD/VIO, with TXD idling high into R208 and the radar's V16 ESD diode into 3V3_R.
-- **Passives** use the values from the netlist. Ceramic capacitance is derated where DC bias matters. ESR and ESL are assumed and marked `[ASSUMED]` in the decks.
+- **LP87524J-Q1** timing (`lp87524j_behav.lib`): start delays, ramp, shutdown delay, discharge resistors, GPIO2, PGOOD window, UVLO and OVP, from the J OTP tables in SNVU663A. Loop dynamics are a separate averaged current-mode model in `run_loadstep.py`, calibrated so that TI's datasheet test (0.1 → 2 A in 1 µs with 22 µF + 22 µF) gives −40 mV.
+- **TPS386000**: four comparators at 0.4 V with hysteresis, 20 ms delay, open-drain outputs, `MR`.
+- **BLM18KG121TH1D** (`bead_blm18kg121.lib`): Murata's published equivalent circuit, with the inductance scaled for DC bias.
+- **LM66200**, **Q402**, **CP2105** and the passives as before; ceramic capacitance is derated for DC bias.
+- **Copper**: resistances from `pdn_extract.py` at 85 °C.
 
 ## Assumptions that change the answers
 
-1. **FB600/FB601 inductance.** The BLM18KG121TH1D low-frequency inductance under 1–2.5 A DC bias isn't in the repo, so it is swept from 5 to 300 nH. The load-step, stability and ripple results depend strongly on it. Murata's SimSurfing model at the real DC bias would settle it.
-2. **LP87524 control loop.** The compensation is internal and undocumented. The controller is calibrated so that TI's own datasheet test (0.1 → 2 A in 1 µs with 22 µF + 22 µF) gives −40 mV. The ferrite network is then added to that calibrated controller.
-3. **LP87524 pin states below UVLO and during READ OTP.** The datasheet doesn't specify them, so GPIO2 and PGOOD are modelled as released while VANA < UVLO and until OTP is loaded (1 ms, also assumed).
-4. **Radar load currents.** These are estimates: 3V3 40 mA, 1V2 0.5 A, 1V0 0.8 A and 1V8 0.6 A running, and less while held in reset.
+1. **Radar current edge rate.** TI publishes peak currents, not how fast the 1.0 V current rises at the start of a chirp. Steps are run with 1, 10 and 100 µs edges.
+2. **Ferrite inductance under DC bias.** Swept from 100 % down to 10 % of the small-signal value.
+3. **LP87524 control loop.** Internal and undocumented; calibrated to the datasheet test as above. FB pin input resistance is assumed to be at least 100 kΩ.
+4. **Current split between radar balls.** Assumed equal across the balls of a rail.
+5. **Thermal boundary.** One combined convection and radiation coefficient of 10 W/m²K on both faces, no carrier, housing or airflow. Radar power from SWRS237C Table 7-4; the three-transmitter figure is an estimate.
+6. **LP87524 pin states below UVLO.** Not specified; modelled as released, which is the worse case for reset.
 
 ## Running
 
 ```
-apt-get install ngspice            # ngspice 42 used
-pip install numpy matplotlib
+apt-get install kicad ngspice      # KiCad 10.0.8 and ngspice used
+pip install numpy scipy pillow matplotlib
 cd simulation
 python3 extract_netlist.py && python3 check_netlist.py
+python3 pdn_extract.py
 python3 run_power.py && python3 run_loadstep.py && python3 run_ripple.py && python3 run_inputs.py
-python3 plot.py
+python3 thermal_board.py && python3 plot.py
 ```
 
 Summaries are written to `results/*_summary.txt` and `results/netlist_checks.txt`.
 
-## Results (Rev 1.0)
+## Results (Rev 1.1)
 
 **Checks out**
 
-- The netlist checks all pass (113 of 113). Every IC pin and every radar power and strap ball is on the net its datasheet function needs. The default boot straps are SOP 001, BOOT gives 101 and JP300 gives 011. VOUT_PA is fed with 1 V for 3-TX mode, and the per-rail capacitance is under 100 µF.
-- On power-up (USB and carrier), 1V8 comes up at 4.3 ms, 1V0 at 6.1 ms, and 1V2 and 3V3 at 9.1–9.6 ms. AOP_NRESET releases 11.0 ms after the last rail settles, 18.3 ms after EN1. 1V8 rises before 3V3, as MSS#38A requires.
-- With HOST_DISABLE, AOP_NRESET falls 12 µs after the pin goes high, before any rail leaves its range (1V2 is first at 32 µs). Re-enabling repeats the clean start-up.
-- A carrier reset on J400.8 reaches the radar at 0.31 V (VIL is 0.65 V). If USB and a carrier contend on UART RX, the carrier wins both ways (0.31 V and 3.0 V).
-- On a USB unplug, PGOOD catches the 3V3 sag. Reset asserts 147 µs after the unplug, at the same moment 3V3_R reaches 3.13 V and about 350 µs before the core rails drop.
-- CP2105 back-power through R208 is harmless at normal start-up: 3V3_R reaches only 0.2 V before Buck0 starts. If the rails stay off with USB attached, Buck0's discharge resistor holds 3V3_R at 0.5 V. Without that resistor, it would reach 2.6 V.
-- A load release at a 5.5 V input reaches 5.48 V, under the 5.6 V minimum PMIC OVP threshold.
+- **Netlist.** 150 of 150 checks pass.
+- **DC drop.** Ferrite outputs to radar balls: 13.4 mΩ on 1.0 V, 62 mΩ on 1.8 V. With remote sense, the worst ball is 11.8 mV under the regulation point on 1.0 V at 2.5 A and 50.9 mV on 1.8 V at 0.85 A. Worst-case voltage at the balls, with PMIC accuracy and ground return: 0.964 V (minimum 0.95), 1.712 V (1.71), 1.155 V (1.14) and 3.229 V (3.135). Ground return is 1.6 mΩ.
+- **Sequencing and reset.** 1V8 is up at 4.3 ms, 1V0 at 6.1 ms, 1V2 and 3V3 at 9.1–9.6 ms. Reset releases 20 ms after the last rail settles. With HOST_DISABLE it asserts in 12 µs, before any rail leaves its range. On a USB unplug it asserts 17 µs after 3V3_R passes 3.13 V and about 230 µs before the first core rail leaves its range. A 1 ms dropout never releases reset with a core rail down. A carrier reset reaches the radar as 0.31 V.
+- **Stability.** Phase margin is 70° or more for every ferrite inductance and component spread tried. DC returns to target at the radar after a step.
+- **Load steps with 100 µs edges.** −44 mV on both rails, inside the radar limits. The buck output stays above the supervisor threshold in every case, including 1 µs edges, so load steps cannot cause resets.
+- **Ripple.** At most 5.8 µV on 1V0_R (limit 13 µV) and 4.2 µV on 1V8_R (limit 19 µV), down to 10 % ferrite inductance.
+- **Hot plug.** 5.0–5.5 V peak on USB_VBUS for every source and cable tried (6 V limit). Rev 1.0 reached 7.9–8.9 V in the same test.
+- **Load release.** At most 5.48 V on SYS_5V, under the 5.6 V PMIC OVP minimum.
 
-**Needs attention** (details in `results/`)
+**Needs attention**
 
-1. **The 1.0 V chirp step against the PGOOD window.** A 2.5 A step (3-TX peak) dips 52 mV even with a trace-like 5 nH between the PMIC and the radar. That is past the −29 mV minimum and −40 mV typical PGOOD thresholds, so frame-time resets are likely unless the real chirp current edge is much slower.
-2. **FB600/FB601 inside the FB_B2/FB_B3 sense loop.** With about 50 nH or more of ferrite inductance, the calibrated loop has almost no phase margin and oscillates in the model. Sensing before the ferrite is stable, but then the radar sees a 62 mV DC drop and 100–200 mV dips.
-3. **Ripple against the ferrite.** Switching ripple meets Table 7-2 only if the ferrite stays above roughly 150 nH (1V8) or 300 nH (1V0) at operating current. That conflicts with item 2, so the real bead data decides it.
-4. **The §3.3 fallback (R604 out, C605 in) loses power-fail reset.** After a USB unplug, the core rails collapse within 0.2 ms, but AOP_NRESET stays high for another 19 ms.
-5. **A short 5 V dropout can release reset with the core rails down.** This happens if the PMIC releases GPIO2 and PGOOD below UVLO or during OTP load, which the datasheet doesn't specify. Fitting C605 1 µF while keeping R604 removes this window in the model and delays reset release by about 6.5 ms.
-6. **USB-C hot plug.** USB_VBUS has only 2 µF of ceramic and no TVS. A live source with a 0.3–2 m cable rings to about 8 V, above the LM66200's 6 V absolute maximum on VIN1 and the CP2105's ratings. Compliant USB-C sources switch VBUS on softly; legacy and cheap sources don't.
+1. **Fast chirp edges.** For a full 0.1 → 2.5 A step with a 1–10 µs edge, 1V0_R dips to 0.83–0.92 V for tens of microseconds, depending on ferrite inductance; 1V8_R dips to 1.69–1.74 V. This is the ferrite filter, not the regulator, and the TI EVM arrangement dips the same way in this model (0.874 V against 0.879 V at 10 µs and 50 % inductance). A two-transmitter step (0.5 → 2.0 A) dips to 0.924 V. Measure the real edge on the first board (spec §9); the fallback is 0 Ω in place of the ferrites.
+2. **Thermal.** Bare board in still air: radar junction rise 24 K at 0.6 W, 47 K at 1.25 W, 64 K at 1.75 W and 84 K at 2.3 W. Maximum ambient is about 81, 58, 41 and 21 °C. The board is nearly isothermal, so its surface area is the limit. High-duty use needs a heat path into a carrier or housing.
+3. **1.8 V margin.** +2 mV at the worst ball (U2). The firmware raises Buck3 by one 20 mV step (spec §8).
+4. **Buck2 output capacitance.** 137 µF nominal against the datasheet's 100 µF figure; the TI EVM has 174 µF. The loop model is stable with it.
+
+## What this cannot show
+
+These need the assembled board or tools and models that aren't available here:
+
+- **RF.** Antenna pattern and the effect of nearby parts, the board edge and a housing. This needs a 3D field solver and TI's package model.
+- **The radar's real supply current waveform**, which decides item 1 above.
+- **The real LP87524 loop.** The model matches one datasheet point.
+- **Switching-edge effects**: EMI, ground bounce and coupling at the buck switch nodes. The extraction here is DC and lumped.
+- **Thermal in the real mounting**: convection in an enclosure and contact resistance to a carrier.
+- **Assembly**: BGA and QFN solder joints, filled-via planarity under paste.

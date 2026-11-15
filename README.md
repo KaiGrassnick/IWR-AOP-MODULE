@@ -1,6 +1,6 @@
 # IWR-AOP-MODULE
 
-**Revision 1.0** · KiCad 10 · six-layer, 85.6 × 33.7 mm · in production
+**Revision 1.1** · KiCad 10 · six-layer, 85.6 × 33.7 mm · designed and simulated, not yet built
 
 A self-contained 60 GHz mmWave radar module built around TI's **IWR6843AOP** (antenna-on-package). It boots its own firmware from on-board flash and connects to a PC over USB-C or a carrier through two rear sockets.
 
@@ -12,7 +12,7 @@ A self-contained 60 GHz mmWave radar module built around TI's **IWR6843AOP** (an
 - **Standalone boot.** 32 Mbit QSPI flash (`U301`, MX25L3233F).
 - **USB-C.** One cable supplies power and two CP2105 serial ports: control/flashing and radar data. BOOT and RESET buttons select flashing mode.
 - **Carrier.** 5 V input, UART and SPI, boot-mode select, reset, disable, interrupt, hardware frame-start pulse and frame-sync input.
-- **Power.** USB-C or carrier 5 V feeds an ideal-diode OR and four-rail TI LP87524J-Q1 PMIC. The PMIC sequences the rails, holds the radar in reset until they are good, and asserts reset when the carrier disables them.
+- **Power.** USB-C or carrier 5 V feeds an ideal-diode OR and four-rail TI LP87524J-Q1 PMIC. The PMIC sequences the rails and regulates the 1.0 V and 1.8 V rails at the radar (remote sense). A TPS386000 supervisor holds the radar in reset until all four rails are good, and the PMIC asserts reset when the carrier disables them. The radar can reach the PMIC over I²C.
 - **Debug.** Rear Cortex-10 JTAG header for development off a carrier (Black Magic Probe or XDS110), debug-boot solder jumper, and test pads for every rail, enable and reset. Flashing requires only USB and the BOOT/RESET buttons.
 - **RF-ready layout.** The radar sits on the bottom edge with a notch above it, giving the 0.2 mm antenna edge gaps TI specifies. A GND pad sits under the die on both faces.
 
@@ -26,7 +26,7 @@ A self-contained 60 GHz mmWave radar module built around TI's **IWR6843AOP** (an
 | Carrier sockets | `J400` 2×6 (UART, control, 5 V in) and `J401` 2×5 (SPI, data); HCTL PM254, 2.54 mm, 8.5 mm |
 | Mounting | Three M3 holes |
 | Board | 85.6 × 33.7 mm, 6 layers, 1.6 mm, ENIG, filled and capped vias |
-| Parts | 141 assembled on 39 BOM lines, both sides (`C605` left unfitted) |
+| Parts | 164 assembled on 46 BOM lines, both sides (`R604` and `C605` left unfitted) |
 
 Full modes, rails, boot, mechanics, stackup and firmware requirements: **[hardware specification](docs/STG-HW-SPEC-004_IWR-AOP-MODULE.md)**.
 
@@ -93,7 +93,7 @@ Back view, mm. Everything is symmetric about the board centrelines (℄). Socket
 
 ## Cost
 
-First JLCPCB order, 5 boards (USD at €1 = $1.121, 5 October 2026):
+JLCPCB figures for revision 1.0, 5 boards (USD at €1 = $1.121, 5 October 2026). Revision 1.1 adds 23 small parts, the largest being the TPS386000 supervisor, and has not been priced:
 
 | | 5 boards | Per board |
 |---|---|---|
@@ -101,7 +101,7 @@ First JLCPCB order, 5 boards (USD at €1 = $1.121, 5 October 2026):
 | Assembly, including parts | $341.61 | $68.32 |
 | **Total** | **$373.46** | **$74.69** |
 
-The IWR6843AOP is about $21 of each board. Per-part prices: [docs/bom-cost.csv](docs/bom-cost.csv).
+The IWR6843AOP is about $21 of each board. Per-part prices for revision 1.0: [docs/bom-cost.csv](docs/bom-cost.csv).
 
 ## Repository layout
 
@@ -121,6 +121,8 @@ docs/                  Hardware specification and BOM cost
 tools/
   board_svg.py         Pinout and dimension SVG generation
   render/              Blender product renders and orbit video pipeline
+  rev11/               Scripts that regenerate the Rev 1.1 schematic and layout from Rev 1.0
+simulation/            Netlist checks, post-layout extraction, ngspice and thermal models, results
 manufacturing/         JLCPCB package builder and output (jlcpcb/)
 references/            Datasheets and JLC's sample BOM format
 CHANGELOG.md           Release history
@@ -132,7 +134,7 @@ The project is self-contained: everything outside the stock KiCad 10 libraries i
 
 ## Status
 
-**In production.** Revision 1.0 is fully routed. ERC is clean; DRC reports 0 unconnected and 0 schematic-parity issues, plus 36 accepted findings (spec §7.3). The bring-up checklist is spec §9.
+**Designed and simulated, not yet built.** Revision 1.1 is fully routed. ERC has no errors; DRC reports 0 unconnected and 0 schematic-parity issues, plus 50 accepted findings (spec §7.3). Revision 1.0 was never built. What changed and why is in the [changelog](CHANGELOG.md); the simulations and their limits are in [`simulation/`](simulation/README.md); the known limits, including the thermal limit of a bare board, are in spec §10. The renders, the orbit video and the STEP model still show revision 1.0, which differs by 23 small parts on the front.
 
 ## License
 

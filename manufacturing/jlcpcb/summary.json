@@ -5,12 +5,12 @@
   ],
   "copper_layers": 6,
   "thickness_mm": 1.6,
-  "vias": 203,
-  "min_via_drill_mm": 0.25,
-  "min_track_mm": 0.15,
-  "bom_lines": 39,
-  "bom_parts": 141,
-  "placements_top": 12,
+  "vias": 238,
+  "min_via_drill_mm": 0.2,
+  "min_track_mm": 0.1,
+  "bom_lines": 46,
+  "bom_parts": 164,
+  "placements_top": 35,
   "placements_bottom": 129,
   "unsourced_bom_lines": [],
   "dropped_from_bom_no_footprint": [],
@@ -18,6 +18,10 @@
     "C1525": [
       "100nF",
       "100nF 16V"
+    ],
+    "C19666": [
+      "4.7uF",
+      "4.7uF X5R 16V"
     ],
     "C86038": [
       "10uF X7R 10V 10%",
@@ -127,6 +131,13 @@
       "side": "B",
       "cpl_rotation_deg": -90
     },
+    "U601": {
+      "lcsc": "C702221",
+      "jlc_footprint": "QFN-20_L4.0-W4.0-P0.50-TL-EP2.2",
+      "matched_by": "pin numbers",
+      "side": "T",
+      "cpl_rotation_deg": 90
+    },
     "Y300": {
       "lcsc": "C18214314",
       "jlc_footprint": "CRYSTAL-SMD_4P-L3.2-W2.5-BL",
@@ -135,11 +146,12 @@
       "cpl_rotation_deg": 90
     }
   },
-  "erc_violations": 0,
+  "erc_violations": 7,
   "drc_violations_by_type": {
-    "error:hole_clearance": 7,
+    "error:hole_clearance": 9,
+    "warning:silk_over_copper": 28,
     "warning:text_height": 12,
-    "warning:silk_over_copper": 17
+    "warning:lib_footprint_mismatch": 1
   },
   "drc_unconnected": 0,
   "drc_schematic_parity": 0

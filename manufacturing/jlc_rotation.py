@@ -39,7 +39,8 @@ from pathlib import Path
 import pcbnew
 
 CACHE = Path(__file__).resolve().parent / 'jlc-footprints.json'
-STOCK = Path(os.environ.get('KICAD10_FOOTPRINT_DIR', '/Applications/KiCad/KiCad.app/Contents/SharedSupport/footprints'))
+_STOCK_DIRS = ('/Applications/KiCad/KiCad.app/Contents/SharedSupport/footprints', '/usr/share/kicad/footprints')
+STOCK = Path(os.environ.get('KICAD10_FOOTPRINT_DIR') or next((d for d in _STOCK_DIRS if Path(d).is_dir()), _STOCK_DIRS[0]))
 TOLERANCE_MM = 0.6  # JLC and KiCad land patterns differ slightly; a wrong angle misses by > 1 mm
 
 
