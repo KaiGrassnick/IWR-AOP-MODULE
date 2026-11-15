@@ -2,7 +2,7 @@
 * Net and reference names follow the KiCad netlist (see simulation/netlist.json).
 * Values from the BOM; behavioral parts are marked [BEHAV], guesses are marked [ASSUMED].
 *
-* Rev 1.1: supervisor U601 on all four rails, R604 not fitted, FB_B2/FB_B3 remote sense
+* Supervisor U601 on all four rails, R604 not fitted, FB_B2/FB_B3 remote sense
 * (R628/C631, R629/C632), FB602 in parallel with FB600, C626/C628 at the buck outputs,
 * C204 + R210 damper on USB_VBUS.  Path resistances from results/pdn.json (85 C).
 *
@@ -60,18 +60,18 @@ XU600 SYS_5V PMIC_ENABLE 3V3_R 1V2_R FB_B2 FB_B3 3V3_R 1V2_R 1V0_RAW 1V8_RAW AOP
 + params: rdis={rdis}
 * remote sense: DC from the radar end, AC from the buck output
 R628    1V0_R FB_B2 22
-C631    1V0_RAW FB_B2 4.7u
+C631    1V0_RAW FB_B2 1u
 R629    1V8_R FB_B3 22
-C632    1V8_RAW FB_B3 4.7u
+C632    1V8_RAW FB_B3 1u
 
-* ferrites (BLM18KG121TH1D, low-frequency model): FB600 || FB602 on 1.0 V, FB601 on 1.8 V,
+* ferrites (BLM18KG260TN1D, low-frequency model, 7 mohm maximum each): FB600 || FB602 on 1.0 V, FB601 on 1.8 V,
 * each followed by the extracted copper resistance to the radar balls
-RFB600  1V0_RAW fb600m 0.014
-LFB600  fb600m fb600o 180n
+RFB600  1V0_RAW fb600m 0.0035
+LFB600  fb600m fb600o 84n
 RCU10   fb600o 1V0_R 0.013
-RFB601  1V8_RAW fb601m 0.028
-LFB601  fb601m fb601o 360n
-RCU18   fb601o 1V8_R 0.040
+RFB601  1V8_RAW fb601m 0.007
+LFB601  fb601m fb601o 167n
+RCU18   fb601o 1V8_R 0.014
 
 * ---------------- rail capacitance (lumped per rail, from the netlist) -----------
 * 3V3_R : C610 22u, C334 10u, C629 10u, 4 x 100n

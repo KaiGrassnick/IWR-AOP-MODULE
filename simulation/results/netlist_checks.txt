@@ -41,10 +41,10 @@ PASS  Buck2 VSET 1.0 V feeds VIN_13RF via FB600 (two beads in parallel)
 PASS  Buck2 VSET 1.0 V feeds VIN_13RF via FB602 (two beads in parallel)
 PASS  R628 DC sense 1V0_R -> FB_B2  [{'1': '1V0_R', '2': '/Radar PMIC/FB_B2'}]
 PASS  C631 AC sense 1V0_RAW -> FB_B2  [{'1': '/Radar PMIC/FB_B2', '2': '1V0_RAW'}]
-PASS  R628/C631 sense crossover well below the ferrite/capacitor resonance (~40-80 kHz)  [1539 Hz]
+PASS  R628/C631 sense crossover well below the ferrite/capacitor resonance (~100 kHz)  [7234 Hz]
 PASS  R629 DC sense 1V8_R -> FB_B3  [{'1': '1V8_R', '2': '/Radar PMIC/FB_B3'}]
 PASS  C632 AC sense 1V8_RAW -> FB_B3  [{'1': '/Radar PMIC/FB_B3', '2': '1V8_RAW'}]
-PASS  R629/C632 sense crossover well below the ferrite/capacitor resonance (~40-80 kHz)  [1539 Hz]
+PASS  R629/C632 sense crossover well below the ferrite/capacitor resonance (~100 kHz)  [7234 Hz]
 PASS  U601 TPS386000 pin 1 MR (no internal pull-up, tied high)  [SYS_5V (want SYS_5V)]
 PASS  U601 TPS386000 pin 6 SENSE4H unused  [GND (want GND)]
 PASS  U601 TPS386000 pin 7 SENSE4L  [/Radar PMIC/SUP_1V0 (want /Radar PMIC/SUP_1V0)]

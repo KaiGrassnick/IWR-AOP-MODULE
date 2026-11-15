@@ -1,6 +1,6 @@
 # Product renders
 
-Run these commands from the repository root. Requires KiCad 10, Blender (tested with 5.2.2 LTS), Python 3 with Pillow, and FFmpeg. Texture lettering uses macOS's `/System/Library/Fonts/HelveticaNeue.ttc`; on another platform, set `FONT` in `make_aop_texture.py` to an installed font and face index.
+Run these commands from the repository root. Requires KiCad 10, Blender (tested with 5.2.2 LTS), Python 3 with Pillow, and FFmpeg. Texture lettering uses macOS's Helvetica Neue where it exists and falls back to Inter or DejaVu Sans on Linux; on Linux, call `blender` from its install directory in place of the macOS path below and set `KICAD10_3DMODEL_DIR` (for example `/usr/share/kicad/3dmodels`) before the exports.
 
 Check DRC before exporting; review the accepted findings in the [hardware specification](../../docs/STG-HW-SPEC-004_IWR-AOP-MODULE.md) §7.3. All generated assets belong under the ignored `build/product-renders/` directory. The scripts find the repository from their location: relative GLB paths resolve from the repository root, while relative render/stitch paths resolve from `build/product-renders/` (absolute paths remain absolute).
 

@@ -52,14 +52,14 @@ for L_, sw, rail in [("L600", "PMIC_SW0", "3V3_R"), ("L601", "PMIC_SW1", "1V2_R"
     chk(f"{L_} {sw} -> {rail}", set(P[L_]["pads"].values()) == {sw, rail})
 for fb in ("FB600", "FB602"):
     chk(f"Buck2 VSET 1.0 V feeds VIN_13RF via {fb} (two beads in parallel)", set(P[fb]["pads"].values()) == {"1V0_RAW", "1V0_R"})
-# Rev 1.1 remote sense: DC from the radar end through R, AC from the buck output through C
+# Remote sense: DC from the radar end through R, AC from the buck output through C
 for rail, fbn, r, c in (("1V0", "/Radar PMIC/FB_B2", "R628", "C631"), ("1V8", "/Radar PMIC/FB_B3", "R629", "C632")):
     chk(f"{r} DC sense {rail}_R -> {fbn.split('/')[-1]}", set(P[r]["pads"].values()) == {f"{rail}_R", fbn}, str(P[r]["pads"]))
     chk(f"{c} AC sense {rail}_RAW -> {fbn.split('/')[-1]}", set(P[c]["pads"].values()) == {f"{rail}_RAW", fbn}, str(P[c]["pads"]))
     rv = float(re.match(r"([\d.]+)R", P[r]["value"]).group(1))
     cv = float(re.match(r"([\d.]+)uF", P[c]["value"]).group(1)) * 1e-6
     fx = 1 / (2 * 3.14159 * rv * cv)
-    chk(f"{r}/{c} sense crossover well below the ferrite/capacitor resonance (~40-80 kHz)", fx < 5e3, f"{fx:.0f} Hz")
+    chk(f"{r}/{c} sense crossover well below the ferrite/capacitor resonance (~100 kHz)", fx < 10e3, f"{fx:.0f} Hz")
 
 # TPS386000 RGP (SBVS105F Pin Functions)
 sv = {"1": "SYS_5V", "6": "GND", "7": "/Radar PMIC/SUP_1V0", "8": "/Radar PMIC/SUP_1V2", "9": "/Radar PMIC/SUP_1V8",
@@ -194,7 +194,7 @@ def capsum(nets):
     return tot
 
 # SNVSAW2B 6.5 lists 100 uF as the maximum total output capacitance per phase. TI's own IWR6843AOPEVM
-# (same PMIC, same ferrites) runs Buck2 with 3 x 22 uF + 2 x (22 + 22 + 10) uF = 174 uF and Buck3 with
+# (same PMIC) runs Buck2 with 3 x 22 uF + 2 x (22 + 22 + 10) uF = 174 uF and Buck3 with
 # 2 x 22 + 54 = 98 uF, so the 1.0 V rail is checked against the proven EVM value and flagged as info.
 for rail, nets, lim, src in [("Buck0 3V3", ["3V3_R"], 100e-6, "SNVSAW2B 6.5"), ("Buck1 1V2", ["1V2_R"], 100e-6, "SNVSAW2B 6.5"),
                              ("Buck2 1V0", ["1V0_RAW", "1V0_R"], 174e-6, "TI IWR6843AOPEVM; datasheet figure is 100 uF"),

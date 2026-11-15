@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
-"""Switching ripple at the radar on 1V0_R and 1V8_R vs SWRS237C Table 7-2 (Rev 1.1).
+"""Switching ripple at the radar on 1V0_R and 1V8_R vs SWRS237C Table 7-2.
 
 Ideal synchronous buck at 4 MHz (fixed duty, open loop, steady state from initial
 conditions) driving L60x 0.47 uH -> 2 x 22 uF -> ferrite(s) -> radar-end capacitors.
-The ferrite is Murata's equivalent circuit (spice/bead_blm18kg121.lib) with its inductance
+The ferrite is Murata's equivalent circuit (spice/beads_murata.lib, BLM18KG260TN1) with its inductance
 swept down for DC bias; capacitor ESR/ESL are assumptions (marked below).
 """
 import pathlib, subprocess, sys
@@ -19,7 +19,7 @@ RAILS = {"1V0_R": (1.0, 0.8, 92.7e-6, 13, 2), "1V8_R": (1.8, 0.6, 44.3e-6, 19, 1
 
 def run(rail, k):
     vo, il, cr, spec, nb = RAILS[rail]
-    beads = "\n".join(f"XB{i} raw2 out BEAD120 params: k={k}" for i in range(nb))
+    beads = "\n".join(f"XB{i} raw2 out BEAD26 params: k={k}" for i in range(nb))
     vin, fs = 5.0, 4e6
     d = vo / vin + 0.004  # small loss allowance
     cir = SP / "_ripple.cir"
@@ -29,7 +29,7 @@ Vin vin 0 {vin}
 Vsw sw 0 PULSE(0 {vin} 0 2n 2n {d/fs - 2e-9} {1/fs})
 L60x sw raw 0.47u ic={il}
 R60xdcr raw raw2 0.02
-.include bead_blm18kg121.lib
+.include beads_murata.lib
 * buck output: 2 x 22 uF, each ESR 3 mohm, ESL 0.5 nH [ASSUMED]
 C61x raw2 c1e 44u ic={vo}
 R61x c1e c1l 1.5m
@@ -69,10 +69,11 @@ wrdata {RES}/rp_tmp.txt v(out) v(raw2)
 
 
 def main():
-    lines = ["Switching ripple, fundamental at 4 MHz (Table 7-2 gives the limit at 4.4 MHz)",
+    lines = ["Ferrites BLM18KG260TN1 (6 A rated, 1.25 A at most per bead here); inductance swept down to 25 % for DC bias",
+             "Switching ripple, fundamental at 4 MHz (Table 7-2 gives the limit at 4.4 MHz)",
              f"{'rail':6} {'bead L':>9} {'at PMIC (uVrms)':>16} {'at radar (uVrms)':>17} {'limit':>6}"]
     for rail in RAILS:
-        for k in [1.0, 0.5, 0.25, 0.1]:
+        for k in [1.0, 0.5, 0.25]:
             o, rw, pp, spec = run(rail, k)
             lines.append(f"{rail:6} {k*100:7.0f} % {rw:16.0f} {o:17.1f} {spec:4d} uV  {'PASS' if o < spec else 'FAIL'}")
     out = "\n".join(lines)

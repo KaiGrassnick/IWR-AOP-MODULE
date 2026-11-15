@@ -10,9 +10,13 @@ radar (datasheet average power), the PMIC and inductors (loss at 85 % efficiency
 ferrites and the USB bridge.  Junction temperature = board temperature under the part
 + PsiJB x power (SWRS237C 7.11, SNVSAW2B 6.4).
 
-This is a bare board in still air with no carrier, housing or heat sink.  It ignores the
-air gap physics of a real enclosure, so it ranks cases and shows where the heat goes; it is
-not a substitute for a thermocouple on the finished assembly.
+Two builds are solved: the bare board in still air, and the board with the heat sink HS300
+(14 x 14 x 6 mm pin-fin, bonded to the back under the radar with thermal adhesive).  The heat
+sink is a conductance from the back-face cells it covers to ambient: adhesive bond line in
+series with the heat sink's natural-convection resistance.  Those cells lose their own
+convection.  There is no carrier or housing, and the air gap physics of a real enclosure is
+ignored, so this ranks cases and shows where the heat goes; it is not a substitute for the
+radar's own temperature sensor on the finished assembly.
 
 Usage: python3 simulation/thermal_board.py     (KiCad 10 python, numpy, scipy, pillow, matplotlib)
 """
@@ -33,6 +37,10 @@ H_AIR = 10.0                      # W/m2/K, natural convection + radiation, each
 PLATING = 18e-6
 PSI_JB = {"U300": 7.3, "U600": 4.7}
 TJ_MAX = {"U300": 105.0, "U600": 125.0}
+# HS300: 14 x 14 x 6 mm BGA pin-fin heat sink.  Natural convection: Same Sky HSB03-141406 39.7 K/W at 1 W,
+# Fischer ICK BGA 14x14x6 29 K/W.  The less favourable figure is used.
+HS_SIZE, HS_RTH = 14.0, 39.7
+HS_BOND_T, HS_BOND_K = 0.7e-3, 1.5              # silicone thermal adhesive over the 0402 capacitors, W/m/K
 
 
 def raster(board):
@@ -92,7 +100,7 @@ def raster(board):
     return x0, y0, coarse(brd), {l: coarse(cu[l]) for l in LAYERS}, vias
 
 
-def solve(board, sources, geo):
+def solve(board, sources, geo, sink=None):
     x0, y0, brd, cov, vias = geo
     cuth, die = stackup()
     ny, nx = brd.shape
@@ -126,7 +134,16 @@ def solve(board, sources, geo):
     a, b = idx[0][inside], idx[1][inside]
     add(a, b, gz[inside])
     G = sparse.coo_matrix((np.concatenate(vals), (np.concatenate(rows), np.concatenate(cols))), shape=(2 * k, 2 * k)).tocsr()
-    G = G + sparse.diags(np.full(2 * k, H_AIR * area))          # each sheet loses heat from its outer face
+    loss = np.full(2 * k, H_AIR * area)                         # each sheet loses heat from its outer face
+    if sink:
+        cx, cy = sink
+        i0, i1 = int((cy - HS_SIZE / 2 - y0) / CELL), int((cy + HS_SIZE / 2 - y0) / CELL)
+        j0, j1 = int((cx - HS_SIZE / 2 - x0) / CELL), int((cx + HS_SIZE / 2 - x0) / CELL)
+        cells = idx[1][i0:i1, j0:j1]
+        cells = cells[cells >= 0]
+        rth = HS_RTH + HS_BOND_T / (HS_BOND_K * len(cells) * area)
+        loss[cells] = 1 / rth / len(cells)
+    G = G + sparse.diags(loss)
     q = np.zeros(2 * k)
     for (side, xa, ya, xb, yb, watts) in sources:
         i0, i1 = int((ya - y0) / CELL), int(np.ceil((yb - y0) / CELL))
@@ -152,36 +169,41 @@ def main():
     geo = raster(board)
     x0, y0, brd, cov, vias = geo
     side = lambda ref: 1 if board.FindFootprintByReference(ref).IsFlipped() else 0
-    L = ["First-order board thermal model: bare board in still air, both faces h = %.0f W/m2/K, no housing or heat sink" % H_AIR,
+    L = ["First-order board thermal model: still air, both faces h = %.0f W/m2/K, no carrier or housing" % H_AIR,
          "Copper coverage: " + ", ".join(f"{l} {100*cov[l][brd > 0.5].mean():.0f} %" for l in LAYERS)
          + f"; {len(vias)} vias; board area {brd.sum()*CELL*CELL/100:.1f} cm2", ""]
     # radar average power: SWRS237C Table 7-4 (1-V LDO bypass); 3-TX figure is an estimate
     cases = [("radar idle / low duty (0.6 W)", 0.6), ("2 TX, 24 % duty (1.25 W, Table 7-4)", 1.25),
              ("2 TX, 48 % duty (1.75 W, Table 7-4)", 1.75), ("3 TX, high duty (2.3 W, estimate)", 2.3)]
     maps = {}
-    L.append(f"{'case':38} {'board under radar':>18} {'radar Tj rise':>14} {'PMIC Tj rise':>13} {'hottest board':>14} {'max ambient':>12}")
-    for name, pr in cases:
-        ppm = pr * (1 / 0.85 - 1)                    # converter loss
-        src = [(side("U300"), *box(board, "U300"), pr),
-               (side("U600"), *box(board, "U600"), ppm * 0.7)]
-        for ind in ("L600", "L601", "L602", "L603"):
-            src.append((side(ind), *box(board, ind), ppm * 0.3 / 4))
-        src.append((side("FB600"), *box(board, "FB600", 0.5), 0.03 * pr))     # ferrites + feed copper
-        src.append((side("U200"), *box(board, "U200"), 0.10))                 # CP2105 with USB attached
-        T = solve(board, src, geo)
-        maps[name] = T
+    f300 = board.FindFootprintByReference("U300").GetPosition()
+    builds = [("Bare board", None), ("With heat sink HS300 on the back under the radar "
+               f"({HS_SIZE:.0f} x {HS_SIZE:.0f} x 6 mm, {HS_RTH} K/W + adhesive)", (MM(f300.x), MM(f300.y)))]
+    for bname, sink in builds:
+        L += [bname, f"{'case':38} {'board under radar':>18} {'radar Tj rise':>14} {'PMIC Tj rise':>13} {'hottest board':>14} {'max ambient':>12}"]
+        for name, pr in cases:
+            ppm = pr * (1 / 0.85 - 1)                    # converter loss
+            src = [(side("U300"), *box(board, "U300"), pr),
+                   (side("U600"), *box(board, "U600"), ppm * 0.7)]
+            for ind in ("L600", "L601", "L602", "L603"):
+                src.append((side(ind), *box(board, ind), ppm * 0.3 / 4))
+            src.append((side("FB600"), *box(board, "FB600", 0.5), 0.03 * pr))     # ferrites + feed copper
+            src.append((side("U200"), *box(board, "U200"), 0.10))                 # CP2105 with USB attached
+            T = solve(board, src, geo, sink)
+            maps[(bname, name)] = T
 
-        def under(ref):
-            xa, ya, xb, yb = box(board, ref)
-            s = side(ref)
-            return np.nanmean(T[s][int((ya - y0) / CELL):int((yb - y0) / CELL), int((xa - x0) / CELL):int((xb - x0) / CELL)])
-        tr, tp = under("U300"), under("U600")
-        jr, jp = tr + PSI_JB["U300"] * pr, tp + PSI_JB["U600"] * ppm * 0.7
-        amb = min(TJ_MAX["U300"] - jr, TJ_MAX["U600"] - jp)
-        L.append(f"{name:38} {tr:15.1f} K {jr:11.1f} K {jp:10.1f} K {np.nanmax(T):11.1f} K {amb:9.0f} C")
-    L += ["", "Rises are above ambient. 'max ambient' keeps the radar junction at or under 105 C and the PMIC under 125 C.",
-          "The radar dominates: a bare module in still air is limited by the board's own surface area.",
-          "Mounting on a carrier or against a housing wall lowers these numbers; the backside pad TH300 is there for that."]
+            def under(ref):
+                xa, ya, xb, yb = box(board, ref)
+                s = side(ref)
+                return np.nanmean(T[s][int((ya - y0) / CELL):int((yb - y0) / CELL), int((xa - x0) / CELL):int((xb - x0) / CELL)])
+            tr, tp = under("U300"), under("U600")
+            jr, jp = tr + PSI_JB["U300"] * pr, tp + PSI_JB["U600"] * ppm * 0.7
+            amb = min(TJ_MAX["U300"] - jr, TJ_MAX["U600"] - jp)
+            L.append(f"{name:38} {tr:15.1f} K {jr:11.1f} K {jp:10.1f} K {np.nanmax(T):11.1f} K {amb:9.0f} C")
+        L.append("")
+    L += ["Rises are above ambient. 'max ambient' keeps the radar junction at or under 105 C and the PMIC under 125 C.",
+          "The radar dominates, and still air on 22.6 cm2 of board is the limit; the heat sink adds surface where the heat is.",
+          "Airflow, a taller heat sink (no carrier underneath) or a housing wall against the heat sink lower these numbers further."]
     (RESDIR / "thermal_summary.txt").write_text("\n".join(L) + "\n")
     print("\n".join(L))
 
@@ -189,13 +211,13 @@ def main():
     matplotlib.use("Agg")
     import matplotlib.pyplot as plt
     name = cases[2][0]
-    T = maps[name]
+    T = maps[(builds[1][0], name)]
     ny, nx = brd.shape
     ext = (x0, x0 + nx * CELL, y0 + ny * CELL, y0)
     fig, axs = plt.subplots(2, 1, figsize=(11, 9))
     for ax, s, lab in ((axs[0], 0, "front half (F.Cu, In1, In2)"), (axs[1], 1, "back half (In3, In4, B.Cu)")):
         im = ax.imshow(T[s], extent=ext, cmap="inferno", vmin=np.nanmin(T), vmax=np.nanmax(T))
-        ax.set_title(f"{name}: temperature rise above ambient, {lab}", fontsize=10)
+        ax.set_title(f"{name}, with heat sink: temperature rise above ambient, {lab}", fontsize=10)
         for ref in ("U300", "U600", "U200"):
             xa, ya, xb, yb = box(board, ref)
             ax.plot([xa, xb, xb, xa, xa], [ya, ya, yb, yb, ya], color="white", lw=0.8)

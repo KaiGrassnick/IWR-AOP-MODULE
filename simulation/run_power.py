@@ -164,7 +164,7 @@ def main():
     t_back = first(t, v["AOP_NRESET"] > NRESET_VIH, 101.01e-3)
     lines.append(f"[B carrier reset] released {ms(t_back)}")
 
-    # C: option R604 fitted (PGOOD also resets, Rev 1.0 behaviour), USB plug + unplug
+    # C: option R604 fitted (PGOOD also resets), USB plug + unplug
     t, v = run("r604", "100m", USB_PLUG.format(vusb=5.0, tun="80m", tun2="80.01m"), r604="0.001")
     checks += [("C R604 option " + c, ok) for c, ok in report_powerup("C R604 fitted", t, v, lines)]
     checks += report_powerdown("C R604 fitted unplug", t, v, 80e-3, lines)

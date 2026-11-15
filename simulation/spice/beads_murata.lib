@@ -1,3 +1,6 @@
+* Murata chip ferrite beads.
+* BEAD26 (BLM18KG260TN1) is fitted on the board; BEAD120 (BLM18KG121TH1, the part on TI's EVM) is kept for comparison.
+*
 * BLM18KG121TH1 chip ferrite bead, 120 ohm at 100 MHz, 3 A, 0603
 * Equivalent circuit with the element values of Murata's published SPICE model for this part
 * (valid 1 MHz - 3 GHz, 25 C, no DC bias, small signal).  The series inductances are scaled by
@@ -14,3 +17,16 @@ R3 2 3 21.78
 L3 2 3 {1.224e-7*k}
 R4 3 b {rdc}
 .ends BEAD120
+
+* BLM18KG260TN1 chip ferrite bead, 26 ohm at 100 MHz, 6 A, 0603, 7 mohm maximum DC resistance.
+* Element values of Murata's published SPICE model; inductances scaled by k as above.
+.subckt BEAD26 a b params: k=1 rdc=0.004
+R1 a 1 3.521
+L1 a 1 {4.838e-8*k}
+C1 a 2 2.539e-12
+R2 1 2 4.901
+L2 1 2 {6.735e-8*k}
+R3 2 3 20.79
+L3 2 3 {5.137e-8*k}
+R4 3 b {rdc}
+.ends BEAD26

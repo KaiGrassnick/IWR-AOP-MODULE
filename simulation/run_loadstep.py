@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""1.0 V and 1.8 V rails: chirp load step, DC level at the radar and loop stability (Rev 1.1).
+"""1.0 V and 1.8 V rails: chirp load step, DC level at the radar and loop stability.
 
 The LP87524J-Q1 compensation is internal and undocumented, so the controller is an
 averaged current-mode model (inner current loop as a 0.25 us lag, PI outer loop)
@@ -8,13 +8,13 @@ no ferrite, gives about -40 mV (SNVSAW2B 6.5).  That controller is then put on t
 board network:
 
     buck output (2 x 22 uF) -> ferrite(s) -> extracted copper -> radar-side capacitors
-    FB pin: DC from the radar end through 22 ohm, AC from the buck output through 4.7 uF
+    FB pin: DC from the radar end through 22 ohm, AC from the buck output through 1 uF
 
-The ferrite is Murata's equivalent circuit (spice/bead_blm18kg121.lib); its inductance is
-swept down to 10 % because a bead loses inductance under DC bias and Murata's model is a
-zero-bias one.  Copper resistances come from results/pdn.json (pdn_extract.py, 85 C).
-Three sense arrangements are compared: Rev 1.1 (blend), the TI EVM (local sense at the
-buck output) and Rev 1.0 (sense after one ferrite, 22 uF at the buck).
+The ferrite is Murata's equivalent circuit for the BLM18KG260TN1 (spice/beads_murata.lib); its
+inductance is swept down to 10 % because a bead loses inductance under DC bias and Murata's
+model is a zero-bias one.  Copper resistances come from results/pdn.json (pdn_extract.py, 85 C).
+For comparison the same board is run with the filter of the TI EVM: 120 ohm beads
+(BLM18KG121TH1) and local sense at the buck output.
 """
 import json
 import pathlib
@@ -43,7 +43,7 @@ T0, T1, TEND = 100e-6, 500e-6, 900e-6
 
 
 def deck(kind, kp, rail="1V0", sense="blend", k=1.0, tr=1e-6, network="board", craw=44e-6, nbead=None, cr=None,
-         rs=22.0, cs=4.7e-6, ipk=None, i0=None, fz=30e3):
+         rs=22.0, cs=1e-6, ipk=None, i0=None, fz=30e3, bead="BEAD26", rcu=None):
     r = RAILS[rail]
     ki = kp * 2 * np.pi * fz
     ipk = r["ipk"] if ipk is None else ipk
@@ -64,19 +64,19 @@ Rfbdc out fb 1m
 """
         vref, ipk, i0 = 1.0, 2.0, 0.1
     else:
-        beads = "\n".join(f"XB{i} raw mid BEAD120 params: k={k}" for i in range(nbead))
+        beads = "\n".join(f"XB{i} raw mid {bead} params: k={k}" for i in range(nbead))
         fbnet = {"blend": f"R628 out fb {rs}\nC631 raw fb {cs}",
                  "local": "Rfbdc raw fb 1m",
                  "after": "Rfbdc out fb 1m"}[sense]
         plant = f"""
-.include bead_blm18kg121.lib
+.include beads_murata.lib
 * buck output capacitors (22 uF 1210 / 0805 each: 3 mohm, 0.5 nH)
 CRAW raw c1e {craw}
 RRAW c1e c1l {3e-3 * 22e-6 / craw}
 LRAW c1l 0 {0.5e-9 * 22e-6 / craw}
 {beads}
 * extracted copper from the bead outputs to the radar balls, ~1 nH of plane-pair inductance
-RCU mid midl {r['rcu']}
+RCU mid midl {r['rcu'] if rcu is None else rcu}
 LCU midl out 1n
 * radar-side capacitors, lumped
 CR out cre {cr}
@@ -176,19 +176,18 @@ def main():
         L.append(head)
         for k in (1.0, 0.5, 0.25, 0.1):
             for tr in (1e-6, 10e-6, 100e-6):
-                m, pm = row(f"Rev 1.1 blend, bead L {k*100:.0f} %, {tr*1e6:.0f} us edge", rail, k=k, tr=tr)
+                m, pm = row(f"bead L {k*100:.0f} %, {tr*1e6:.0f} us edge", rail, k=k, tr=tr)
                 res[(rail, k, tr)] = (m, pm)
                 if (k, tr) in ((1.0, 1e-6), (0.25, 10e-6)):
                     d = sim("tran", kp, rail=rail, k=k, tr=tr)
                     np.savetxt(RES / f"loadstep_{rail}_k{int(k*100)}_tr{int(tr*1e6)}us.txt", d[::25][:, [0, 1, 3]], fmt="%.6e", header="t v(radar) v(buck output)")
-        L.append("  component spread on the blend (bead L 130 %, sense C -40 %, radar C -30 %, buck C -30 %):")
-        row("  worst-case stack, 1 us edge", rail, k=1.3, cs=2.8e-6, cr=r["cr"] * 0.7, craw=31e-6)
-        row("  sense C -40 % only", rail, cs=2.8e-6)
+        L.append("  component spread (bead L 130 %, sense C -40 %, radar C -30 %, buck C -30 %):")
+        row("  worst-case stack, 1 us edge", rail, k=1.3, cs=0.6e-6, cr=r["cr"] * 0.7, craw=31e-6)
+        row("  sense C -40 % only", rail, cs=0.6e-6)
         row("  bead L 130 %, radar C +30 %", rail, k=1.3, cr=r["cr"] * 1.3)
         L.append("  for comparison, 10 us edge, bead L 50 %:")
-        row("  TI EVM arrangement (local sense)", rail, sense="local", k=0.5, tr=10e-6)
-        row("  Rev 1.0 (sense after 1 bead, 22 uF)", rail, sense="after", k=0.5, tr=10e-6, nbead=1, craw=22e-6,
-            cr=48.7e-6 if rail == "1V0" else r["cr"])
+        row("  this board", rail, k=0.5, tr=10e-6)
+        row("  TI EVM filter (120 ohm beads, local sense)", rail, sense="local", k=0.5, tr=10e-6, bead="BEAD120")
         if rail == "1V0":
             row("  2-TX profile 0.5 -> 2.0 A, 10 us, L 50 %", rail, k=0.5, tr=10e-6, i0=0.5, ipk=2.0)
         L.append("")
@@ -210,7 +209,8 @@ def main():
         worst = min(m["vmin"] for m in fast)
         L.append(f"{rail}: fastest edges dip to {worst:.3f} V at the radar for some tens of microseconds "
                  f"({'below' if worst < r['vmin'] else 'inside'} the {r['vmin']} V DC limit). This is the ferrite-capacitor "
-                 f"filter itself, the same on TI's EVM, and depends on how fast the radar really steps its current.")
+                 f"filter and the feed copper; it is smaller than with the TI EVM filter and depends on how fast the radar "
+                 f"really steps its current.")
     L.append("")
     L.append("CHECKS")
     L += [f"  {'PASS' if ok else 'FAIL'}  {c}" for c, ok in checks]

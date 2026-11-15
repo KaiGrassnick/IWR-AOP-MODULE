@@ -1,64 +1,64 @@
 [A usb] EN1 high at   2.416 ms
-[A usb]   1V8_R  reaches 90 % at   4.283 ms
-[A usb]   1V0_R  reaches 90 % at   6.092 ms
+[A usb]   1V8_R  reaches 90 % at   4.281 ms
+[A usb]   1V0_R  reaches 90 % at   6.091 ms
 [A usb]   1V2_R  reaches 90 % at   9.138 ms
 [A usb]   3V3_R  reaches 90 % at   9.637 ms
 [A usb] all rails inside window at   9.706 ms
 [A usb] AOP_NRESET released (>1.57 V) at  29.678 ms  = 19.97 ms after rails settled, 27.26 ms after EN1
-[A usb] max 3V3_R before Buck0 starts (CP2105 back-power through R208): 0.213 V
-[A usb unplug] AOP_NRESET below 0.65 V at  80.165 ms (165.0 us after event)
-[A usb unplug]   3V3_R  below datasheet min (3.13 V) at  80.148 ms
-[A usb unplug]   1V2_R  below datasheet min (1.14 V) at  80.392 ms
-[A usb unplug]   1V0_R  below datasheet min (0.95 V) at  80.474 ms
-[A usb unplug]   1V8_R  below datasheet min (1.71 V) at  80.460 ms
+[A usb] max 3V3_R before Buck0 starts (CP2105 back-power through R208): 0.212 V
+[A usb unplug] AOP_NRESET below 0.65 V at  80.167 ms (166.8 us after event)
+[A usb unplug]   3V3_R  below datasheet min (3.13 V) at  80.150 ms
+[A usb unplug]   1V2_R  below datasheet min (1.14 V) at  80.394 ms
+[A usb unplug]   1V0_R  below datasheet min (0.95 V) at  80.466 ms
+[A usb unplug]   1V8_R  below datasheet min (1.71 V) at  80.452 ms
 [A usb unplug]   reset comes 17 us after 3V3_R passes 3.13 V (supervisor threshold 3.07 V sits under the radar minimum so that tolerance cannot cause nuisance resets)
 [B carrier] EN1 high at   2.414 ms
-[B carrier]   1V8_R  reaches 90 % at   4.281 ms
+[B carrier]   1V8_R  reaches 90 % at   4.279 ms
 [B carrier]   1V0_R  reaches 90 % at   6.090 ms
 [B carrier]   1V2_R  reaches 90 % at   9.137 ms
 [B carrier]   3V3_R  reaches 90 % at   9.634 ms
 [B carrier] all rails inside window at   9.703 ms
 [B carrier] AOP_NRESET released (>1.57 V) at  29.677 ms  = 19.97 ms after rails settled, 27.26 ms after EN1
 [B HOST_DISABLE] AOP_NRESET below 0.65 V at  40.012 ms (12.2 us after event)
-[B HOST_DISABLE]   3V3_R  below datasheet min (3.13 V) at  40.351 ms
+[B HOST_DISABLE]   3V3_R  below datasheet min (3.13 V) at  40.352 ms
 [B HOST_DISABLE]   1V2_R  below datasheet min (1.14 V) at  40.031 ms
-[B HOST_DISABLE]   1V0_R  below datasheet min (0.95 V) at  40.111 ms
-[B HOST_DISABLE]   1V8_R  below datasheet min (1.71 V) at  41.090 ms
+[B HOST_DISABLE]   1V0_R  below datasheet min (0.95 V) at  40.105 ms
+[B HOST_DISABLE]   1V8_R  below datasheet min (1.71 V) at  41.089 ms
 [B HOST_DISABLE]   reset comes 339 us before 3V3_R passes 3.13 V
 [B re-enable] EN1 high at  55.020 ms
 [B re-enable]   1V8_R  reaches 90 % at  55.442 ms
 [B re-enable]   1V0_R  reaches 90 % at  57.251 ms
-[B re-enable]   1V2_R  reaches 90 % at  60.299 ms
-[B re-enable]   3V3_R  reaches 90 % at  60.795 ms
-[B re-enable] all rails inside window at  60.864 ms
-[B re-enable] AOP_NRESET released (>1.57 V) at  80.839 ms  = 19.97 ms after rails settled, 25.82 ms after EN1
+[B re-enable]   1V2_R  reaches 90 % at  60.297 ms
+[B re-enable]   3V3_R  reaches 90 % at  60.796 ms
+[B re-enable] all rails inside window at  60.865 ms
+[B re-enable] AOP_NRESET released (>1.57 V) at  80.837 ms  = 19.97 ms after rails settled, 25.82 ms after EN1
 [B carrier reset] AOP_NRESET during J400.8 low: 0.305 V (needs < 0.65 V)
 [B carrier reset] released 101.010 ms
 [C R604 fitted] EN1 high at   2.416 ms
-[C R604 fitted]   1V8_R  reaches 90 % at   4.284 ms
-[C R604 fitted]   1V0_R  reaches 90 % at   6.092 ms
+[C R604 fitted]   1V8_R  reaches 90 % at   4.281 ms
+[C R604 fitted]   1V0_R  reaches 90 % at   6.091 ms
 [C R604 fitted]   1V2_R  reaches 90 % at   9.139 ms
 [C R604 fitted]   3V3_R  reaches 90 % at   9.636 ms
 [C R604 fitted] all rails inside window at   9.705 ms
-[C R604 fitted] AOP_NRESET released (>1.57 V) at  29.678 ms  = 19.97 ms after rails settled, 27.26 ms after EN1
-[C R604 fitted unplug] AOP_NRESET below 0.65 V at  80.146 ms (146.0 us after event)
-[C R604 fitted unplug]   3V3_R  below datasheet min (3.13 V) at  80.148 ms
+[C R604 fitted] AOP_NRESET released (>1.57 V) at  29.679 ms  = 19.97 ms after rails settled, 27.26 ms after EN1
+[C R604 fitted unplug] AOP_NRESET below 0.65 V at  80.147 ms (147.2 us after event)
+[C R604 fitted unplug]   3V3_R  below datasheet min (3.13 V) at  80.150 ms
 [C R604 fitted unplug]   1V2_R  below datasheet min (1.14 V) at  80.514 ms
-[C R604 fitted unplug]   1V0_R  below datasheet min (0.95 V) at  80.588 ms
-[C R604 fitted unplug]   1V8_R  below datasheet min (1.71 V) at  80.576 ms
-[C R604 fitted unplug]   reset comes 2 us before 3V3_R passes 3.13 V
-[D back-power rdis=1 rio=1e6] 3V3_R peak before Buck0 = 0.214 V; 1V8_R up at   4.283 ms
-[D back-power rdis=0 rio=10k] 3V3_R peak before Buck0 = 0.259 V; 1V8_R up at   4.282 ms
-[D back-power rdis=0 rio=1e6] 3V3_R peak before Buck0 = 0.260 V; 1V8_R up at   4.284 ms
+[C R604 fitted unplug]   1V0_R  below datasheet min (0.95 V) at  80.584 ms
+[C R604 fitted unplug]   1V8_R  below datasheet min (1.71 V) at  80.570 ms
+[C R604 fitted unplug]   reset comes 3 us before 3V3_R passes 3.13 V
+[D back-power rdis=1 rio=1e6] 3V3_R peak before Buck0 = 0.214 V; 1V8_R up at   4.281 ms
+[D back-power rdis=0 rio=10k] 3V3_R peak before Buck0 = 0.259 V; 1V8_R up at   4.281 ms
+[D back-power rdis=0 rio=1e6] 3V3_R peak before Buck0 = 0.260 V; 1V8_R up at   4.281 ms
 [E 1 ms USB dropout] AOP_NRESET above 1.57 V while core rails are below minimum: never
 [E] NOTE: depends on the LP87524 GPIO2/PGOOD pin state below UVLO and during READ OTP, which the datasheet does not specify (modelled as released / high-impedance).
-[E restart] EN1 high at  61.021 ms
-[E restart]   1V8_R  reaches 90 % at  64.252 ms
-[E restart]   1V0_R  reaches 90 % at  66.061 ms
-[E restart]   1V2_R  reaches 90 % at  69.108 ms
-[E restart]   3V3_R  reaches 90 % at  69.606 ms
-[E restart] all rails inside window at  69.675 ms
-[E restart] AOP_NRESET released (>1.57 V) at  89.648 ms  = 19.97 ms after rails settled, 28.63 ms after EN1
+[E restart] EN1 high at  61.020 ms
+[E restart]   1V8_R  reaches 90 % at  64.253 ms
+[E restart]   1V0_R  reaches 90 % at  66.063 ms
+[E restart]   1V2_R  reaches 90 % at  69.111 ms
+[E restart]   3V3_R  reaches 90 % at  69.608 ms
+[E restart] all rails inside window at  69.678 ms
+[E restart] AOP_NRESET released (>1.57 V) at  89.652 ms  = 19.97 ms after rails settled, 28.63 ms after EN1
 [D2 rails off, USB on, rdis=1 rio=1e6] 3V3_R after 300 ms = 0.487 V, radar RX ball = 1.172 V, 1V8_R = 0.000 V
 [D2 rails off, USB on, rdis=0 rio=1e6] 3V3_R after 300 ms = 2.539 V, radar RX ball = 3.156 V, 1V8_R = 0.000 V
 [D2 rails off, USB on, rdis=0 rio=10k] 3V3_R after 300 ms = 2.309 V, radar RX ball = 2.943 V, 1V8_R = 0.000 V

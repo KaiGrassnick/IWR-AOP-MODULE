@@ -1,7 +1,7 @@
 {
     "$schema": "https://schemas.kicad.org/drc.v1.json",
     "coordinate_units": "mm",
-    "date": "2026-11-15T10:52:50",
+    "date": "2026-11-15T11:44:57",
     "ignored_checks": [
         {
             "description": "Footprint has no courtyard defined",
@@ -44,18 +44,18 @@
                 {
                     "description": "Pad [<no net>] of U601 on F.Paste",
                     "pos": {
-                        "x": 166.925,
-                        "y": 126.025
+                        "x": 168.125,
+                        "y": 124.825
                     },
-                    "uuid": "b50ffadc-d465-4f99-99f0-291bf4f290c5"
+                    "uuid": "977e4040-6a07-4726-876f-eeec0944e890"
                 },
                 {
                     "description": "Via [GND] on F.Cu - B.Cu",
                     "pos": {
-                        "x": 166.45,
-                        "y": 126.15
+                        "x": 168.2,
+                        "y": 125.1
                     },
-                    "uuid": "7e16265f-c7ec-4f81-82c6-fd7b065ca05a"
+                    "uuid": "805d334a-3086-4141-946a-8708ed1dd5ac"
                 }
             ],
             "severity": "error",
@@ -79,29 +79,6 @@
                         "y": 119.4
                     },
                     "uuid": "da1cd6de-dfb2-4b5e-8827-6733a84029b7"
-                }
-            ],
-            "severity": "error",
-            "type": "hole_clearance"
-        },
-        {
-            "description": "Hole clearance violation (rule 'SMD pad no unfilled via' clearance 0.1000 mm; actual 0.0000 mm)",
-            "items": [
-                {
-                    "description": "Pad [<no net>] of U600 on B.Paste",
-                    "pos": {
-                        "x": 174.345,
-                        "y": 115.75
-                    },
-                    "uuid": "d9771cb1-239a-4d09-a9c1-de76867397c5"
-                },
-                {
-                    "description": "Via [/Radar PMIC/FB_B2] on F.Cu - B.Cu",
-                    "pos": {
-                        "x": 174.3,
-                        "y": 115.25
-                    },
-                    "uuid": "68d3171f-3b21-4590-b8bf-6982a46c92c3"
                 }
             ],
             "severity": "error",
@@ -167,10 +144,10 @@
                 {
                     "description": "Via [GND] on F.Cu - B.Cu",
                     "pos": {
-                        "x": 172.5325,
+                        "x": 171.6,
                         "y": 117.575
                     },
-                    "uuid": "233e2b05-dc3d-4a94-a0aa-99baba4ef413"
+                    "uuid": "f078dbb5-0f3c-4582-a3d3-98769f6b5330"
                 }
             ],
             "severity": "error",
@@ -190,10 +167,10 @@
                 {
                     "description": "Via [GND] on F.Cu - B.Cu",
                     "pos": {
-                        "x": 171.6,
+                        "x": 172.5325,
                         "y": 117.575
                     },
-                    "uuid": "f078dbb5-0f3c-4582-a3d3-98769f6b5330"
+                    "uuid": "233e2b05-dc3d-4a94-a0aa-99baba4ef413"
                 }
             ],
             "severity": "error",
@@ -236,10 +213,10 @@
                 {
                     "description": "Via [/Radar PMIC/FB_B3] on F.Cu - B.Cu",
                     "pos": {
-                        "x": 170.35,
-                        "y": 115.4
+                        "x": 170.9,
+                        "y": 115.55
                     },
-                    "uuid": "29ff2f01-76cb-4d6b-8711-1b2da2649724"
+                    "uuid": "32c27e18-b5c4-47f7-8f76-3f624b113bbb"
                 }
             ],
             "severity": "error",
@@ -364,20 +341,20 @@
             "description": "Silkscreen clipped by solder mask",
             "items": [
                 {
-                    "description": "Value field of TP611 (PMIC_ENABLE)",
+                    "description": "Value field of TP608 (1V0_RAW)",
                     "pos": {
-                        "x": 180.4,
-                        "y": 115.55
+                        "x": 176.8,
+                        "y": 113.575
                     },
-                    "uuid": "54fdc107-c7f9-49b6-a1c6-b0efac47b27a"
+                    "uuid": "fba1a495-f4b7-46c2-846e-8dc940bf3c78"
                 },
                 {
-                    "description": "Via [GND] on F.Cu - B.Cu",
+                    "description": "Via [/Radar PMIC/FB_B2] on F.Cu - B.Cu",
                     "pos": {
-                        "x": 179.225,
-                        "y": 115.525
+                        "x": 179.1,
+                        "y": 113.3
                     },
-                    "uuid": "cdf89861-ad32-4dff-a0db-22025b9a378a"
+                    "uuid": "3b88a455-da3f-4478-a9fa-bab808fe39f8"
                 }
             ],
             "severity": "warning",
@@ -392,7 +369,7 @@
                         "x": 126.288748,
                         "y": 108.29
                     },
-                    "uuid": "e34dd2b6-a408-43e3-b28e-c21f1a78e599"
+                    "uuid": "d5b5fdb1-38dd-44ef-ad55-a6b365c63422"
                 },
                 {
                     "description": "Via [GND] on F.Cu - B.Cu",
@@ -415,7 +392,7 @@
                         "x": 125.19,
                         "y": 110.8
                     },
-                    "uuid": "7f9d6129-60d8-493c-93c3-6cbf71842757"
+                    "uuid": "3db8298a-73c5-43e2-9d2a-e24254fcb14d"
                 },
                 {
                     "description": "Via [USB_3V45] on F.Cu - B.Cu",
@@ -479,20 +456,20 @@
             "description": "Silkscreen clipped by solder mask",
             "items": [
                 {
-                    "description": "Segment of R625 on F.Silkscreen",
+                    "description": "Value field of TP611 (PMIC_ENABLE)",
                     "pos": {
-                        "x": 173.606359,
-                        "y": 126.07
+                        "x": 180.4,
+                        "y": 115.55
                     },
-                    "uuid": "69fdc18a-c952-48cb-bf48-872d0878e1a0"
+                    "uuid": "54fdc107-c7f9-49b6-a1c6-b0efac47b27a"
                 },
                 {
                     "description": "Via [GND] on F.Cu - B.Cu",
                     "pos": {
-                        "x": 174.07,
-                        "y": 126.225
+                        "x": 179.225,
+                        "y": 115.525
                     },
-                    "uuid": "18f88767-6526-4551-9565-52706ddf4ad5"
+                    "uuid": "cdf89861-ad32-4dff-a0db-22025b9a378a"
                 }
             ],
             "severity": "warning",
@@ -516,6 +493,52 @@
                         "y": 120.675
                     },
                     "uuid": "1fa5f450-8181-42dd-bb23-d024c30ed692"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Circle of TP614 on F.Silkscreen",
+                    "pos": {
+                        "x": 162.9,
+                        "y": 124.75
+                    },
+                    "uuid": "d5dce68f-14d4-4c0e-8fc0-f39090acd166"
+                },
+                {
+                    "description": "Via [PMIC_SCL] on F.Cu - B.Cu",
+                    "pos": {
+                        "x": 162.55,
+                        "y": 125.1
+                    },
+                    "uuid": "9f104a32-9373-4490-b9c6-411f5f6986c4"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Segment of R625 on F.Silkscreen",
+                    "pos": {
+                        "x": 173.606359,
+                        "y": 126.07
+                    },
+                    "uuid": "618e7ab6-4873-40c7-95c8-0abf6686c138"
+                },
+                {
+                    "description": "Via [GND] on F.Cu - B.Cu",
+                    "pos": {
+                        "x": 174.07,
+                        "y": 126.225
+                    },
+                    "uuid": "33bed385-5855-4405-bfc8-bdaba573c882"
                 }
             ],
             "severity": "warning",
@@ -607,7 +630,7 @@
                         "x": 169.3,
                         "y": 107.375
                     },
-                    "uuid": "d1d78bb4-6673-423d-98e5-b4c242b82528"
+                    "uuid": "6194c31a-dc1a-47f6-82a3-22faf5538cca"
                 }
             ],
             "severity": "warning",
@@ -625,12 +648,12 @@
                     "uuid": "07a400bd-e5a7-444a-b6ad-9b4c86f80cfa"
                 },
                 {
-                    "description": "Via [1V0_RAW] on F.Cu - B.Cu",
+                    "description": "Via [/Radar PMIC/FB_B2] on F.Cu - B.Cu",
                     "pos": {
-                        "x": 175.0,
+                        "x": 174.95,
                         "y": 115.15
                     },
-                    "uuid": "4ca41985-6929-4886-a801-a6010f7b873b"
+                    "uuid": "12dec068-b0b4-451c-a1e2-229d00f58be0"
                 }
             ],
             "severity": "warning",
@@ -653,7 +676,7 @@
                         "x": 170.3,
                         "y": 108.25
                     },
-                    "uuid": "e7b01572-9418-4a12-938e-8b5afa1aecc9"
+                    "uuid": "71af86ea-d3ce-4465-aaf8-2a9d547497cf"
                 }
             ],
             "severity": "warning",
@@ -676,7 +699,7 @@
                         "x": 170.3,
                         "y": 108.25
                     },
-                    "uuid": "e7b01572-9418-4a12-938e-8b5afa1aecc9"
+                    "uuid": "71af86ea-d3ce-4465-aaf8-2a9d547497cf"
                 }
             ],
             "severity": "warning",
@@ -699,7 +722,7 @@
                         "x": 175.45,
                         "y": 108.225
                     },
-                    "uuid": "83e9bd57-4c33-4ac7-8b79-0c410d74b77e"
+                    "uuid": "dc828f11-ae12-4d58-8633-42d5ceb336b8"
                 }
             ],
             "severity": "warning",
@@ -719,10 +742,10 @@
                 {
                     "description": "Via [/Radar PMIC/FB_B2] on F.Cu - B.Cu",
                     "pos": {
-                        "x": 174.4,
-                        "y": 110.65
+                        "x": 174.5,
+                        "y": 110.55
                     },
-                    "uuid": "f7ecf230-2e99-4fab-8333-3f9fcba49350"
+                    "uuid": "fb0e912d-92db-447c-b3a4-23f2136de7ea"
                 }
             ],
             "severity": "warning",
@@ -732,20 +755,20 @@
             "description": "Silkscreen clipped by solder mask",
             "items": [
                 {
-                    "description": "Segment of C302 on B.Silkscreen",
+                    "description": "Segment of C600 on B.Silkscreen",
                     "pos": {
-                        "x": 142.635,
-                        "y": 123.847836
+                        "x": 177.021247,
+                        "y": 121.335
                     },
-                    "uuid": "bc9b7a83-a205-453f-86da-e3e891c74712"
+                    "uuid": "b63aa067-8ec8-4a4f-a96a-1b807d8db734"
                 },
                 {
-                    "description": "Via [1V2_R] on F.Cu - B.Cu",
+                    "description": "Via [1V8_RAW] on F.Cu - B.Cu",
                     "pos": {
-                        "x": 142.695872,
-                        "y": 123.779597
+                        "x": 177.85,
+                        "y": 121.2
                     },
-                    "uuid": "1428411d-389f-44ad-964a-43621bd5c866"
+                    "uuid": "f27b986f-91fc-4f14-b77d-19ca230d76cc"
                 }
             ],
             "severity": "warning",
@@ -768,7 +791,7 @@
                         "x": 174.5,
                         "y": 125.5
                     },
-                    "uuid": "e277152c-603a-4696-a8c9-9f2862c7f5bf"
+                    "uuid": "3f68b3f5-b441-4501-841a-b3eebea404a3"
                 }
             ],
             "severity": "warning",
@@ -791,7 +814,30 @@
                         "x": 174.07,
                         "y": 126.225
                     },
-                    "uuid": "18f88767-6526-4551-9565-52706ddf4ad5"
+                    "uuid": "33bed385-5855-4405-bfc8-bdaba573c882"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Segment of C611 on B.Silkscreen",
+                    "pos": {
+                        "x": 162.751292,
+                        "y": 124.058559
+                    },
+                    "uuid": "736f67b1-1ccb-4736-b1fc-d941cfc9e04d"
+                },
+                {
+                    "description": "Via [PMIC_SCL] on F.Cu - B.Cu",
+                    "pos": {
+                        "x": 162.55,
+                        "y": 125.1
+                    },
+                    "uuid": "9f104a32-9373-4490-b9c6-411f5f6986c4"
                 }
             ],
             "severity": "warning",
@@ -815,6 +861,29 @@
                         "y": 118.420201
                     },
                     "uuid": "215597ad-ce5a-473b-b89e-c0770ffc5070"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Segment of C302 on B.Silkscreen",
+                    "pos": {
+                        "x": 142.635,
+                        "y": 123.847836
+                    },
+                    "uuid": "bc9b7a83-a205-453f-86da-e3e891c74712"
+                },
+                {
+                    "description": "Via [1V2_R] on F.Cu - B.Cu",
+                    "pos": {
+                        "x": 142.695872,
+                        "y": 123.779597
+                    },
+                    "uuid": "1428411d-389f-44ad-964a-43621bd5c866"
                 }
             ],
             "severity": "warning",

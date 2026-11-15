@@ -5,7 +5,7 @@
   ],
   "copper_layers": 6,
   "thickness_mm": 1.6,
-  "vias": 238,
+  "vias": 244,
   "min_via_drill_mm": 0.2,
   "min_track_mm": 0.1,
   "bom_lines": 46,
@@ -19,9 +19,9 @@
       "100nF",
       "100nF 16V"
     ],
-    "C19666": [
-      "4.7uF",
-      "4.7uF X5R 16V"
+    "C15849": [
+      "1uF",
+      "1uF X5R 50V"
     ],
     "C86038": [
       "10uF X7R 10V 10%",
@@ -148,8 +148,8 @@
   },
   "erc_violations": 7,
   "drc_violations_by_type": {
-    "error:hole_clearance": 9,
-    "warning:silk_over_copper": 28,
+    "error:hole_clearance": 8,
+    "warning:silk_over_copper": 32,
     "warning:text_height": 12,
     "warning:lib_footprint_mismatch": 1
   },

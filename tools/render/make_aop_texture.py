@@ -27,6 +27,9 @@ N = int(PKG * R)
 REPO_ROOT = Path(__file__).resolve().parents[2]
 OUT = str(REPO_ROOT / "build" / "product-renders" / "aop-top")
 FONT = ("/System/Library/Fonts/HelveticaNeue.ttc", 7)  # Helvetica Neue Light
+if not os.path.exists(FONT[0]):  # Linux: Inter Light, the closest face commonly installed
+    FONT = next(((f, 0) for f in ("/usr/share/fonts/opentype/inter/Inter-Light.otf",
+                                  "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf") if os.path.exists(f)), FONT)
 
 # --- measured features (mm, photo frame) ---------------------------------------
 PATCH_W, PATCH_H = 1.60, 1.30  # 60 GHz patch: ~lambda_g/2 along the vertical feed axis
@@ -114,7 +117,11 @@ def texas_logo(w_mm, h_mm):
     fill = Image.new("L", (W + 2 * m, H + 2 * m), 0)
     d = ImageDraw.Draw(fill)
     d.polygon([(m + (x - min(xs)) * sx, m + (max(ys) - y) * sy) for x, y in zip(xs, ys)], fill=255)
-    f = ImageFont.truetype("/System/Library/Fonts/Helvetica.ttc", int(H * 0.52), index=1)
+    bold = ("/System/Library/Fonts/Helvetica.ttc", 1)
+    if not os.path.exists(bold[0]):  # Linux
+        bold = next(((p, 0) for p in ("/usr/share/fonts/opentype/inter/Inter-Bold.otf",
+                                      "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf") if os.path.exists(p)), bold)
+    f = ImageFont.truetype(bold[0], int(H * 0.52), index=bold[1])
     d.text((m + W * 0.36, m + H * 0.18), "ti", font=f, fill=0)
     k = max(3, px(STROKE) | 1)
     return ImageChops.subtract(fill.filter(ImageFilter.MaxFilter(k)), fill)

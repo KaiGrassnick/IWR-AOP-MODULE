@@ -25,7 +25,7 @@ def ng(txt):
 
 
 def hotplug(lcab, rcab, vsrc=5.0, cbulk_src=100e-6, rev11=True):
-    damper = """* Rev 1.1: C204 10 uF 50 V X7R (8 uF at 5 V) + R210 0.47 ohm damper, D202 SMF5.0A TVS
+    damper = """* C204 10 uF 50 V X7R (8 uF at 5 V) + R210 0.47 ohm damper, D202 SMF5.0A TVS
 C204 USB_VBUS dmp 8u
 R210 dmp 0 0.47
 D202 0 USB_VBUS DTVS
@@ -90,8 +90,8 @@ wrdata {RES}/in_tmp.txt v(SYS_5V)
 
 def main():
     L = ["USB-C hot plug into USB_VBUS; limit: LM66200 VIN abs max 6.0 V",
-         "Rev 1.1 has the C204 + R210 damper and the D202 TVS; Rev 1.0 had 2 uF of ceramic only",
-         f"{'source, cable':40} {'Rev 1.1 peak':>13} {'Rev 1.0 peak':>13}"]
+         "The board has the C204 + R210 damper and the D202 TVS; the second column is the same input with 2 uF of ceramic only",
+         f"{'source, cable':40} {'peak':>13} {'undamped':>13}"]
     ok = True
     for name, lc, rc, vs in [("5.0 V, 0.3 m, 0.25 uH, 60 mohm", 0.25e-6, 0.06, 5.0),
                              ("5.0 V, 1 m, 0.7 uH, 120 mohm", 0.7e-6, 0.12, 5.0),

@@ -29,7 +29,7 @@ LAYERS = ("F.Cu", "In1.Cu", "In2.Cu", "In3.Cu", "In4.Cu", "B.Cu")
 RHO20 = 1.72e-8            # ohm*m, annealed copper at 20 C
 ALPHA = 0.0039             # 1/K
 PLATING = 0.018e-3         # via barrel plating, m (JLCPCB minimum; filled vias are epoxy, not copper)
-BEAD_DCR = 0.022           # BLM18KG121TH1 typical DC resistance (Murata model R4); 0.030 max
+BEAD_DCR = 0.007           # BLM18KG260TN1 maximum DC resistance (4 mohm in Murata's model)
 IND_DCR = {"1V0": 0.020, "1V8": 0.020}   # only reported, the regulator senses after the inductor
 
 
@@ -402,7 +402,7 @@ def main():
     cu, die = stackup()
     lines.append("Post-layout DC extraction from the routed board (see simulation/pdn_extract.py)")
     lines.append(f"Copper: {', '.join(f'{l} {cu[l]*1e3:.1f} um' for l in LAYERS)}; via barrel plating {PLATING*1e6:.0f} um; "
-                 f"bead DCR {BEAD_DCR*1e3:.0f} mohm each (typ)")
+                 f"bead DCR {BEAD_DCR*1e3:.0f} mohm each (max)")
     lines.append("")
     plots = {}
     for temp in (20.0, 85.0):

@@ -1,34 +1,34 @@
 Post-layout DC extraction from the routed board (see simulation/pdn_extract.py)
-Copper: F.Cu 35.0 um, In1.Cu 17.5 um, In2.Cu 17.5 um, In3.Cu 17.5 um, In4.Cu 17.5 um, B.Cu 35.0 um; via barrel plating 18 um; bead DCR 22 mohm each (typ)
+Copper: F.Cu 35.0 um, In1.Cu 17.5 um, In2.Cu 17.5 um, In3.Cu 17.5 um, In4.Cu 17.5 um, B.Cu 35.0 um; via barrel plating 18 um; bead DCR 7 mohm each (max)
 
 ================ copper at 20 C ================
 1V0: 2.50 A peak from L602.2 into 9 radar balls (G16, G17, G18, H16, H17, H18, J16, J17, J18), copper at 20 C
-  inductor pad -> DC sense point R628.1:  49.85 mV   (regulation point; the buck output sits this much above nominal)
-  FB600:  1.29 A,  28.3 mV across the bead; bead output at  32.87 mV
-  FB602:  1.21 A,  26.7 mV across the bead; bead output at  32.18 mV
-  bead outputs -> radar balls (copper only):  26.66 mV mean,  26.74 mV worst ball = 10.66 mohm
+  inductor pad -> DC sense point R628.1:  28.58 mV   (regulation point; the buck output sits this much above nominal)
+  FB600:  1.32 A,   9.2 mV across the bead; bead output at  13.73 mV
+  FB602:  1.18 A,   8.3 mV across the bead; bead output at  13.80 mV
+  bead outputs -> radar balls (copper only):  24.15 mV mean,  24.24 mV worst ball =  9.66 mohm
   sense point -> radar balls:   9.33 mV mean,   9.42 mV worst ball (G16), spread between balls 0.15 mV
-  effective resistance sense -> radar:   3.73 mohm; inductor pad -> radar:  23.67 mohm
+  effective resistance sense -> radar:   3.73 mohm; inductor pad -> radar:  15.17 mohm
   1V0_RAW  F.Cu  : 99.5th percentile current density  0.03 A/mm width =     1 A/mm2
   1V0_RAW  In1.Cu: 99.5th percentile current density  0.00 A/mm width =     0 A/mm2
   1V0_RAW  In2.Cu: 99.5th percentile current density  0.00 A/mm width =     0 A/mm2
   1V0_RAW  In3.Cu: 99.5th percentile current density  0.00 A/mm width =     0 A/mm2
   1V0_RAW  In4.Cu: 99.5th percentile current density  0.00 A/mm width =     0 A/mm2
   1V0_RAW  B.Cu  : 99.5th percentile current density  3.28 A/mm width =    94 A/mm2
-  1V0_R    F.Cu  : 99.5th percentile current density  0.64 A/mm width =    18 A/mm2
+  1V0_R    F.Cu  : 99.5th percentile current density  2.27 A/mm width =    65 A/mm2
   1V0_R    In1.Cu: 99.5th percentile current density  0.00 A/mm width =     0 A/mm2
   1V0_R    In2.Cu: 99.5th percentile current density  0.00 A/mm width =     0 A/mm2
-  1V0_R    In3.Cu: 99.5th percentile current density  2.76 A/mm width =   158 A/mm2
+  1V0_R    In3.Cu: 99.5th percentile current density  2.82 A/mm width =   161 A/mm2
   1V0_R    In4.Cu: 99.5th percentile current density  0.00 A/mm width =     0 A/mm2
-  1V0_R    B.Cu  : 99.5th percentile current density  0.70 A/mm width =    20 A/mm2
-  copper + bead loss at peak current: 148 mW
+  1V0_R    B.Cu  : 99.5th percentile current density  0.69 A/mm width =    20 A/mm2
+  copper + bead loss at peak current: 95 mW
 
 1V8: 0.85 A peak from L603.2 into 12 radar balls (A12, B1, C11, C15, C18, F1, K1, M16, M17, M18, U2, V11), copper at 20 C
-  inductor pad -> DC sense point R629.1:  32.45 mV   (regulation point; the buck output sits this much above nominal)
-  FB601:  0.85 A,  18.7 mV across the bead; bead output at  19.36 mV
-  bead outputs -> radar balls (copper only):  42.04 mV mean,  53.70 mV worst ball = 49.46 mohm
-  sense point -> radar balls:  28.95 mV mean,  40.60 mV worst ball (U2), spread between balls 39.96 mV
-  effective resistance sense -> radar:  34.06 mohm; inductor pad -> radar:  72.24 mohm
+  inductor pad -> DC sense point R629.1:  12.52 mV   (regulation point; the buck output sits this much above nominal)
+  FB601:  0.85 A,   6.0 mV across the bead; bead output at   6.61 mV
+  bead outputs -> radar balls (copper only):   9.32 mV mean,  14.01 mV worst ball = 10.96 mohm
+  sense point -> radar balls:   3.40 mV mean,   8.09 mV worst ball (U2), spread between balls 7.62 mV
+  effective resistance sense -> radar:   4.00 mohm; inductor pad -> radar:  18.73 mohm
   1V8_RAW  F.Cu  : 99.5th percentile current density  0.00 A/mm width =     0 A/mm2
   1V8_RAW  In1.Cu: 99.5th percentile current density  0.00 A/mm width =     0 A/mm2
   1V8_RAW  In2.Cu: 99.5th percentile current density  0.00 A/mm width =     0 A/mm2
@@ -38,10 +38,10 @@ Copper: F.Cu 35.0 um, In1.Cu 17.5 um, In2.Cu 17.5 um, In3.Cu 17.5 um, In4.Cu 17.
   1V8_R    F.Cu  : 99.5th percentile current density  1.04 A/mm width =    30 A/mm2
   1V8_R    In1.Cu: 99.5th percentile current density  0.00 A/mm width =     0 A/mm2
   1V8_R    In2.Cu: 99.5th percentile current density  0.00 A/mm width =     0 A/mm2
-  1V8_R    In3.Cu: 99.5th percentile current density  2.74 A/mm width =   156 A/mm2
+  1V8_R    In3.Cu: 99.5th percentile current density  0.30 A/mm width =    17 A/mm2
   1V8_R    In4.Cu: 99.5th percentile current density  0.00 A/mm width =     0 A/mm2
   1V8_R    B.Cu  : 99.5th percentile current density  1.58 A/mm width =    45 A/mm2
-  copper + bead loss at peak current: 52 mW
+  copper + bead loss at peak current: 14 mW
 
 1V2: 1.00 A peak from L601.2 into 11 radar balls (A5, C1, E1, J1, V12, V14, V15, V4, V6, V7, V8), copper at 20 C
   inductor pad -> DC sense point U600.14:   2.27 mV   (regulation point; the buck output sits this much above nominal)
@@ -68,36 +68,36 @@ Copper: F.Cu 35.0 um, In1.Cu 17.5 um, In2.Cu 17.5 um, In3.Cu 17.5 um, In4.Cu 17.
   copper + bead loss at peak current: 0 mW
 
 GND return of the 1.0 V peak current: 2.50 A from 6 radar GND balls back to C612/C626 on all GND layers, copper at 20 C
-  ground rise at the radar:  3.11 mV mean,  3.14 mV worst = 1.24 mohm
+  ground rise at the radar:  3.25 mV mean,  3.28 mV worst = 1.30 mohm
 
 ================ copper at 85 C ================
 1V0: 2.50 A peak from L602.2 into 9 radar balls (G16, G17, G18, H16, H17, H18, J16, J17, J18), copper at 85 C
-  inductor pad -> DC sense point R628.1:  62.48 mV   (regulation point; the buck output sits this much above nominal)
-  FB600:  1.29 A,  35.5 mV across the bead; bead output at  41.19 mV
-  FB602:  1.21 A,  33.4 mV across the bead; bead output at  40.34 mV
-  bead outputs -> radar balls (copper only):  33.41 mV mean,  33.51 mV worst ball = 13.36 mohm
+  inductor pad -> DC sense point R628.1:  35.82 mV   (regulation point; the buck output sits this much above nominal)
+  FB600:  1.32 A,  11.5 mV across the bead; bead output at  17.20 mV
+  FB602:  1.18 A,  10.4 mV across the bead; bead output at  17.29 mV
+  bead outputs -> radar balls (copper only):  30.27 mV mean,  30.38 mV worst ball = 12.11 mohm
   sense point -> radar balls:  11.70 mV mean,  11.80 mV worst ball (G16), spread between balls 0.19 mV
-  effective resistance sense -> radar:   4.68 mohm; inductor pad -> radar:  29.67 mohm
+  effective resistance sense -> radar:   4.68 mohm; inductor pad -> radar:  19.01 mohm
   1V0_RAW  F.Cu  : 99.5th percentile current density  0.03 A/mm width =     1 A/mm2
   1V0_RAW  In1.Cu: 99.5th percentile current density  0.00 A/mm width =     0 A/mm2
   1V0_RAW  In2.Cu: 99.5th percentile current density  0.00 A/mm width =     0 A/mm2
   1V0_RAW  In3.Cu: 99.5th percentile current density  0.00 A/mm width =     0 A/mm2
   1V0_RAW  In4.Cu: 99.5th percentile current density  0.00 A/mm width =     0 A/mm2
   1V0_RAW  B.Cu  : 99.5th percentile current density  3.28 A/mm width =    94 A/mm2
-  1V0_R    F.Cu  : 99.5th percentile current density  0.64 A/mm width =    18 A/mm2
+  1V0_R    F.Cu  : 99.5th percentile current density  2.27 A/mm width =    65 A/mm2
   1V0_R    In1.Cu: 99.5th percentile current density  0.00 A/mm width =     0 A/mm2
   1V0_R    In2.Cu: 99.5th percentile current density  0.00 A/mm width =     0 A/mm2
-  1V0_R    In3.Cu: 99.5th percentile current density  2.76 A/mm width =   158 A/mm2
+  1V0_R    In3.Cu: 99.5th percentile current density  2.82 A/mm width =   161 A/mm2
   1V0_R    In4.Cu: 99.5th percentile current density  0.00 A/mm width =     0 A/mm2
-  1V0_R    B.Cu  : 99.5th percentile current density  0.70 A/mm width =    20 A/mm2
-  copper + bead loss at peak current: 185 mW
+  1V0_R    B.Cu  : 99.5th percentile current density  0.69 A/mm width =    20 A/mm2
+  copper + bead loss at peak current: 119 mW
 
 1V8: 0.85 A peak from L603.2 into 12 radar balls (A12, B1, C11, C15, C18, F1, K1, M16, M17, M18, U2, V11), copper at 85 C
-  inductor pad -> DC sense point R629.1:  40.68 mV   (regulation point; the buck output sits this much above nominal)
-  FB601:  0.85 A,  23.4 mV across the bead; bead output at  24.26 mV
-  bead outputs -> radar balls (copper only):  52.69 mV mean,  67.30 mV worst ball = 61.99 mohm
-  sense point -> radar balls:  36.28 mV mean,  50.89 mV worst ball (U2), spread between balls 50.08 mV
-  effective resistance sense -> radar:  42.68 mohm; inductor pad -> radar:  90.54 mohm
+  inductor pad -> DC sense point R629.1:  15.69 mV   (regulation point; the buck output sits this much above nominal)
+  FB601:  0.85 A,   7.5 mV across the bead; bead output at   8.28 mV
+  bead outputs -> radar balls (copper only):  11.67 mV mean,  17.55 mV worst ball = 13.73 mohm
+  sense point -> radar balls:   4.26 mV mean,  10.14 mV worst ball (U2), spread between balls 9.55 mV
+  effective resistance sense -> radar:   5.01 mohm; inductor pad -> radar:  23.48 mohm
   1V8_RAW  F.Cu  : 99.5th percentile current density  0.00 A/mm width =     0 A/mm2
   1V8_RAW  In1.Cu: 99.5th percentile current density  0.00 A/mm width =     0 A/mm2
   1V8_RAW  In2.Cu: 99.5th percentile current density  0.00 A/mm width =     0 A/mm2
@@ -107,10 +107,10 @@ GND return of the 1.0 V peak current: 2.50 A from 6 radar GND balls back to C612
   1V8_R    F.Cu  : 99.5th percentile current density  1.04 A/mm width =    30 A/mm2
   1V8_R    In1.Cu: 99.5th percentile current density  0.00 A/mm width =     0 A/mm2
   1V8_R    In2.Cu: 99.5th percentile current density  0.00 A/mm width =     0 A/mm2
-  1V8_R    In3.Cu: 99.5th percentile current density  2.74 A/mm width =   156 A/mm2
+  1V8_R    In3.Cu: 99.5th percentile current density  0.30 A/mm width =    17 A/mm2
   1V8_R    In4.Cu: 99.5th percentile current density  0.00 A/mm width =     0 A/mm2
   1V8_R    B.Cu  : 99.5th percentile current density  1.58 A/mm width =    45 A/mm2
-  copper + bead loss at peak current: 65 mW
+  copper + bead loss at peak current: 17 mW
 
 1V2: 1.00 A peak from L601.2 into 11 radar balls (A5, C1, E1, J1, V12, V14, V15, V4, V6, V7, V8), copper at 85 C
   inductor pad -> DC sense point U600.14:   2.84 mV   (regulation point; the buck output sits this much above nominal)
@@ -137,10 +137,10 @@ GND return of the 1.0 V peak current: 2.50 A from 6 radar GND balls back to C612
   copper + bead loss at peak current: 0 mW
 
 GND return of the 1.0 V peak current: 2.50 A from 6 radar GND balls back to C612/C626 on all GND layers, copper at 85 C
-  ground rise at the radar:  3.87 mV mean,  3.90 mV worst = 1.55 mohm
+  ground rise at the radar:  4.04 mV mean,  4.07 mV worst = 1.62 mohm
 
 Budget at the radar balls, worst case (85 C copper, peak current, ground return included):
-  1V0: 1.00 V - 20 mV (PMIC accuracy) - 11.8 mV (sense point to worst ball) - 3.9 mV (return) = 0.964 V vs radar minimum 0.950 V -> OK (margin +14 mV)
-  1V8: 1.80 V - 36 mV (PMIC accuracy) - 50.9 mV (sense point to worst ball) - 1.3 mV (return) = 1.712 V vs radar minimum 1.710 V -> OK (margin +2 mV)
-  1V2: 1.20 V - 24 mV (PMIC accuracy) - 19.5 mV (sense point to worst ball) - 1.5 mV (return) = 1.155 V vs radar minimum 1.140 V -> OK (margin +15 mV)
+  1V0: 1.00 V - 20 mV (PMIC accuracy) - 11.8 mV (sense point to worst ball) - 4.0 mV (return) = 0.964 V vs radar minimum 0.950 V -> OK (margin +14 mV)
+  1V8: 1.80 V - 36 mV (PMIC accuracy) - 10.1 mV (sense point to worst ball) - 1.4 mV (return) = 1.752 V vs radar minimum 1.710 V -> OK (margin +42 mV)
+  1V2: 1.20 V - 24 mV (PMIC accuracy) - 19.5 mV (sense point to worst ball) - 1.6 mV (return) = 1.155 V vs radar minimum 1.140 V -> OK (margin +15 mV)
   3V3: 3.30 V - 66 mV (PMIC accuracy) - 4.5 mV (sense point to worst ball) - 0.1 mV (return) = 3.229 V vs radar minimum 3.135 V -> OK (margin +94 mV)

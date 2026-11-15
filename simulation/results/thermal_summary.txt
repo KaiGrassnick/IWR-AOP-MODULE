@@ -1,12 +1,20 @@
-First-order board thermal model: bare board in still air, both faces h = 10 W/m2/K, no housing or heat sink
-Copper coverage: F.Cu 86 %, In1.Cu 92 %, In2.Cu 12 %, In3.Cu 16 %, In4.Cu 92 %, B.Cu 85 %; 238 vias; board area 22.6 cm2
+First-order board thermal model: still air, both faces h = 10 W/m2/K, no carrier or housing
+Copper coverage: F.Cu 85 %, In1.Cu 92 %, In2.Cu 12 %, In3.Cu 25 %, In4.Cu 92 %, B.Cu 85 %; 244 vias; board area 22.6 cm2
 
+Bare board
 case                                    board under radar  radar Tj rise  PMIC Tj rise  hottest board  max ambient
 radar idle / low duty (0.6 W)                     19.2 K        23.6 K       19.5 K        19.9 K        81 C
 2 TX, 24 % duty (1.25 W, Table 7-4)               37.5 K        46.7 K       39.2 K        39.5 K        58 C
-2 TX, 48 % duty (1.75 W, Table 7-4)               51.6 K        64.4 K       54.3 K        54.7 K        41 C
-3 TX, high duty (2.3 W, estimate)                 67.1 K        83.9 K       71.0 K        71.3 K        21 C
+2 TX, 48 % duty (1.75 W, Table 7-4)               51.6 K        64.4 K       54.3 K        54.6 K        41 C
+3 TX, high duty (2.3 W, estimate)                 67.2 K        83.9 K       70.9 K        71.2 K        21 C
+
+With heat sink HS300 on the back under the radar (14 x 14 x 6 mm, 39.7 K/W + adhesive)
+case                                    board under radar  radar Tj rise  PMIC Tj rise  hottest board  max ambient
+radar idle / low duty (0.6 W)                     12.9 K        17.3 K       14.1 K        13.8 K        88 C
+2 TX, 24 % duty (1.25 W, Table 7-4)               25.2 K        34.3 K       28.5 K        28.0 K        71 C
+2 TX, 48 % duty (1.75 W, Table 7-4)               34.7 K        47.5 K       39.6 K        38.9 K        58 C
+3 TX, high duty (2.3 W, estimate)                 45.1 K        61.9 K       51.8 K        50.9 K        43 C
 
 Rises are above ambient. 'max ambient' keeps the radar junction at or under 105 C and the PMIC under 125 C.
-The radar dominates: a bare module in still air is limited by the board's own surface area.
-Mounting on a carrier or against a housing wall lowers these numbers; the backside pad TH300 is there for that.
+The radar dominates, and still air on 22.6 cm2 of board is the limit; the heat sink adds surface where the heat is.
+Airflow, a taller heat sink (no carrier underneath) or a housing wall against the heat sink lower these numbers further.

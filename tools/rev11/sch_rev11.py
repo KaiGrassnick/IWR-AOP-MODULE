@@ -170,7 +170,7 @@ def sym_tps386000(prefix=""):
     return (f'(symbol "{prefix}{n}" (pin_names (offset 0.508)) (exclude_from_sim no) (in_bom yes) (on_board yes) '
             f'(property "Reference" "U" (at -12.7 13.97 0) (effects (font (size 1.27 1.27)) (justify left))) '
             f'(property "Value" "{n}" (at 2.54 13.97 0) (effects (font (size 1.27 1.27)) (justify left))) '
-            f'(property "Footprint" "Package_DFN_QFN:Texas_RGP0020D_VQFN-20-1EP_4x4mm_P0.5mm_EP2.7x2.7mm" (at 0 0 0) (effects (font (size 1.27 1.27)) (hide yes))) '
+            f'(property "Footprint" "Package_DFN_QFN:TQFN-20-1EP_4x4mm_P0.5mm_EP2.1x2.1mm" (at 0 0 0) (effects (font (size 1.27 1.27)) (hide yes))) '
             f'(property "Datasheet" "https://www.ti.com/lit/ds/symlink/tps386000.pdf" (at 0 0 0) (effects (font (size 1.27 1.27)) (hide yes))) '
             f'(property "Description" "Quad supply voltage supervisor, 0.4 V adjustable thresholds (0.25 %), open-drain resets, 20 ms delay with CT open, VDD 1.8 to 6.5 V, 11 uA" (at 0 0 0) (effects (font (size 1.27 1.27)) (hide yes))) '
             + hid("MPN", n) + " " + hid("Manufacturer", "Texas Instruments") + " " + hid("LCSC", "C702221") + " "
@@ -217,9 +217,21 @@ def rails():
     s.edit("#PWR8046", swap("1V8_R", "3V3_R"))
     # PGOOD is no longer a reset source by default
     s.edit("R604", lambda l: prop(l.replace("(dnp no)", "(dnp yes)"), "Description",
-                                  "DNP option: fitted, PGOOD also asserts reset (Rev 1.0 behaviour). Not fitted, reset is U601 + GPIO2."))
+                                  "DNP option: fitted, PGOOD also asserts reset. Not fitted, reset is U601 + GPIO2."))
+    # Ferrites: BLM18KG260TN1D (26 ohm, 6 A, 7 mohm max) in place of the 120 ohm part of the TI EVM. About a
+    # quarter of the inductance: the filter still meets the 4 MHz ripple limit with margin, and the dip
+    # a fast chirp current edge causes at the radar is roughly halved (simulation/run_loadstep.py).
     for r in ("FB600", "FB601"):
-        s.edit(r, lambda l: prop(l, "Description", "Second-stage ferrite as on TI IWR6843AOPEVM (BLM18KG121TH1D). Its DC drop is regulated out by the remote sense (R628/R629); the loop sees the buck output through C631/C632."))
+        def bead(l):
+            l = l.replace('"Value" "120R@100MHz / 3A"', '"Value" "26R@100MHz / 6A"')
+            for k, v in (("MPN", "BLM18KG260TN1D"), ("LCSC", "C88981"),
+                         ("Datasheet", "https://www.murata.com/en-us/products/productdetail?partno=BLM18KG260TN1%23"),
+                         ("Description", "Second-stage ferrite, 26 ohm / 6 A / 7 mohm. Low inductance keeps the chirp load-step dip small; "
+                                         "its DC drop is regulated out by the remote sense (R628/R629) and the loop sees the buck output through C631/C632.")):
+                l = prop(l, k, v)
+            assert "26R@100MHz" in l
+            return l
+        s.edit(r, bead)
 
     def retext(old, new):
         i = next(i for i, l in enumerate(s.L) if l.startswith("  (text") and old in l)
@@ -238,7 +250,7 @@ def rails():
     s.cap("C624", "C630", 186.69, 167.64, "1V0_R", Description=d)
     s.cap("C624", "C633", 217.17, 167.64, "1V0_R", Description=d)
     # second 1.0 V ferrite in parallel: halves DC drop and bias per bead
-    s.clone("FB600", "FB602", 204.47, 180.34, Description="In parallel with FB600: 11 mohm total, 1.25 A per bead at the 2.5 A 3-TX peak.")
+    s.clone("FB600", "FB602", 204.47, 180.34, Description="In parallel with FB600: 2 mohm total, 1.25 A per bead at the 2.5 A 3-TX peak.")
     s.label("1V0_RAW", 200.66, 180.34, 180); s.label("1V0_R", 208.28, 180.34, 0)
 
     # test pads
@@ -272,17 +284,16 @@ def rails():
     # ---- remote sense networks: DC from the radar end, AC from the buck output
     part["22R"] = ("0402WGF220JTCE", "C25092")
     s.text("FB_B2/FB_B3 REMOTE SENSE: DC through 22R from the radar balls (IR drop of ferrite and\\n"
-           "copper is regulated out), AC through 4.7 uF from the buck output (loop does not see the\\n"
-           "ferrite resonance). Crossover 1.6 kHz. Fallback to the TI EVM local sense: remove\\n"
+           "copper is regulated out), AC through 1 uF from the buck output (loop does not see the\\n"
+           "ferrite resonance). Crossover 7 kHz. Fallback to the TI EVM local sense: remove\\n"
            "R628/R629 and fit 0R in place of C631/C632.", 320.04, 296.0)
     for i, (rail, fb, rr, cc) in enumerate((("1V0", "FB_B2", "R628", "C631"), ("1V8", "FB_B3", "R629", "C632"))):
         x = 335.28 + 35.56 * i
         s.power(f"{rail}_R", x, 311.15); s.wire(x, 311.15, x, 313.69)
         res(rr, "22R", x, 316.23, f"{fb} DC sense from the radar end of {rail}_R (Kelvin tap at the radar balls); 1 %")
         s.wire(x, 318.77, x, 323.85); s.junction(x, 321.31); s.wire(x, 321.31, x + 5.08, 321.31); s.label(fb, x + 5.08, 321.31, 0)
-        s.clone("C605", cc, x, 327.66, dnp="no", Value="4.7uF", MPN="CL10A475KO8NNNC", LCSC="C19666", Rating="X5R 16V",
-                Datasheet="https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Samsung-Electro-Mechanics-CL10A475KO8NNNC_C19666.pdf",
-                Description=f"{fb} AC sense from the buck output {rail}_RAW; with {rr}: 100 us")
+        s.clone("C605", cc, x, 327.66, dnp="no", Value="1uF", MPN="CL10A105KB8NNNC", LCSC="C15849", Rating="X5R 50V",
+                Description=f"{fb} AC sense from the buck output {rail}_RAW; with {rr}: 22 us")
         s.wire(x, 331.47, x, 334.01); s.wire(x, 334.01, x + 10.16, 334.01); s.wire(x + 10.16, 334.01, x + 10.16, 331.47)
         s.power(f"{rail}_RAW", x + 10.16, 331.47)
 
@@ -293,7 +304,7 @@ def rails():
     s.add(f'  (symbol (lib_id "IWR-AOP-MODULE:TPS386000RGPR") (at {f(X)} {f(Y)} 0) (unit 1) (in_bom yes) (on_board yes) (dnp no) (uuid "{new_uuid()}") '
           f'(property "Reference" "U601" (at {f(X - 12.7)} {f(Y - 13.97)} 0) (effects (font (size 1.27 1.27)) (justify left))) '
           f'(property "Value" "TPS386000RGPR" (at {f(X + 2.54)} {f(Y - 13.97)} 0) (effects (font (size 1.27 1.27)) (justify left))) '
-          f'(property "Footprint" "Package_DFN_QFN:Texas_RGP0020D_VQFN-20-1EP_4x4mm_P0.5mm_EP2.7x2.7mm" (at {f(X)} {f(Y)} 0) (effects (font (size 1.27 1.27)) (hide yes))) '
+          f'(property "Footprint" "Package_DFN_QFN:TQFN-20-1EP_4x4mm_P0.5mm_EP2.1x2.1mm" (at {f(X)} {f(Y)} 0) (effects (font (size 1.27 1.27)) (hide yes))) '
           f'(property "Datasheet" "https://www.ti.com/lit/ds/symlink/tps386000.pdf" (at {f(X)} {f(Y)} 0) (effects (font (size 1.27 1.27)) (hide yes))) '
           f'(property "Description" "Quad supply voltage supervisor; all four open-drain resets wired to AOP_NRESET" (at {f(X)} {f(Y)} 0) (effects (font (size 1.27 1.27)) (hide yes))) '
           f'(property "MPN" "TPS386000RGPR" (at {f(X)} {f(Y)} 0) (effects (font (size 1.27 1.27)) (hide yes))) '

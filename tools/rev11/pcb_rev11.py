@@ -96,6 +96,14 @@ def add_fp(b, comps, ref, x, y, rot=0, back=False):
     lib, name = c["footprint"].split(":")
     f = pcbnew.FootprintLoad(os.path.join(FPLIB, lib + ".pretty"), name)
     f.SetFPID(pcbnew.LIB_ID(lib, name))
+    # KiCad ships no 3D model under this footprint's name; the plain 4 x 4 mm QFN-20 body is the same package
+    ms = f.Models()
+    if len(ms) and "TQFN-20-1EP_4x4mm_P0.5mm_EP2.1x2.1mm.step" in ms[0].m_Filename:
+        old, m = ms[0], pcbnew.FP_3DMODEL()
+        m.m_Filename = old.m_Filename.replace("TQFN-20-1EP_4x4mm_P0.5mm_EP2.1x2.1mm.step", "QFN-20-1EP_4x4mm_P0.5mm.step")
+        m.m_Scale, m.m_Rotation, m.m_Offset = old.m_Scale, old.m_Rotation, old.m_Offset
+        ms.clear()
+        ms.push_back(m)
     f.SetReference(ref)
     f.SetValue(c["value"])
     b.Add(f)
@@ -134,6 +142,13 @@ def sync_nets(b, comps, nets):
             d.SetText(comps[ref]["description"])
         if f.GetValue() != comps[ref]["value"]:
             f.SetValue(comps[ref]["value"])
+        for k in ("MPN", "Manufacturer", "LCSC"):
+            v = comps[ref]["fields"].get(k)
+            if v is not None and f.HasField(k) and f.GetFieldText(k) != v:
+                f.SetField(k, v)
+        ds = f.GetField(pcbnew.FIELD_T_DATASHEET)
+        if comps[ref]["datasheet"] and ds.GetText() != comps[ref]["datasheet"]:
+            ds.SetText(comps[ref]["datasheet"])
 
 
 def near(a, bpt, tol=0.02):
@@ -430,12 +445,17 @@ def stage4(b, comps, nets, rt):
     refill(b)
     # GND via for the supervisor pad. Every free via site here lies under a paste aperture of the
     # exposed pad; vias are filled and capped, so this is the same accepted case as under U600.
-    rt.via_near("GND", "F.Cu", 166.45, 125.65, width=0.3)
+    rt.via_near("GND", "F.Cu", 166.95, 125.65, width=0.3)
 
 
 def stage5(b, comps, nets, rt):
     """Radar I2C (balls G3 = SCL, G1 = SDA) through R605/R606 to the PMIC bus."""
     west = (139, 111, 166, 128.4)
+    # The 1.8 V sense line goes first: its only way out of the pocket between TP602, TP606 and the reset
+    # line is on the front, and the PMIC_SCL route below would otherwise take it.
+    # 1.8 V Kelvin tap: the 1V8_R test pad, which hangs on the bulk capacitors at the radar
+    straight(b, "1V8_R", "F.Cu", [xy(b, "R629", "1"), xy(b, "TP606", "1")], 0.2)
+    rt.route("/Radar PMIC/FB_B3", padpt(b, "R629", "2"), padpt(b, "C632", "1"), (156, 104, 182, 124), width=0.15)
     rt.route("PMIC_SCL", padpt(b, "R605", "2"), padpt(b, "TP614", "1"), west, width=0.2, layers=("F.Cu",), via=None)
     # G3 is enclosed on all four signal layers.  Its way out is In3 eastwards between rows 2 and 3, which
     # the 3V3_R feed of ball H1 crossed at x = 148.275; that feed now reaches the same In3 trunk one column
@@ -466,9 +486,6 @@ def stage5b(b, comps, nets, rt):
     rt.route(fb3, padpt(b, "U600", "21"), padpt(b, "C632", "1"), pm, width=0.2)
     straight(b, "1V0_RAW", "F.Cu", [xy(b, "C631", "2"), xy(b, "TP608", "1")], 0.3)
     straight(b, "1V8_RAW", "F.Cu", [xy(b, "C632", "2"), xy(b, "C628", "1")], 0.3)
-    # 1.8 V Kelvin tap: the 1V8_R test pad, which hangs on the bulk capacitors at the radar
-    straight(b, "1V8_R", "F.Cu", [xy(b, "R629", "1"), xy(b, "TP606", "1")], 0.2)
-    rt.route(fb3, padpt(b, "R629", "2"), padpt(b, "C632", "1"), (156, 108, 180, 122), width=0.15)
     # 1.0 V Kelvin tap: a via inside R628 pad 1, between four ball pads, down to the In3 feed 3 mm
     # from the VIN_13RF balls
     R.add_via(b, "1V0_R", 153.1, 114.15, 0.35, 0.2)
@@ -516,6 +533,39 @@ def stage6(b, comps, nets, rt):
     refill(b)
 
 
+def stage7(b, comps, nets, rt):
+    """1.8 V copper under the radar and the heat sink outline.
+
+    The extraction showed the 1.8 V balls fed through 0.3 mm tracks on 17.5 um In3 (62 mohm from the
+    ferrite to the balls, 40 mV between balls).  A copper area on In3 now carries the rail under the
+    radar, below the 1.0 V area in priority.
+    """
+    add_zone(b, "1V8_R", "In3.Cu", [(141.7, 113.2), (146.3, 113.2), (146.3, 115.95), (165.6, 115.95), (165.6, 128.0),
+                                    (141.7, 128.0)], "1V8_R In3 under the radar", clearance=0.1, min_w=0.15, priority=5)
+    # HS300: 14 x 14 mm heat sink bonded to the back under the radar.  Board-only outline on B.Fab;
+    # everything under it is 0402 (0.55 mm), which sets the adhesive bond line.
+    u = b.FindFootprintByReference("U300").GetPosition()
+    f = pcbnew.FOOTPRINT(b)
+    f.SetReference("HS300")
+    f.SetValue("Heat sink 14x14x6 (HSB03-141406 / ICK BGA 14x14x6), thermal adhesive")
+    f.SetAttributes(pcbnew.FP_BOARD_ONLY | pcbnew.FP_EXCLUDE_FROM_POS_FILES | pcbnew.FP_EXCLUDE_FROM_BOM)
+    b.Add(f)
+    f.SetPosition(u)
+    f.SetLayer(pcbnew.B_Cu)
+    h = NM(7.0)
+    for layer in (pcbnew.B_Fab, pcbnew.Cmts_User):
+        r = pcbnew.PCB_SHAPE(f, pcbnew.SHAPE_T_RECT)
+        r.SetStart(pcbnew.VECTOR2I(u.x - h, u.y - h))
+        r.SetEnd(pcbnew.VECTOR2I(u.x + h, u.y + h))
+        r.SetLayer(layer)
+        r.SetWidth(NM(0.1))
+        f.Add(r)
+    for fld in f.GetFields():
+        fld.SetVisible(False)
+        fld.SetLayer(pcbnew.B_Fab)
+    refill(b)
+
+
 def fix_islands(b, rt):
     """Outer-layer GND pour fragments that hold a pad but no via get one."""
     import islands
@@ -531,7 +581,7 @@ def fix_islands(b, rt):
     refill(b)
 
 
-STAGES = [stage1, stage2, stage3, stage4, stage5, stage5b, stage6]
+STAGES = [stage1, stage2, stage3, stage4, stage5, stage5b, stage6, stage7]
 
 
 def main():

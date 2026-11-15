@@ -3,28 +3,28 @@
   "1V0": {
    "amps": 2.5,
    "temp": 20.0,
-   "sense_to_radar_mohm": 3.7339987927334826,
-   "sense_to_radar_worst_mv": 9.416661665271338,
-   "source_to_radar_mohm": 23.67295735943874,
-   "raw_rise_mv": 49.84739641676314,
-   "best_ball_above_sense_mv": -9.262654688207334,
-   "bead_to_radar_mohm": 10.662978273498931,
+   "sense_to_radar_mohm": 3.7339989590010947,
+   "sense_to_radar_worst_mv": 9.41666208095536,
+   "source_to_radar_mohm": 15.167282409968708,
+   "raw_rise_mv": 28.58320862741904,
+   "best_ball_above_sense_mv": -9.262655103846502,
+   "bead_to_radar_mohm": 9.661766577885002,
    "bead_split": [
-    1.2884008297532532,
-    1.2115991705994085
+    1.3152099397393517,
+    1.1847900600328705
    ]
   },
   "1V8": {
    "amps": 0.85,
    "temp": 20.0,
-   "sense_to_radar_mohm": 34.0568554633916,
-   "sense_to_radar_worst_mv": 40.604081526008436,
-   "source_to_radar_mohm": 72.236650927225,
-   "raw_rise_mv": 32.452826144258395,
-   "best_ball_above_sense_mv": -0.6410887027339038,
-   "bead_to_radar_mohm": 49.46412587057943,
+   "sense_to_radar_mohm": 4.001716623334169,
+   "sense_to_radar_worst_mv": 8.094332846110234,
+   "source_to_radar_mohm": 18.731940329420095,
+   "raw_rise_mv": 12.520690150173039,
+   "best_ball_above_sense_mv": -0.46975050370187504,
+   "bead_to_radar_mohm": 10.95941535066,
    "bead_split": [
-    0.8500000032096434
+    0.8500000008858227
    ]
   },
   "1V2": {
@@ -50,38 +50,38 @@
    "bead_split": []
   },
   "GND_1V0_return": {
-   "mohm": 1.244638516348502
+   "mohm": 1.3011916251201772
   }
  },
  "85C": {
   "1V0": {
    "amps": 2.5,
    "temp": 85.0,
-   "sense_to_radar_mohm": 4.6799423412180365,
-   "sense_to_radar_worst_mv": 11.801894267522457,
-   "source_to_radar_mohm": 29.6701472580868,
-   "raw_rise_mv": 62.47551229217189,
-   "best_ball_above_sense_mv": -11.609450162631013,
-   "bead_to_radar_mohm": 13.363722143636233,
+   "sense_to_radar_mohm": 4.679942548869337,
+   "sense_to_radar_worst_mv": 11.801894786662077,
+   "source_to_radar_mohm": 19.008795548471255,
+   "raw_rise_mv": 35.82213249900479,
+   "best_ball_above_sense_mv": -11.60945068173061,
+   "bead_to_radar_mohm": 12.10922480252267,
    "bead_split": [
-    1.2884040263620307,
-    1.2115959741254219
+    1.315255050841949,
+    1.1847449497127385
    ],
-   "dc_at_radar_worst": 0.964332382683131
+   "dc_at_radar_worst": 0.9641561159622191
   },
   "1V8": {
    "amps": 0.85,
    "temp": 85.0,
-   "sense_to_radar_mohm": 42.68391711987779,
-   "sense_to_radar_worst_mv": 50.8883692775713,
-   "source_to_radar_mohm": 90.53773628074349,
-   "raw_rise_mv": 40.67574628673586,
-   "best_ball_above_sense_mv": -0.8035668947489888,
-   "bead_to_radar_mohm": 61.993372509288356,
+   "sense_to_radar_mohm": 5.014642805315535,
+   "sense_to_radar_worst_mv": 10.143212092803795,
+   "source_to_radar_mohm": 23.475573724607944,
+   "raw_rise_mv": 15.691791281398547,
+   "best_ball_above_sense_mv": -0.5887394208866359,
+   "bead_to_radar_mohm": 13.733709940433402,
    "bead_split": [
-    0.8499999996796832
+    0.8500000001718346
    ],
-   "dc_at_radar_worst": 1.711797284885651
+   "dc_at_radar_worst": 1.752482511561816
   },
   "1V2": {
    "amps": 1.0,
@@ -93,7 +93,7 @@
    "best_ball_above_sense_mv": -9.74270169463826,
    "bead_to_radar_mohm": null,
    "bead_split": [],
-   "dc_at_radar_worst": 1.1549041603394494
+   "dc_at_radar_worst": 1.1548336538587405
   },
   "3V3": {
    "amps": 0.07,
@@ -105,10 +105,10 @@
    "best_ball_above_sense_mv": -3.5475756624069374,
    "bead_to_radar_mohm": null,
    "bead_split": [],
-   "dc_at_radar_worst": 3.2294019601722947
+   "dc_at_radar_worst": 3.2293970247186454
   },
   "GND_1V0_return": {
-   "mohm": 1.546289219738597
+   "mohm": 1.6167957004475693
   }
  }
 }
