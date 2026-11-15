@@ -1,0 +1,35 @@
+Electrical replay of firmware-configured frames (controller kp = 37.9 A/V, simulation/run_loadstep.py model)
+Current: SWRS237C Table 7-3 worst case ('max' set in sim/bss.py). Voltages at the radar balls; 'buck min' at the
+buck output, where the supervisor senses. Edge = current step rise time [not published, swept].
+
+'VSET that fits': the setpoints for which this frame stays inside the radar's range (the loop is linear
+in its reference, so another setpoint shifts the waveform). Supervisor margin: buck min vs 0.900 / 1.653 V.
+
+trace                        rail   VSET bead L  edge     min     max     <min     >max buck min   VSET that fits  verdict
+a_default_no_trim            1V0   1.000   100%   1us   0.967   1.052    0.0us    3.0us    0.991      0.983-0.998  FAIL: outside radar range
+a_default_no_trim            1V0   1.000   100%  10us   0.971   1.033    0.0us    0.0us    0.994      0.979-1.017  PASS
+a_default_no_trim            1V0   1.000    50%   1us   0.972   1.043    0.0us    0.0us    0.990      0.978-1.007  PASS
+a_default_no_trim            1V0   1.000    50%  10us   0.976   1.030    0.0us    0.0us    0.993      0.974-1.020  PASS
+a_default_no_trim            1V8   1.800   100%   1us   1.750   1.851    0.0us    0.0us    1.794      1.760-1.849  PASS
+a_default_no_trim            1V8   1.800   100%  10us   1.764   1.837    0.0us    0.0us    1.797      1.746-1.863  PASS
+a_default_no_trim            1V8   1.800    50%   1us   1.763   1.838    0.0us    0.0us    1.790      1.747-1.862  PASS
+a_default_no_trim            1V8   1.800    50%  10us   1.774   1.827    0.0us    0.0us    1.796      1.736-1.873  PASS
+
+b_default_trim_1005          1V0   1.005   100%   1us   0.972   1.057    0.0us    5.6us    0.996      0.983-0.998  FAIL: outside radar range
+b_default_trim_1005          1V0   1.005   100%  10us   0.976   1.038    0.0us    0.0us    0.999      0.979-1.017  PASS
+b_default_trim_1005          1V0   1.005    50%   1us   0.977   1.048    0.0us    0.0us    0.995      0.978-1.007  PASS
+b_default_trim_1005          1V0   1.005    50%  10us   0.981   1.035    0.0us    0.0us    0.998      0.974-1.020  PASS
+b_default_trim_1005          1V8   1.800   100%   1us   1.750   1.851    0.0us    0.0us    1.794      1.760-1.849  PASS
+b_default_trim_1005          1V8   1.800   100%  10us   1.764   1.837    0.0us    0.0us    1.797      1.746-1.863  PASS
+b_default_trim_1005          1V8   1.800    50%   1us   1.763   1.838    0.0us    0.0us    1.790      1.747-1.862  PASS
+b_default_trim_1005          1V8   1.800    50%  10us   1.774   1.827    0.0us    0.0us    1.796      1.736-1.873  PASS
+
+c_3tx_simultaneous_trim_1005 1V0   1.005   100%   1us   0.949   1.094   36.3us  428.5us    0.996  none (145 mV p-p)  FAIL: outside radar range
+c_3tx_simultaneous_trim_1005 1V0   1.005   100%  10us   0.957   1.057    0.0us  241.5us    0.999  none (101 mV p-p)  FAIL: outside radar range
+c_3tx_simultaneous_trim_1005 1V0   1.005    50%   1us   0.958   1.079    0.0us  174.1us    0.995  none (121 mV p-p)  FAIL: outside radar range
+c_3tx_simultaneous_trim_1005 1V0   1.005    50%  10us   0.963   1.050    0.0us    2.7us    0.998      0.992-1.005  FAIL: outside radar range
+c_3tx_simultaneous_trim_1005 1V8   1.800   100%   1us   1.750   1.851    0.0us    0.0us    1.794      1.760-1.849  PASS
+c_3tx_simultaneous_trim_1005 1V8   1.800   100%  10us   1.764   1.837    0.0us    0.0us    1.797      1.746-1.863  PASS
+c_3tx_simultaneous_trim_1005 1V8   1.800    50%   1us   1.763   1.838    0.0us    0.0us    1.790      1.747-1.862  PASS
+c_3tx_simultaneous_trim_1005 1V8   1.800    50%  10us   1.774   1.827    0.0us    0.0us    1.796      1.736-1.873  PASS
+
