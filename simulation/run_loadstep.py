@@ -107,7 +107,7 @@ Clag icl 0 0.25u
 Bil 0 raw I = V(icl)
 {plant}
 {load}
-.options reltol=1e-4
+.options reltol=1e-4 method=gear
 {ana}
 .end
 """

@@ -52,7 +52,7 @@ Summaries are written to `results/*_summary.txt` and `results/netlist_checks.txt
 **Checks out**
 
 - **Netlist.** 150 of 150 checks pass.
-- **DC drop.** Ferrite outputs to radar balls: 12.1 mΩ on 1.0 V, 13.7 mΩ on 1.8 V. With remote sense, the worst ball is 11.8 mV under the regulation point on 1.0 V at 2.5 A and 10.1 mV on 1.8 V at 0.85 A. Worst-case voltage at the balls, with PMIC accuracy and ground return: 0.964 V (minimum 0.95), 1.752 V (1.71), 1.155 V (1.14) and 3.229 V (3.135).
+- **DC drop.** Ferrite outputs to radar balls: 12.4 mΩ on 1.0 V, 13.7 mΩ on 1.8 V. With remote sense, the worst ball is 11.8 mV under the regulation point on 1.0 V at 2.5 A and 10.1 mV on 1.8 V at 0.85 A. Worst-case voltage at the balls, with PMIC accuracy and ground return: 0.964 V (minimum 0.95), 1.752 V (1.71), 1.155 V (1.14) and 3.229 V (3.135).
 - **Sequencing and reset.** 1V8 is up at 4.3 ms, 1V0 at 6.1 ms, 1V2 and 3V3 at 9.1–9.6 ms. Reset releases 20 ms after the last rail settles. With HOST_DISABLE it asserts in 12 µs, before any rail leaves its range. On a USB unplug it asserts 17 µs after 3V3_R passes 3.13 V and about 230 µs before the first core rail leaves its range. A 1 ms dropout never releases reset with a core rail down. A carrier reset reaches the radar as 0.31 V.
 - **Stability.** Phase margin is 71° or more for every ferrite inductance and component spread tried. DC returns to target at the radar after a step.
 - **Load steps on 1.8 V.** Inside the radar limits for every edge: 1.750 V at worst for a 1 µs edge (minimum 1.71 V).
@@ -65,7 +65,7 @@ Summaries are written to `results/*_summary.txt` and `results/netlist_checks.txt
 
 **Remaining limit**
 
-- **Full three-transmitter step with a fast edge on 1.0 V.** For 0.1 → 2.5 A with a 1–10 µs edge, 1V0_R dips to 0.911–0.942 V and stays under 0.95 V for about 6 µs. With a 10 µs edge and half the ferrite inductance the figure is 0.935 V; the filter of the TI EVM, on this board's copper, gives 0.875 V under the same conditions. TI does not publish how fast the radar's supply current steps; spec §9 has the measurement, and firmware can raise Buck2 in 5 mV steps for headroom.
+- **Full three-transmitter step with a fast edge on 1.0 V.** For 0.1 → 2.5 A with a 1–10 µs edge, 1V0_R dips to 0.911–0.942 V and stays under 0.95 V for about 6 µs. With a 10 µs edge and half the ferrite inductance the figure is 0.934 V; the filter of the TI EVM, on this board's copper, gives 0.875 V under the same conditions. TI does not publish how fast the radar's supply current steps; spec §9 has the measurement, and firmware can raise Buck2 in 5 mV steps for headroom.
 
 ## What this cannot show
 

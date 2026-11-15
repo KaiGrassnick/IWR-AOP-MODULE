@@ -76,7 +76,7 @@ The OTP order brings 1.8 V up before 3.3 V, as the IWR6843AOP requires (errata M
 
 **Filter.** The ferrites are BLM18KG260TN1D (26 Ω at 100 MHz, 6 A, 7 mΩ maximum). TI's IWR6843AOPEVM uses a 120 Ω part in the same position; the 26 Ω part has about a quarter of the inductance, which still meets the radar's 4 MHz ripple limit with margin and roughly halves the dip a fast chirp current edge causes at the radar. The 1.0 V rail has two in parallel (`FB600` on the back, `FB602` on the front, at the same position), each carrying 1.25 A of the 2.5 A peak. Behind them sit `C624`, `C630` and `C633` (3 × 22 µF) on 1.0 V and `C625` (22 µF) on 1.8 V. Total nominal output capacitance is 137 µF on Buck2 and 88 µF on Buck3. The LP87524 datasheet names 100 µF for a single-phase output; TI's own EVM runs Buck2 with 174 µF, the loop model is stable with 137 µF, and the soft-start charging current is 0.52 A against a 5 A limit.
 
-**Copper.** `1V0_R` runs on copper areas on `In3.Cu` and `F.Cu`, and `1V8_R` on a copper area on `In3.Cu` under the radar. Extracted from the routed board at 85 °C copper, the path from the ferrite outputs to the radar balls is 12.1 mΩ on 1.0 V and 13.7 mΩ on 1.8 V.
+**Copper.** `1V0_R` runs on copper areas on `In3.Cu` and `F.Cu`, and `1V8_R` on a copper area on `In3.Cu` under the radar. Extracted from the routed board at 85 °C copper, the path from the ferrite outputs to the radar balls is 12.4 mΩ on 1.0 V and 13.7 mΩ on 1.8 V.
 
 **Remote sense.** Regulating at the buck output, as the TI EVM does, would leave the radar about 36 mV low on 1.0 V at peak current. Regulating directly behind the ferrite would put the ferrite and its capacitors inside the loop. The feedback is therefore split by frequency:
 
@@ -103,11 +103,11 @@ The 2 % PMIC accuracy is the largest term on every rail. The current is assumed 
 | Step at the radar | Edge | 1.0 V minimum | 1.8 V minimum |
 |---|---|---|---|
 | Idle to full peak (0.1 → 2.5 A, 0.1 → 0.85 A) | 100 µs | 0.989 V | 1.796 V |
-| Idle to full peak | 10 µs | 0.924–0.942 V | 1.764–1.779 V |
+| Idle to full peak | 10 µs | 0.923–0.942 V | 1.764–1.779 V |
 | Idle to full peak | 1 µs | 0.911–0.935 V | 1.750–1.775 V |
 | Two transmitters (0.5 → 2.0 A) | 10 µs | 0.959 V | n/a |
 
-The ranges cover ferrite inductance from 100 % down to 10 % of its small-signal value. The 1.8 V rail stays inside its limits in every case. The 1.0 V rail stays inside 0.95–1.05 V for two-transmitter steps and for any edge of 100 µs or slower; a full three-transmitter step with an edge of 10 µs or faster dips to 0.91–0.94 V for about 6 µs. With a 10 µs edge and half the ferrite inductance the figure is 0.935 V; the filter of the TI EVM gives 0.875 V under the same conditions. The buck output never comes near the supervisor threshold, so a dip cannot reset the radar. Firmware can add headroom by raising Buck2 by a few 5 mV steps over I²C (§8).
+The ranges cover ferrite inductance from 100 % down to 10 % of its small-signal value. The 1.8 V rail stays inside its limits in every case. The 1.0 V rail stays inside 0.95–1.05 V for two-transmitter steps and for any edge of 100 µs or slower; a full three-transmitter step with an edge of 10 µs or faster dips to 0.91–0.94 V for about 6 µs. With a 10 µs edge and half the ferrite inductance the figure is 0.934 V; the filter of the TI EVM gives 0.875 V under the same conditions. The buck output never comes near the supervisor threshold, so a dip cannot reset the radar. Firmware can add headroom by raising Buck2 by a few 5 mV steps over I²C (§8).
 
 ### 3.3 Enable and reset
 
