@@ -228,9 +228,8 @@ def rails():
     s.cap("C624", "C626", 156.21, 167.64, "1V0_RAW", Description=d)
     s.cap("C624", "C627", 186.69, 167.64, "1V0_RAW", Description=d)
     s.cap("C624", "C628", 186.69, 213.36, "1V8_RAW", Description=d)
-    s.cap("C624", "C630", 274.32, 167.64, "1V0_R", Description="Radar-end bulk after the ferrites.")
     # second 1.0 V ferrite in parallel: halves DC drop and bias per bead
-    s.clone("FB600", "FB602", 204.47, 180.34, Description="In parallel with FB600: 12.5 mohm total, 1.25 A per bead at the 2.5 A 3-TX peak.")
+    s.clone("FB600", "FB602", 204.47, 180.34, Description="In parallel with FB600: 11 mohm total, 1.25 A per bead at the 2.5 A 3-TX peak.")
     s.label("1V0_RAW", 200.66, 180.34, 180); s.label("1V0_R", 208.28, 180.34, 0)
 
     # test pads
