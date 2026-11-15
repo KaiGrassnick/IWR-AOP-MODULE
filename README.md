@@ -116,6 +116,7 @@ tools/
   render/              Blender product renders and orbit video pipeline
   rev11/               Scripts that generate the schematic and layout changes of revision 1.1
   bom_cost.py          Rebuilds docs/bom-cost.csv from current LCSC prices
+  heatsink_model.py    STEP model of heat sink HS300 (CadQuery)
 simulation/            Netlist checks, post-layout extraction, ngspice and thermal models, results
 manufacturing/         JLCPCB package builder and output (jlcpcb/)
 references/            Datasheets and JLC's sample BOM format
