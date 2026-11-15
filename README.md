@@ -118,6 +118,7 @@ tools/
   bom_cost.py          Rebuilds docs/bom-cost.csv from current LCSC prices
   heatsink_model.py    STEP model of heat sink HS300 (CadQuery)
 simulation/            Netlist checks, post-layout extraction, ngspice and thermal models, results
+cosim/                 Firmware running on a model of the board, chirp load replayed in ngspice
 manufacturing/         JLCPCB package builder and output (jlcpcb/)
 references/            Datasheets and JLC's sample BOM format
 CHANGELOG.md           Release history
@@ -129,7 +130,7 @@ The project is self-contained: everything outside the stock KiCad 10 libraries i
 
 ## Status
 
-**Designed and simulated, not yet built.** The board is fully routed. ERC has no errors; DRC reports 0 unconnected and 0 schematic-parity issues, plus 53 accepted findings (spec §7.3). Post-layout extraction and simulation cover rail voltages at the radar balls, sequencing and reset, loop stability, chirp load steps, ripple, USB hot plug and temperature: see [`simulation/`](simulation/README.md). Operating conditions and the basis of the models are in spec §10 and the measurements for the first boards in spec §9.
+**Designed and simulated, not yet built.** The board is fully routed. ERC has no errors; DRC reports 0 unconnected and 0 schematic-parity issues, plus 53 accepted findings (spec §7.3). Post-layout extraction and simulation cover rail voltages at the radar balls, sequencing and reset, loop stability, chirp load steps, ripple, USB hot plug and temperature: see [`simulation/`](simulation/README.md). Test firmware runs on a model of the board in [`cosim/`](cosim/README.md): power-up, flashing, resets and the PMIC trim over I²C. Operating conditions and the basis of the models are in spec §10 and the measurements for the first boards in spec §9.
 
 ## License
 

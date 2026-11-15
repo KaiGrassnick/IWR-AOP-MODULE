@@ -1,0 +1,332 @@
+Co-simulation results: 14 scenarios, 0 failed
+
+=== usb_boot: PASS  (USB power-up: rails, supervisor, boot ROM, firmware, PMIC over I2C)  [88 ms simulated, 9.9 M instructions, 3 s]
+  [ok] boot banner and prompt on the CP2105 ECI port
+  [ok] reset released at 29.64 ms (ngspice power-up run: 29.68 ms)
+  [ok] boot ROM loaded the image from QSPI: application started 6.1 ms after reset release
+  [ok] firmware read the LP87524J (OTP_REV 0x72, RESET_REG set)
+  [ok] pmic command: OTP voltages read over I2C at 400 kHz
+  pmic output: pmic | PMIC: LP87524J OTP_REV 0x72, I2C 400 kHz | Buck0 3V3_R  3300 mV  CTRL1 0xC4 | Buck1 1V2_R  1200 mV  CTRL1 0xC4 | Buck2 1V0    1000 mV  CTRL1 0xC6 | Buck3 1V8    1800 mV  CTRL1 0xC6 | TOP_STAT 0x00  BUCK_0_1_STAT 0xCC  BUCK_2_3_STAT 0xCC | flags cleared: INT_TOP1 0x00 INT_TOP2 0x00 INT_BUCK 0x00 0x00 | Done
+  [ok] data UART 460800 Bd, SCI divider gives 462962 Bd
+  [ok] no rule violations
+  [ok] firmware touched only modelled registers
+  [ok] no CPU fault
+  log:
+        0.000 ms  PMIC   registers loaded from OTP (RESET_REG set)
+        0.000 ms  power  5 V present
+        2.416 ms  power  EN1 high
+        8.855 ms  power  PMIC GPIO2 released
+       29.639 ms  power  supervisor releases reset
+       29.639 ms  power  AOP_NRESET high (radar runs)
+       35.786 ms  ROM    image loaded from QSPI, R4F released
+
+=== carrier_boot: PASS  (Carrier power (J400/J401) only, CLI over the carrier UART)  [62 ms simulated, 4.8 M instructions, 2 s]
+  [ok] boot banner on the carrier's UART (J400/J401), CP2105 unpowered
+  [ok] nothing reaches the unpowered CP2105
+  [ok] CLI over the carrier UART
+  [ok] no rule violations
+  [ok] firmware touched only modelled registers
+  [ok] no CPU fault
+  log:
+        0.000 ms  PMIC   registers loaded from OTP (RESET_REG set)
+        0.000 ms  power  5 V present
+        2.416 ms  power  EN1 high
+        8.855 ms  power  PMIC GPIO2 released
+       29.639 ms  power  supervisor releases reset
+       29.639 ms  power  AOP_NRESET high (radar runs)
+       35.786 ms  ROM    image loaded from QSPI, R4F released
+
+=== stream_default: PASS  (Default TDM-MIMO profile, 10 frames, no 1V0 trim)  [1184 ms simulated, 26.4 M instructions, 5 s]
+  [ok] sensorStart: channel, LDO bypass, RF init, profile, chirps, frame, start
+  [ok] 11 data packets parsed from the 460800 Bd port, 0 framing errors
+  frame: 48 chirps of 104.1 us, TX per chirp [1], 1V0 VSET 1000 mV, average radar power 0.84 W (typ)
+  telemetry TLV: Buck2 1000 mV, Buck2 1040 mA in chirps / 40 mA idle, Buck3 440 / 100 mA, radar 25.2 C
+  [ok] Buck2 runs at 1000 mV while streaming
+  [ok] sensorStop
+  [ok] Buck2 back to 1000 mV (0x4D) after stop
+  [ok] no rule violations
+  [ok] firmware touched only modelled registers
+  [ok] no CPU fault
+  log:
+        0.000 ms  PMIC   registers loaded from OTP (RESET_REG set)
+        0.000 ms  power  5 V present
+        2.416 ms  power  EN1 high
+        8.855 ms  power  PMIC GPIO2 released
+       29.639 ms  power  supervisor releases reset
+       29.639 ms  power  AOP_NRESET high (radar runs)
+       35.786 ms  ROM    image loaded from QSPI, R4F released
+       51.112 ms  BSS    LDO bypass config: ldoBypassEnable=3 supplyMonIrDrop=1 ioSupplyIndicator=0
+
+=== stream_trim: PASS  (Same with the 1V0 trim to 1025 mV while running)  [1187 ms simulated, 26.8 M instructions, 5 s]
+  [ok] pmicTrim 1025
+  [ok] sensorStart: channel, LDO bypass, RF init, profile, chirps, frame, start
+  [ok] 11 data packets parsed from the 460800 Bd port, 0 framing errors
+  frame: 48 chirps of 104.1 us, TX per chirp [1], 1V0 VSET 1025 mV, average radar power 0.84 W (typ)
+  telemetry TLV: Buck2 1025 mV, Buck2 1040 mA in chirps / 40 mA idle, Buck3 440 / 100 mA, radar 25.2 C
+  [ok] Buck2 runs at 1025 mV while streaming
+  [ok] sensorStop
+  [ok] Buck2 back to 1000 mV (0x4D) after stop
+  Buck2 VOUT writes: 84.4 ms 0x52, 1185.8 ms 0x4D
+  [ok] no rule violations
+  [ok] firmware touched only modelled registers
+  [ok] no CPU fault
+  log:
+        0.000 ms  PMIC   registers loaded from OTP (RESET_REG set)
+        0.000 ms  power  5 V present
+        2.416 ms  power  EN1 high
+        8.855 ms  power  PMIC GPIO2 released
+       29.639 ms  power  supervisor releases reset
+       29.639 ms  power  AOP_NRESET high (radar runs)
+       35.786 ms  ROM    image loaded from QSPI, R4F released
+       54.112 ms  BSS    LDO bypass config: ldoBypassEnable=3 supplyMonIrDrop=1 ioSupplyIndicator=0
+       84.378 ms  PMIC   BUCK2_VOUT 0x4D -> 0x52 (1025 mV)
+     1185.782 ms  PMIC   BUCK2_VOUT 0x52 -> 0x4D (1000 mV)
+
+=== stress_3tx: PASS  (Three TX at once (LDO bypass), 64 chirps per frame, trim 1025 mV)  [1198 ms simulated, 27.4 M instructions, 6 s]
+  [ok] 'chirpReset' accepted
+  [ok] 'chirpCfg 0 0 0 0 0 0 0 7' accepted
+  [ok] 'frameCfg 0 0 64 0 100' accepted
+  [ok] pmicTrim 1025
+  [ok] sensorStart: channel, LDO bypass, RF init, profile, chirps, frame, start
+  [ok] 11 data packets parsed from the 460800 Bd port, 0 framing errors
+  frame: 64 chirps of 104.1 us, TX per chirp [3], 1V0 VSET 1025 mV, average radar power 0.88 W (typ)
+  telemetry TLV: Buck2 1025 mV, Buck2 1500 mA in chirps / 40 mA idle, Buck3 440 / 100 mA, radar 25.2 C
+  [ok] Buck2 runs at 1025 mV while streaming
+  [ok] sensorStop
+  [ok] Buck2 back to 1000 mV (0x4D) after stop
+  [ok] no rule violations
+  [ok] firmware touched only modelled registers
+  [ok] no CPU fault
+  log:
+        0.000 ms  PMIC   registers loaded from OTP (RESET_REG set)
+        0.000 ms  power  5 V present
+        2.416 ms  power  EN1 high
+        8.855 ms  power  PMIC GPIO2 released
+       29.639 ms  power  supervisor releases reset
+       29.639 ms  power  AOP_NRESET high (radar runs)
+       35.786 ms  ROM    image loaded from QSPI, R4F released
+       65.112 ms  BSS    LDO bypass config: ldoBypassEnable=3 supplyMonIrDrop=1 ioSupplyIndicator=0
+       95.314 ms  PMIC   BUCK2_VOUT 0x4D -> 0x52 (1025 mV)
+     1196.718 ms  PMIC   BUCK2_VOUT 0x52 -> 0x4D (1000 mV)
+
+=== guards: PASS  (Firmware limits on PMIC writes)  [60 ms simulated, 3.6 M instructions, 1 s]
+  [ok] pmicTrim 1100 refused (window 1000-1025 mV)
+  [ok] buck2 900 refused
+  [ok] pmicWrite refused before debugUnlock
+  [ok] Buck2 untouched
+  [ok] no rule violations
+  [ok] firmware touched only modelled registers
+  [ok] no CPU fault
+  log:
+        0.000 ms  PMIC   registers loaded from OTP (RESET_REG set)
+        0.000 ms  power  5 V present
+        2.416 ms  power  EN1 high
+        8.855 ms  power  PMIC GPIO2 released
+       29.639 ms  power  supervisor releases reset
+       29.639 ms  power  AOP_NRESET high (radar runs)
+       35.786 ms  ROM    image loaded from QSPI, R4F released
+
+=== bad_pmic_write: PASS  (Firmware bug: Buck2 written to 855 mV)  [773 ms simulated, 5.7 M instructions, 2 s]
+  [ok] supervisor holds the radar in reset (1V0 under 0.900 V)
+  [ok] radar still in reset 0.5 s later: the PMIC keeps 855 mV, nothing reloads it
+  events: 54.9 ms supervisor asserts reset: 1V0 under 0.9 V; 54.9 ms AOP_NRESET low (radar in reset)
+  [ok] a HOST_DISABLE pulse does not help either: EN1 does not reload the registers
+  [ok] unplug / replug: PMIC reloads OTP, radar boots again
+  [ok] the model flags the write: Buck2 set to 855 mV: SNVSAW2B says not under 1.0 V with VIN > 4 V; 1V0_R setpoint 855 mV outside the radar's 0.95-1.05 V
+  log:
+        0.000 ms  PMIC   registers loaded from OTP (RESET_REG set)
+        0.000 ms  power  5 V present
+        2.416 ms  power  EN1 high
+        8.855 ms  power  PMIC GPIO2 released
+       29.639 ms  power  supervisor releases reset
+       29.639 ms  power  AOP_NRESET high (radar runs)
+       35.786 ms  ROM    image loaded from QSPI, R4F released
+       54.818 ms  PMIC   BUCK2_VOUT 0x4D -> 0x30 (855 mV)
+       54.818 ms  PMIC   VIOLATION: Buck2 set to 855 mV: SNVSAW2B says not under 1.0 V with VIN > 4 V
+       54.818 ms  PMIC   VIOLATION: 1V0_R setpoint 855 mV outside the radar's 0.95-1.05 V
+       54.864 ms  power  supervisor asserts reset: 1V0 under 0.9 V
+       54.864 ms  power  AOP_NRESET low (radar in reset)
+       54.864 ms  radar  held in reset
+      553.000 ms  power  HOST_DISABLE asserted
+      553.000 ms  power  EN1 low
+      573.000 ms  power  HOST_DISABLE released
+      573.000 ms  power  EN1 high
+      578.000 ms  power  PMIC GPIO2 released
+      673.000 ms  power  5 V removed
+      673.300 ms  power  PMIC below UVLO: registers will reload from OTP
+      723.000 ms  PMIC   registers loaded from OTP (RESET_REG set)
+      723.000 ms  power  5 V present
+      725.416 ms  power  EN1 high
+      731.855 ms  power  PMIC GPIO2 released
+      752.639 ms  power  supervisor releases reset
+      752.639 ms  power  AOP_NRESET high (radar runs)
+      758.786 ms  ROM    image loaded from QSPI, R4F released
+
+=== flash_uart: PASS  (UniFlash-style programming in SOP 101, then boot)  [2483 ms simulated, 2.7 M instructions, 1 s]
+  [ok] BOOT held at power-up: ROM in UART flashing mode (SOP 101)
+  [ok] after programming + QE + RESET the image boots
+  [ok] no rule violations
+  [ok] firmware touched only modelled registers
+  [ok] no CPU fault
+  log:
+        0.000 ms  PMIC   registers loaded from OTP (RESET_REG set)
+        0.000 ms  power  5 V present
+        2.416 ms  power  EN1 high
+        8.855 ms  power  PMIC GPIO2 released
+       29.639 ms  power  supervisor releases reset
+       29.639 ms  power  AOP_NRESET high (radar runs)
+       29.639 ms  ROM    SOP 101: UART flashing mode, waiting for the host
+     2422.286 ms  flash  22944 bytes programmed, QE set
+     2462.287 ms  power  AOP_NRESET low (radar in reset)
+     2462.287 ms  radar  held in reset
+     2463.287 ms  power  AOP_NRESET high (radar runs)
+     2469.434 ms  ROM    image loaded from QSPI, R4F released
+
+=== flash_no_qe: PASS  (Programmed without the QE bit)  [2523 ms simulated, 0.0 M instructions, 0 s]
+  [ok] programmed without setting QE: no boot (expected, spec 4.2)
+  ROM: failed: QE bit clear: the ROM's quad read returns garbage (spec 4.2)
+  log:
+        0.000 ms  PMIC   registers loaded from OTP (RESET_REG set)
+        0.000 ms  power  5 V present
+        2.416 ms  power  EN1 high
+        8.855 ms  power  PMIC GPIO2 released
+       29.639 ms  power  supervisor releases reset
+       29.639 ms  power  AOP_NRESET high (radar runs)
+       29.639 ms  ROM    SOP 101: UART flashing mode, waiting for the host
+     2422.286 ms  flash  22944 bytes programmed, QE left clear
+     2422.288 ms  power  AOP_NRESET low (radar in reset)
+     2422.288 ms  radar  held in reset
+     2423.288 ms  power  AOP_NRESET high (radar runs)
+     2423.288 ms  ROM    QSPI boot failed: QE bit clear: the ROM's quad read returns garbage (spec 4.2)
+
+=== flash_reset_wip: PASS  (RESET pressed while the QE write is still busy)  [2544 ms simulated, 2.7 M instructions, 1 s]
+  [ok] RESET within tW (40 ms) of the QE write: boot fails (errata MSS#45), a second reset fixes it
+  ROM: failed: flash still busy (WIP = 1) when the ROM read it (errata MSS#45)
+  [ok] second reset boots
+  log:
+        0.000 ms  PMIC   registers loaded from OTP (RESET_REG set)
+        0.000 ms  power  5 V present
+        2.416 ms  power  EN1 high
+        8.855 ms  power  PMIC GPIO2 released
+       29.639 ms  power  supervisor releases reset
+       29.639 ms  power  AOP_NRESET high (radar runs)
+       29.639 ms  ROM    SOP 101: UART flashing mode, waiting for the host
+     2422.286 ms  flash  22944 bytes programmed, QE set
+     2422.287 ms  power  AOP_NRESET low (radar in reset)
+     2422.287 ms  radar  held in reset
+     2423.287 ms  power  AOP_NRESET high (radar runs)
+     2423.287 ms  ROM    QSPI boot failed: flash still busy (WIP = 1) when the ROM read it (errata MSS#45)
+     2523.287 ms  power  AOP_NRESET low (radar in reset)
+     2523.287 ms  radar  held in reset
+     2524.287 ms  power  AOP_NRESET high (radar runs)
+     2530.434 ms  ROM    image loaded from QSPI, R4F released
+
+=== host_disable: PASS  (Carrier pulses HOST_DISABLE while streaming with trim)  [396 ms simulated, 15.0 M instructions, 4 s]
+  [ok] HOST_DISABLE mid-stream: EN1 low, rails off, radar in reset
+  [ok] radar boots again after HOST_DISABLE is released
+  [ok] firmware sees RESET_REG clear: PMIC kept its registers across HOST_DISABLE
+  PMIC Buck2 VOUT after re-enable: 0x4D
+  [ok] Buck2 is at 1000 mV again (firmware stopped the radar before, or reset it at boot)
+  events: 336.0 ms HOST_DISABLE asserted; 336.0 ms EN1 low; 336.0 ms AOP_NRESET low (radar in reset); 336.1 ms supervisor asserts reset: 1V2 under 1.12 V; 346.0 ms HOST_DISABLE released; 346.0 ms EN1 high; 351.0 ms PMIC GPIO2 released; 371.8 ms supervisor releases reset; 371.8 ms AOP_NRESET high (radar runs)
+  [ok] no rule violations
+  [ok] firmware touched only modelled registers
+  [ok] no CPU fault
+  log:
+        0.000 ms  PMIC   registers loaded from OTP (RESET_REG set)
+        0.000 ms  power  5 V present
+        2.416 ms  power  EN1 high
+        8.855 ms  power  PMIC GPIO2 released
+       29.639 ms  power  supervisor releases reset
+       29.639 ms  power  AOP_NRESET high (radar runs)
+       35.786 ms  ROM    image loaded from QSPI, R4F released
+       54.112 ms  BSS    LDO bypass config: ldoBypassEnable=3 supplyMonIrDrop=1 ioSupplyIndicator=0
+       84.378 ms  PMIC   BUCK2_VOUT 0x4D -> 0x52 (1025 mV)
+      336.000 ms  power  HOST_DISABLE asserted
+      336.000 ms  power  EN1 low
+      336.012 ms  power  AOP_NRESET low (radar in reset)
+      336.012 ms  radar  held in reset
+      336.061 ms  power  supervisor asserts reset: 1V2 under 1.12 V
+      346.000 ms  power  HOST_DISABLE released
+      346.000 ms  power  EN1 high
+      351.000 ms  power  PMIC GPIO2 released
+      371.784 ms  power  supervisor releases reset
+      371.784 ms  power  AOP_NRESET high (radar runs)
+      377.932 ms  ROM    image loaded from QSPI, R4F released
+      389.099 ms  PMIC   BUCK2_VOUT 0x52 -> 0x4D (1000 mV)
+
+=== carrier_reset: PASS  (Carrier pulses HOST_NRESET while streaming with trim)  [361 ms simulated, 15.0 M instructions, 4 s]
+  [ok] streaming with Buck2 at 1025 mV (0x52)
+  [ok] HOST_NRESET pulse mid-stream: radar resets, PMIC keeps 1025 mV, firmware notices at boot
+  [ok] firmware puts Buck2 back to 1000 mV
+  [ok] no rule violations
+  [ok] firmware touched only modelled registers
+  [ok] no CPU fault
+  log:
+        0.000 ms  PMIC   registers loaded from OTP (RESET_REG set)
+        0.000 ms  power  5 V present
+        2.416 ms  power  EN1 high
+        8.855 ms  power  PMIC GPIO2 released
+       29.639 ms  power  supervisor releases reset
+       29.639 ms  power  AOP_NRESET high (radar runs)
+       35.786 ms  ROM    image loaded from QSPI, R4F released
+       54.112 ms  BSS    LDO bypass config: ldoBypassEnable=3 supplyMonIrDrop=1 ioSupplyIndicator=0
+       84.378 ms  PMIC   BUCK2_VOUT 0x4D -> 0x52 (1025 mV)
+      336.000 ms  power  AOP_NRESET low (radar in reset)
+      336.000 ms  radar  held in reset
+      337.000 ms  power  AOP_NRESET high (radar runs)
+      343.147 ms  ROM    image loaded from QSPI, R4F released
+      354.315 ms  PMIC   BUCK2_VOUT 0x52 -> 0x4D (1000 mV)
+
+=== usb_dropout: PASS  (USB dropouts of 0.1 ms and 1 ms while streaming with trim)  [753 ms simulated, 33.6 M instructions, 7 s]
+  [ok] USB dropout of 0.1 ms: radar resets and boots again
+    banner: ['PMIC: LP87524J OTP 0x72, Buck2 1025 mV, registers kept from before this reset', 'PMIC: Buck2 back to 1000 mV']
+  [ok] USB dropout of 1.0 ms: radar resets and boots again
+    banner: ['PMIC: LP87524J OTP 0x72, Buck2 1000 mV, registers fresh from OTP']
+  [ok] no rule violations
+  [ok] firmware touched only modelled registers
+  [ok] no CPU fault
+  log:
+        0.000 ms  PMIC   registers loaded from OTP (RESET_REG set)
+        0.000 ms  power  5 V present
+        2.416 ms  power  EN1 high
+        8.855 ms  power  PMIC GPIO2 released
+       29.639 ms  power  supervisor releases reset
+       29.639 ms  power  AOP_NRESET high (radar runs)
+       35.786 ms  ROM    image loaded from QSPI, R4F released
+       54.112 ms  BSS    LDO bypass config: ldoBypassEnable=3 supplyMonIrDrop=1 ioSupplyIndicator=0
+       84.378 ms  PMIC   BUCK2_VOUT 0x4D -> 0x52 (1025 mV)
+      286.000 ms  power  5 V removed
+      286.100 ms  power  5 V back before PMIC UVLO
+      286.100 ms  power  EN1 high
+      286.167 ms  power  supervisor asserts reset: 3V3_R below threshold (unplug)
+      286.167 ms  power  AOP_NRESET low (radar in reset)
+      286.167 ms  radar  held in reset
+      291.100 ms  power  PMIC GPIO2 released
+      306.182 ms  power  supervisor releases reset
+      306.182 ms  power  AOP_NRESET high (radar runs)
+      312.329 ms  ROM    image loaded from QSPI, R4F released
+      323.497 ms  PMIC   BUCK2_VOUT 0x52 -> 0x4D (1000 mV)
+      334.212 ms  BSS    LDO bypass config: ldoBypassEnable=3 supplyMonIrDrop=1 ioSupplyIndicator=0
+      364.478 ms  PMIC   BUCK2_VOUT 0x4D -> 0x52 (1025 mV)
+      516.100 ms  power  5 V removed
+      516.267 ms  power  supervisor asserts reset: 3V3_R below threshold (unplug)
+      516.267 ms  power  AOP_NRESET low (radar in reset)
+      516.267 ms  radar  held in reset
+      516.400 ms  power  PMIC below UVLO: registers will reload from OTP
+      517.100 ms  PMIC   registers loaded from OTP (RESET_REG set)
+      517.100 ms  power  5 V present
+      519.516 ms  power  EN1 high
+      525.955 ms  power  PMIC GPIO2 released
+      546.739 ms  power  supervisor releases reset
+      546.739 ms  power  AOP_NRESET high (radar runs)
+      552.886 ms  ROM    image loaded from QSPI, R4F released
+      571.212 ms  BSS    LDO bypass config: ldoBypassEnable=3 supplyMonIrDrop=1 ioSupplyIndicator=0
+      601.478 ms  PMIC   BUCK2_VOUT 0x4D -> 0x52 (1025 mV)
+
+=== uart_baud: PASS  (UART baud rates the SCI can make)
+    115200 Bd: radar makes    114679 Bd (BRS 108), CP2105    115108 Bd, error -0.37 %  ok
+    460800 Bd: radar makes    462963 Bd (BRS 26), CP2105    461538 Bd, error +0.31 %  ok
+    921600 Bd: radar makes    892857 Bd (BRS 13), CP2105    923077 Bd, error -3.27 %  MARGINAL
+   1843200 Bd: radar makes   1785714 Bd (BRS 6), CP2105   1846154 Bd, error -3.27 %  MARGINAL
+  [ok] firmware uses 115200 (CLI) and 460800 (data); 921600 is -3.1 %: marginal, not used
+
