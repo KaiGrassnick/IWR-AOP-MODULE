@@ -43,6 +43,6 @@ struct pinmux_entry {
  * the PMIC is 2 % accurate (spec 3.2), so the setpoint must stay <= 1.025 V to keep the
  * worst-case DC level under 1.05 V. SNVSAW2B: with VIN > 4 V do not set an output under 1.0 V. */
 #define BUCK2_MV_MIN 1000u
-#define BUCK2_MV_MAX 1025u
+#define BUCK2_MV_MAX 1005u   /* cosim/results/replay_summary.txt: higher pushes 1V0 over 1.05 V at frame end */
 
 #endif

@@ -19,7 +19,9 @@
 
 #define PROMPT "aop:/>"
 
+#ifdef FW_DEBUG_PMIC
 static bool debug_unlocked;
+#endif
 static uint32_t telemetry_buck2_ma, telemetry_buck3_ma;        /* between frames */
 static uint32_t telemetry_buck2_frame_ma, telemetry_buck3_frame_ma; /* while chirping */
 static uint32_t pmic_flags_seen;
@@ -155,6 +157,9 @@ static void cli_exec(char *line)
     } else if (!strcmp(cmd, "temp")) {
         st = radar_get_temp(&radar.temp_mc);
         uprintf(&sci_cli, "radar temperature %d mC\n", (int)radar.temp_mc);
+#ifdef FW_DEBUG_PMIC
+    /* Raw PMIC writes bypass every range check. A bad Buck write makes the supervisor hold the
+     * radar in reset and only removing 5 V recovers the board, so this is a debug build only. */
     } else if (!strcmp(cmd, "debugUnlock")) {
         debug_unlocked = true;
     } else if (!strcmp(cmd, "pmicWrite") && argc >= 3) {
@@ -162,6 +167,7 @@ static void cli_exec(char *line)
             st = -30;
         else
             st = pmic_raw_write((uint8_t)strtoul(argv[1], 0, 0), (uint8_t)strtoul(argv[2], 0, 0));
+#endif
     } else if (!strcmp(cmd, "channelCfg") && argc >= 3) {
         radar_cfg.rx_mask = (uint32_t)atoi(argv[1]);
         radar_cfg.tx_mask = (uint32_t)atoi(argv[2]);

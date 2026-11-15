@@ -21,6 +21,7 @@ from sim.board import Board  # noqa: E402
 from sim.soc import VCLK  # noqa: E402
 
 ELF = HERE / "firmware" / "build" / "fw.elf"
+ELF_DEBUG = HERE / "firmware" / "build" / "fw_debug.elf"
 RES = HERE / "results"
 TRACES = RES / "traces"
 CAL = calib.load()
@@ -41,8 +42,8 @@ class Check:
         self.lines.append(f"  {text}")
 
 
-def fresh(**kw):
-    b = Board(str(ELF), **kw)
+def fresh(debug=False, **kw):
+    b = Board(str(ELF_DEBUG if debug else ELF), **kw)
     return b
 
 
@@ -147,7 +148,7 @@ def stream_default(c):
 
 
 def stream_trim(c):
-    b = _stream(c, "b_default_trim_1025", 1025)
+    b = _stream(c, "b_default_trim_1005", 1005)
     w = [(t, r, v) for t, r, v in b.pmic.writes if r == 0x0E]
     c.note("Buck2 VOUT writes: " + ", ".join(f"{t*1e3:.1f} ms 0x{v:02X}" for t, r, v in w))
     clean(c, b)
@@ -155,7 +156,7 @@ def stream_trim(c):
 
 def stress_3tx(c):
     cfg = ["chirpReset", "chirpCfg 0 0 0 0 0 0 0 7", "frameCfg 0 0 64 0 100"]
-    b = _stream(c, "c_3tx_simultaneous_trim_1025", 1025, cfg)
+    b = _stream(c, "c_3tx_simultaneous_trim_1005", 1005, cfg)
     clean(c, b)
 
 
@@ -164,16 +165,17 @@ def guards(c):
     b.preflash()
     b.plug_usb()
     booted(b)
-    c.expect("Error" in b.cli("pmicTrim 1100"), "pmicTrim 1100 refused (window 1000-1025 mV)")
+    c.expect("Error" in b.cli("pmicTrim 1025"), "pmicTrim 1025 refused (window 1000-1005 mV)")
     c.expect("Error" in b.cli("buck2 900"), "buck2 900 refused")
-    c.expect("Error" in b.cli("pmicWrite 0x0E 0x30"), "pmicWrite refused before debugUnlock")
+    c.expect("ignored" in b.cli("debugUnlock") and "ignored" in b.cli("pmicWrite 0x0E 0x30"),
+             "normal build has no raw PMIC write (debugUnlock, pmicWrite ignored)")
     c.expect(b.pmic.regs[0x0E] == 0x4D, "Buck2 untouched")
     clean(c, b)
 
 
 def bad_write(c):
-    """What a firmware bug writing the PMIC can do: Buck2 to 855 mV."""
-    b = c.board = fresh()
+    """What a raw PMIC write can do (debug build): Buck2 to 855 mV."""
+    b = c.board = fresh(debug=True)
     b.preflash()
     b.plug_usb()
     booted(b)
@@ -254,7 +256,7 @@ def host_disable(c):
     b.carrier_power()
     b.preflash()
     booted(b, port=b.car_uart)
-    b.cli("pmicTrim 1025")
+    b.cli("pmicTrim 1005")
     b.cli("sensorStart", 0.3)
     b.run(0.25)
     n0 = len(b.car_uart.data)
@@ -277,7 +279,7 @@ def carrier_reset(c):
     b.carrier_power()
     b.preflash()
     booted(b, port=b.car_uart)
-    b.cli("pmicTrim 1025")
+    b.cli("pmicTrim 1005")
     b.cli("sensorStart", 0.3)
     b.run(0.25)
     trimmed = b.pmic.regs[0x0E]
@@ -287,9 +289,9 @@ def carrier_reset(c):
     b.carrier_reset(False)
     ok = booted(b, port=b.car_uart, timeout=0.3, start=n0)
     txt = b.car_uart.data[n0:].decode("latin-1")
-    c.expect(trimmed == 0x52, "streaming with Buck2 at 1025 mV (0x52)")
-    c.expect(ok and "registers kept" in txt and "Buck2 1025 mV" in txt,
-             "HOST_NRESET pulse mid-stream: radar resets, PMIC keeps 1025 mV, firmware notices at boot")
+    c.expect(trimmed == 0x4E, "streaming with Buck2 at 1005 mV (0x4E)")
+    c.expect(ok and "registers kept" in txt and "Buck2 1005 mV" in txt,
+             "HOST_NRESET pulse mid-stream: radar resets, PMIC keeps 1005 mV, firmware notices at boot")
     c.expect("Buck2 back to 1000" in txt and b.pmic.regs[0x0E] == 0x4D, "firmware puts Buck2 back to 1000 mV")
     clean(c, b)
 
@@ -299,7 +301,7 @@ def usb_dropout(c):
     b.preflash()
     b.plug_usb()
     booted(b)
-    b.cli("pmicTrim 1025")
+    b.cli("pmicTrim 1005")
     b.cli("sensorStart", 0.3)
     b.run(0.2)
     for gap, expect in ((0.1e-3, "kept"), (1e-3, "fresh")):
@@ -311,7 +313,7 @@ def usb_dropout(c):
         txt = b.eci.data[n0:].decode("latin-1")
         c.expect(ok, f"USB dropout of {gap*1e3:.1f} ms: radar resets and boots again")
         c.note(f"  banner: {[l for l in txt.splitlines() if 'PMIC' in l]}")
-        b.cli("pmicTrim 1025")
+        b.cli("pmicTrim 1005")
         b.cli("sensorStart", 0.3)
         b.run(0.15)
     clean(c, b)
@@ -335,10 +337,10 @@ SCENARIOS = [
     ("usb_boot", "USB power-up: rails, supervisor, boot ROM, firmware, PMIC over I2C", usb_boot),
     ("carrier_boot", "Carrier power (J400/J401) only, CLI over the carrier UART", carrier_boot),
     ("stream_default", "Default TDM-MIMO profile, 10 frames, no 1V0 trim", stream_default),
-    ("stream_trim", "Same with the 1V0 trim to 1025 mV while running", stream_trim),
-    ("stress_3tx", "Three TX at once (LDO bypass), 64 chirps per frame, trim 1025 mV", stress_3tx),
+    ("stream_trim", "Same with the 1V0 trim to 1005 mV while running", stream_trim),
+    ("stress_3tx", "Three TX at once (LDO bypass), 64 chirps per frame, trim 1005 mV", stress_3tx),
     ("guards", "Firmware limits on PMIC writes", guards),
-    ("bad_pmic_write", "Firmware bug: Buck2 written to 855 mV", bad_write),
+    ("bad_pmic_write", "Debug build: raw write puts Buck2 at 855 mV", bad_write),
     ("flash_uart", "UniFlash-style programming in SOP 101, then boot", flash_uart),
     ("flash_no_qe", "Programmed without the QE bit", flash_no_qe),
     ("flash_reset_wip", "RESET pressed while the QE write is still busy", flash_reset_wip),
@@ -350,7 +352,7 @@ SCENARIOS = [
 
 
 def main(names):
-    if not ELF.exists():
+    if not (ELF.exists() and ELF_DEBUG.exists()):
         sys.exit("build the firmware first: make -C firmware")
     RES.mkdir(exist_ok=True)
     out, n_fail = [], 0

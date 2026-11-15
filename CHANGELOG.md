@@ -6,7 +6,7 @@ All notable changes are documented here, following [Keep a Changelog](https://ke
 
 ### Added
 
-- `cosim/`: bare-metal test firmware for the radar's R4F, run on a model of the board (power tree, supervisor, PMIC over I²C, boot ROM and flash, USB bridge, carrier). Includes 14 scenarios and an ngspice replay of the firmware's chirp load on 1V0 and 1V8. The replay shows the 1025 mV Buck2 trim takes 1V0 over 1.05 V at frame end.
+- `cosim/`: bare-metal test firmware for the radar's R4F, run on a model of the board (power tree, supervisor, PMIC over I²C, boot ROM and flash, USB bridge, carrier). Includes 14 scenarios and an ngspice replay of the firmware's chirp load on 1V0 and 1V8. The replay shows a 1025 mV Buck2 trim takes 1V0 over 1.05 V at frame end, so the firmware limits the trim to 1000-1005 mV; raw PMIC writes are in the debug build only.
 
 ## [1.1] - 2026-11-15
 
