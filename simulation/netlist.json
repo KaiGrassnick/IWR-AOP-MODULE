@@ -1,5 +1,27 @@
 {
  "parts": {
+  "R601": {
+   "value": "10kR",
+   "fp": "Resistor_SMD:R_0402_1005Metric",
+   "props": {
+    "Value": "10kR",
+    "KiLib_Generator": "SMD_2terminal_chip_molded",
+    "MPN": "0402WGF1002TCE",
+    "Manufacturer": "UNI-ROYAL(Uniroyal Elec)",
+    "LCSC": "C25744",
+    "ki_keywords": "r resistor",
+    "Sheetname": "Radar PMIC",
+    "Sheetfile": "rails.kicad_sch",
+    "ki_fp_filters": "R_*"
+   },
+   "attr": [
+    "smd"
+   ],
+   "pads": {
+    "1": "3V3_R",
+    "2": "PMIC_SDA"
+   }
+  },
   "H4": {
    "value": "MountingHole_3.2mm_M3",
    "fp": "MountingHole:MountingHole_3.2mm_M3",
@@ -14,6 +36,82 @@
    ],
    "pads": {}
   },
+  "R623": {
+   "value": "15kR",
+   "fp": "Resistor_SMD:R_0402_1005Metric",
+   "props": {
+    "Value": "15kR",
+    "KiLib_Generator": "SMD_2terminal_chip_molded",
+    "MPN": "0402WGF1502TCE",
+    "Manufacturer": "UNI-ROYAL(Uniroyal Elec)",
+    "LCSC": "C25756"
+   },
+   "attr": [
+    "smd"
+   ],
+   "pads": {
+    "1": "/Radar PMIC/SUP_1V8",
+    "2": "GND"
+   }
+  },
+  "C627": {
+   "value": "22uF",
+   "fp": "Capacitor_SMD:C_0805_2012Metric",
+   "props": {
+    "Value": "22uF",
+    "KiLib_Generator": "SMD_2terminal_chip_molded",
+    "MPN": "CL21A226MAQNNNE",
+    "Manufacturer": "Samsung Electro-Mechanics",
+    "LCSC": "C45783",
+    "Rating": "X5R 25V",
+    "Tolerance": "20%"
+   },
+   "attr": [
+    "smd"
+   ],
+   "pads": {
+    "1": "1V0_RAW",
+    "2": "GND"
+   }
+  },
+  "C628": {
+   "value": "22uF",
+   "fp": "Capacitor_SMD:C_0805_2012Metric",
+   "props": {
+    "Value": "22uF",
+    "KiLib_Generator": "SMD_2terminal_chip_molded",
+    "MPN": "CL21A226MAQNNNE",
+    "Manufacturer": "Samsung Electro-Mechanics",
+    "LCSC": "C45783",
+    "Rating": "X5R 25V",
+    "Tolerance": "20%"
+   },
+   "attr": [
+    "smd"
+   ],
+   "pads": {
+    "1": "1V8_RAW",
+    "2": "GND"
+   }
+  },
+  "R626": {
+   "value": "15kR",
+   "fp": "Resistor_SMD:R_0402_1005Metric",
+   "props": {
+    "Value": "15kR",
+    "KiLib_Generator": "SMD_2terminal_chip_molded",
+    "MPN": "0402WGF1502TCE",
+    "Manufacturer": "UNI-ROYAL(Uniroyal Elec)",
+    "LCSC": "C25756"
+   },
+   "attr": [
+    "smd"
+   ],
+   "pads": {
+    "1": "1V0_RAW",
+    "2": "/Radar PMIC/SUP_1V0"
+   }
+  },
   "R604": {
    "value": "0R",
    "fp": "Resistor_SMD:R_0402_1005Metric",
@@ -25,7 +123,8 @@
     "LCSC": "C17168"
    },
    "attr": [
-    "smd"
+    "smd",
+    "dnp"
    ],
    "pads": {
     "1": "PMIC_PGOOD",
@@ -47,6 +146,24 @@
    ],
    "pads": {
     "1": "PMIC_ENABLE"
+   }
+  },
+  "R620": {
+   "value": "100kR",
+   "fp": "Resistor_SMD:R_0402_1005Metric",
+   "props": {
+    "Value": "100kR",
+    "KiLib_Generator": "SMD_2terminal_chip_molded",
+    "MPN": "0402WGF1003TCE",
+    "Manufacturer": "UNI-ROYAL(Uniroyal Elec)",
+    "LCSC": "C25741"
+   },
+   "attr": [
+    "smd"
+   ],
+   "pads": {
+    "1": "3V3_R",
+    "2": "/Radar PMIC/SUP_3V3"
    }
   },
   "TP603": {
@@ -111,6 +228,24 @@
     "1": "PMIC_INT_N"
    }
   },
+  "R606": {
+   "value": "0R",
+   "fp": "Resistor_SMD:R_0402_1005Metric",
+   "props": {
+    "Value": "0R",
+    "KiLib_Generator": "SMD_2terminal_chip_molded",
+    "MPN": "0402WGF0000TCE",
+    "Manufacturer": "UNI-ROYAL(Uniroyal Elec)",
+    "LCSC": "C17168"
+   },
+   "attr": [
+    "smd"
+   ],
+   "pads": {
+    "1": "AOP_I2C_SDA",
+    "2": "PMIC_SDA"
+   }
+  },
   "Q402": {
    "value": "MMBT3904",
    "fp": "Package_TO_SOT_SMD:SOT-23",
@@ -131,6 +266,42 @@
     "1": "Q402_BASE",
     "2": "GND",
     "3": "PMIC_ENABLE"
+   }
+  },
+  "R625": {
+   "value": "15kR",
+   "fp": "Resistor_SMD:R_0402_1005Metric",
+   "props": {
+    "Value": "15kR",
+    "KiLib_Generator": "SMD_2terminal_chip_molded",
+    "MPN": "0402WGF1502TCE",
+    "Manufacturer": "UNI-ROYAL(Uniroyal Elec)",
+    "LCSC": "C25756"
+   },
+   "attr": [
+    "smd"
+   ],
+   "pads": {
+    "1": "/Radar PMIC/SUP_1V2",
+    "2": "GND"
+   }
+  },
+  "FB602": {
+   "value": "120R@100MHz / 3A",
+   "fp": "Inductor_SMD:L_0603_1608Metric",
+   "props": {
+    "Value": "120R@100MHz / 3A",
+    "KiLib_Generator": "SMD_2terminal_chip_molded",
+    "MPN": "BLM18KG121TH1D",
+    "Manufacturer": "Murata",
+    "LCSC": "C437404"
+   },
+   "attr": [
+    "smd"
+   ],
+   "pads": {
+    "1": "1V0_RAW",
+    "2": "1V0_R"
    }
   },
   "SW401": {
@@ -185,6 +356,24 @@
     "1": "USB_VBUS"
    }
   },
+  "C204": {
+   "value": "10uF 50V",
+   "fp": "Capacitor_SMD:C_1206_3216Metric",
+   "props": {
+    "Value": "10uF 50V",
+    "KiLib_Generator": "SMD_2terminal_chip_molded",
+    "MPN": "CL31A106KBHNNNE",
+    "Manufacturer": "Samsung Electro-Mechanics",
+    "LCSC": "C13585"
+   },
+   "attr": [
+    "smd"
+   ],
+   "pads": {
+    "1": "USB_VBUS",
+    "2": "Net-(C204-Pad2)"
+   }
+  },
   "C140": {
    "value": "10uF 10V",
    "fp": "Capacitor_SMD:C_0805_2012Metric",
@@ -201,6 +390,24 @@
    "pads": {
     "1": "PWR_IN",
     "2": "GND"
+   }
+  },
+  "R622": {
+   "value": "47kR",
+   "fp": "Resistor_SMD:R_0402_1005Metric",
+   "props": {
+    "Value": "47kR",
+    "KiLib_Generator": "SMD_2terminal_chip_molded",
+    "MPN": "0402WGF4702TCE",
+    "Manufacturer": "UNI-ROYAL(Uniroyal Elec)",
+    "LCSC": "C25792"
+   },
+   "attr": [
+    "smd"
+   ],
+   "pads": {
+    "1": "1V8_RAW",
+    "2": "/Radar PMIC/SUP_1V8"
    }
   },
   "R414": {
@@ -241,6 +448,40 @@
     "1": "1V0_RAW"
    }
   },
+  "D202": {
+   "value": "SMF5.0A",
+   "fp": "Diode_SMD:D_SOD-123F",
+   "props": {
+    "Value": "SMF5.0A",
+    "MPN": "SMF5.0A",
+    "Manufacturer": "ElecSuper",
+    "LCSC": "C193402"
+   },
+   "attr": [
+    "smd"
+   ],
+   "pads": {
+    "1": "USB_VBUS",
+    "2": "GND"
+   }
+  },
+  "TP615": {
+   "value": "PMIC_SDA",
+   "fp": "TestPoint:TestPoint_Pad_D1.0mm",
+   "props": {
+    "Value": "PMIC_SDA",
+    "MPN": "PCB_TEST_PAD_1MM",
+    "Manufacturer": "PCB fabrication",
+    "LCSC": ""
+   },
+   "attr": [
+    "exclude_from_pos_files",
+    "exclude_from_bom"
+   ],
+   "pads": {
+    "1": "PMIC_SDA"
+   }
+  },
   "H3": {
    "value": "MountingHole_3.2mm_M3",
    "fp": "MountingHole:MountingHole_3.2mm_M3",
@@ -254,6 +495,42 @@
     "exclude_from_bom"
    ],
    "pads": {}
+  },
+  "R605": {
+   "value": "0R",
+   "fp": "Resistor_SMD:R_0402_1005Metric",
+   "props": {
+    "Value": "0R",
+    "KiLib_Generator": "SMD_2terminal_chip_molded",
+    "MPN": "0402WGF0000TCE",
+    "Manufacturer": "UNI-ROYAL(Uniroyal Elec)",
+    "LCSC": "C17168"
+   },
+   "attr": [
+    "smd"
+   ],
+   "pads": {
+    "1": "AOP_I2C_SCL",
+    "2": "PMIC_SCL"
+   }
+  },
+  "R627": {
+   "value": "12kR",
+   "fp": "Resistor_SMD:R_0402_1005Metric",
+   "props": {
+    "Value": "12kR",
+    "KiLib_Generator": "SMD_2terminal_chip_molded",
+    "MPN": "0402WGF1202TCE",
+    "Manufacturer": "UNI-ROYAL(Uniroyal Elec)",
+    "LCSC": "C25752"
+   },
+   "attr": [
+    "smd"
+   ],
+   "pads": {
+    "1": "/Radar PMIC/SUP_1V0",
+    "2": "GND"
+   }
   },
   "TP605": {
    "value": "1V0_R",
@@ -270,6 +547,23 @@
    ],
    "pads": {
     "1": "1V0_R"
+   }
+  },
+  "TP614": {
+   "value": "PMIC_SCL",
+   "fp": "TestPoint:TestPoint_Pad_D1.0mm",
+   "props": {
+    "Value": "PMIC_SCL",
+    "MPN": "PCB_TEST_PAD_1MM",
+    "Manufacturer": "PCB fabrication",
+    "LCSC": ""
+   },
+   "attr": [
+    "exclude_from_pos_files",
+    "exclude_from_bom"
+   ],
+   "pads": {
+    "1": "PMIC_SCL"
    }
   },
   "R313": {
@@ -386,9 +680,9 @@
     "F16": "GND",
     "F17": "GND",
     "F18": "GND",
-    "G1": "unconnected-(U300B-SPIB_MOSI-PadG1)",
+    "G1": "AOP_I2C_SDA",
     "G2": "/Radar and boot/AOP_QSPI_D1",
-    "G3": "unconnected-(U300B-SPIB_MISO-PadG3)",
+    "G3": "AOP_I2C_SCL",
     "G16": "1V0_R",
     "G17": "1V0_R",
     "G18": "1V0_R",
@@ -510,6 +804,24 @@
    ],
    "pads": {}
   },
+  "C606": {
+   "value": "100nF",
+   "fp": "Capacitor_SMD:C_0402_1005Metric",
+   "props": {
+    "Value": "100nF",
+    "KiLib_Generator": "SMD_2terminal_chip_molded",
+    "MPN": "CL05B104KO5NNNC",
+    "Manufacturer": "Samsung Electro-Mechanics",
+    "LCSC": "C1525"
+   },
+   "attr": [
+    "smd"
+   ],
+   "pads": {
+    "1": "SYS_5V",
+    "2": "GND"
+   }
+  },
   "TP607": {
    "value": "1V2_R",
    "fp": "TestPoint:TestPoint_Pad_D1.0mm",
@@ -542,6 +854,24 @@
    ],
    "pads": {
     "1": "SYS_5V"
+   }
+  },
+  "R624": {
+   "value": "27kR",
+   "fp": "Resistor_SMD:R_0402_1005Metric",
+   "props": {
+    "Value": "27kR",
+    "KiLib_Generator": "SMD_2terminal_chip_molded",
+    "MPN": "0402WGF2702TCE",
+    "Manufacturer": "UNI-ROYAL(Uniroyal Elec)",
+    "LCSC": "C25771"
+   },
+   "attr": [
+    "smd"
+   ],
+   "pads": {
+    "1": "1V2_R",
+    "2": "/Radar PMIC/SUP_1V2"
    }
   },
   "R415": {
@@ -586,6 +916,42 @@
    "pads": {
     "1": "SYS_5V",
     "2": "PMIC_ENABLE"
+   }
+  },
+  "R210": {
+   "value": "0.47R",
+   "fp": "Resistor_SMD:R_0603_1608Metric",
+   "props": {
+    "Value": "0.47R",
+    "KiLib_Generator": "SMD_2terminal_chip_molded",
+    "MPN": "0603WAF470LT5E",
+    "Manufacturer": "UNI-ROYAL(Uniroyal Elec)",
+    "LCSC": "C23411"
+   },
+   "attr": [
+    "smd"
+   ],
+   "pads": {
+    "1": "Net-(C204-Pad2)",
+    "2": "GND"
+   }
+  },
+  "R621": {
+   "value": "15kR",
+   "fp": "Resistor_SMD:R_0402_1005Metric",
+   "props": {
+    "Value": "15kR",
+    "KiLib_Generator": "SMD_2terminal_chip_molded",
+    "MPN": "0402WGF1502TCE",
+    "Manufacturer": "UNI-ROYAL(Uniroyal Elec)",
+    "LCSC": "C25756"
+   },
+   "attr": [
+    "smd"
+   ],
+   "pads": {
+    "1": "/Radar PMIC/SUP_3V3",
+    "2": "GND"
    }
   },
   "R413": {
@@ -665,6 +1031,23 @@
     "2": "AOP_NERROR_OUT"
    }
   },
+  "TP613": {
+   "value": "PMIC_PGOOD",
+   "fp": "TestPoint:TestPoint_Pad_D1.0mm",
+   "props": {
+    "Value": "PMIC_PGOOD",
+    "MPN": "PCB_TEST_PAD_1MM",
+    "Manufacturer": "PCB fabrication",
+    "LCSC": ""
+   },
+   "attr": [
+    "exclude_from_pos_files",
+    "exclude_from_bom"
+   ],
+   "pads": {
+    "1": "PMIC_PGOOD"
+   }
+  },
   "TP612": {
    "value": "GND",
    "fp": "TestPoint:TestPoint_Pad_D1.0mm",
@@ -680,6 +1063,63 @@
    ],
    "pads": {
     "1": "GND"
+   }
+  },
+  "C626": {
+   "value": "22uF",
+   "fp": "Capacitor_SMD:C_0805_2012Metric",
+   "props": {
+    "Value": "22uF",
+    "KiLib_Generator": "SMD_2terminal_chip_molded",
+    "MPN": "CL21A226MAQNNNE",
+    "Manufacturer": "Samsung Electro-Mechanics",
+    "LCSC": "C45783",
+    "Rating": "X5R 25V",
+    "Tolerance": "20%"
+   },
+   "attr": [
+    "smd"
+   ],
+   "pads": {
+    "1": "1V0_RAW",
+    "2": "GND"
+   }
+  },
+  "U601": {
+   "value": "TPS386000RGPR",
+   "fp": "Package_DFN_QFN:Texas_RGP0020D_VQFN-20-1EP_4x4mm_P0.5mm_EP2.7x2.7mm",
+   "props": {
+    "Value": "TPS386000RGPR",
+    "KiLib_Generator": "package/no_lead",
+    "MPN": "TPS386000RGPR",
+    "Manufacturer": "Texas Instruments",
+    "LCSC": "C702221"
+   },
+   "attr": [
+    "smd"
+   ],
+   "pads": {
+    "1": "SYS_5V",
+    "2": "unconnected-(U601-CT4-Pad2)",
+    "3": "unconnected-(U601-CT3-Pad3)",
+    "4": "unconnected-(U601-CT2-Pad4)",
+    "5": "unconnected-(U601-CT1-Pad5)",
+    "6": "GND",
+    "7": "/Radar PMIC/SUP_1V0",
+    "8": "/Radar PMIC/SUP_1V2",
+    "9": "/Radar PMIC/SUP_1V8",
+    "10": "/Radar PMIC/SUP_3V3",
+    "11": "GND",
+    "12": "GND",
+    "13": "unconnected-(U601-VREF-Pad13)",
+    "14": "SYS_5V",
+    "15": "AOP_NRESET",
+    "16": "AOP_NRESET",
+    "17": "AOP_NRESET",
+    "18": "AOP_NRESET",
+    "19": "unconnected-(U601-~{WDO}-Pad19)",
+    "20": "GND",
+    "21": "GND"
    }
   },
   "R310": {
@@ -702,28 +1142,6 @@
    "pads": {
     "1": "3V3_R",
     "2": "/Radar and boot/AOP_WARM_RESET"
-   }
-  },
-  "R601": {
-   "value": "10kR",
-   "fp": "Resistor_SMD:R_0402_1005Metric",
-   "props": {
-    "Value": "10kR",
-    "KiLib_Generator": "SMD_2terminal_chip_molded",
-    "MPN": "0402WGF1002TCE",
-    "Manufacturer": "UNI-ROYAL(Uniroyal Elec)",
-    "LCSC": "C25744",
-    "ki_keywords": "r resistor",
-    "Sheetname": "Radar PMIC",
-    "Sheetfile": "rails.kicad_sch",
-    "ki_fp_filters": "R_*"
-   },
-   "attr": [
-    "smd"
-   ],
-   "pads": {
-    "1": "1V8_R",
-    "2": "PMIC_SDA"
    }
   },
   "R311": {
@@ -1212,7 +1630,7 @@
     "smd"
    ],
    "pads": {
-    "1": "1V0_R",
+    "1": "1V0_RAW",
     "2": "unconnected-(U600-GPIO3-Pad2)",
     "3": "GND",
     "4": "GND",
@@ -1232,7 +1650,7 @@
     "18": "SYS_5V",
     "19": "PMIC_INT_N",
     "20": "SYS_5V",
-    "21": "1V8_R",
+    "21": "1V8_RAW",
     "22": "SYS_5V",
     "23": "PMIC_SW3",
     "24": "GND",
@@ -2875,7 +3293,7 @@
     "smd"
    ],
    "pads": {
-    "1": "1V8_R",
+    "1": "3V3_R",
     "2": "PMIC_SCL"
    }
   },
@@ -3650,26 +4068,49 @@
   }
  },
  "nets": {
-  "PMIC_PGOOD": [
-   "R604.1",
-   "U600.16"
+  "3V3_R": [
+   "C334.1",
+   "C335.1",
+   "C336.1",
+   "C348.1",
+   "C610.1",
+   "C629.1",
+   "C706.1",
+   "J301.1",
+   "JP300.2",
+   "L600.2",
+   "R205.1",
+   "R206.1",
+   "R300.1",
+   "R304.1",
+   "R307.1",
+   "R308.1",
+   "R309.1",
+   "R310.1",
+   "R311.1",
+   "R312.1",
+   "R404.1",
+   "R416.1",
+   "R600.1",
+   "R601.1",
+   "R603.1",
+   "R620.1",
+   "SW401.1",
+   "U300.H1",
+   "U300.V9",
+   "U301.8",
+   "U600.8"
   ],
-  "AOP_NRESET": [
-   "C605.1",
-   "J301.10",
-   "R417.2",
-   "R603.2",
-   "R604.2",
-   "SW400.1",
-   "TP603.1",
-   "U300.U11",
-   "U600.15"
+  "PMIC_SDA": [
+   "R601.2",
+   "R606.2",
+   "TP615.1",
+   "U600.6"
   ],
-  "PMIC_ENABLE": [
-   "Q402.3",
-   "R133.2",
-   "TP611.1",
-   "U600.7"
+  "/Radar PMIC/SUP_1V8": [
+   "R622.2",
+   "R623.1",
+   "U601.9"
   ],
   "GND": [
    "C100.2",
@@ -3733,6 +4174,7 @@
    "C603.2",
    "C604.2",
    "C605.2",
+   "C606.2",
    "C610.2",
    "C611.2",
    "C612.2",
@@ -3747,10 +4189,14 @@
    "C623.2",
    "C624.2",
    "C625.2",
+   "C626.2",
+   "C627.2",
+   "C628.2",
    "C629.2",
    "C706.2",
    "D200.3",
    "D201.3",
+   "D202.2",
    "J200.A1",
    "J200.A12",
    "J200.B1",
@@ -3769,12 +4215,17 @@
    "R100.2",
    "R101.2",
    "R201.2",
+   "R210.2",
    "R305.2",
    "R306.2",
    "R313.2",
    "R402.2",
    "R403.2",
    "R414.2",
+   "R621.2",
+   "R623.2",
+   "R625.2",
+   "R627.2",
    "SW400.2",
    "TH300.1",
    "TP612.1",
@@ -3867,73 +4318,88 @@
    "U600.27",
    "U600.3",
    "U600.4",
+   "U601.11",
+   "U601.12",
+   "U601.20",
+   "U601.21",
+   "U601.6",
    "Y300.2",
    "Y300.4"
+  ],
+  "1V0_RAW": [
+   "C612.1",
+   "C626.1",
+   "C627.1",
+   "FB600.1",
+   "FB602.1",
+   "L602.2",
+   "R626.1",
+   "TP608.1",
+   "U600.1"
+  ],
+  "1V8_RAW": [
+   "C613.1",
+   "C628.1",
+   "FB601.1",
+   "L603.2",
+   "R622.1",
+   "TP609.1",
+   "U600.21"
+  ],
+  "/Radar PMIC/SUP_1V0": [
+   "R626.2",
+   "R627.1",
+   "U601.7"
+  ],
+  "PMIC_PGOOD": [
+   "R604.1",
+   "TP613.1",
+   "U600.16"
+  ],
+  "AOP_NRESET": [
+   "C605.1",
+   "J301.10",
+   "R417.2",
+   "R603.2",
+   "R604.2",
+   "SW400.1",
+   "TP603.1",
+   "U300.U11",
+   "U600.15",
+   "U601.15",
+   "U601.16",
+   "U601.17",
+   "U601.18"
+  ],
+  "PMIC_ENABLE": [
+   "Q402.3",
+   "R133.2",
+   "TP611.1",
+   "U600.7"
+  ],
+  "/Radar PMIC/SUP_3V3": [
+   "R620.2",
+   "R621.1",
+   "U601.10"
   ],
   "PMIC_INT_N": [
    "R602.2",
    "TP602.1",
    "U600.19"
   ],
+  "AOP_I2C_SDA": [
+   "R606.1",
+   "U300.G1"
+  ],
   "Q402_BASE": [
    "Q402.1",
    "R413.2",
    "R414.1"
   ],
-  "3V3_R": [
-   "C334.1",
-   "C335.1",
-   "C336.1",
-   "C348.1",
-   "C610.1",
-   "C629.1",
-   "C706.1",
-   "J301.1",
-   "JP300.2",
-   "L600.2",
-   "R205.1",
-   "R206.1",
-   "R300.1",
-   "R304.1",
-   "R307.1",
-   "R308.1",
-   "R309.1",
-   "R310.1",
-   "R311.1",
-   "R312.1",
-   "R404.1",
-   "R416.1",
-   "R603.1",
-   "SW401.1",
-   "U300.H1",
-   "U300.V9",
-   "U301.8",
-   "U600.8"
-  ],
-  "MANUAL_BOOT": [
-   "R410.1",
-   "SW401.2"
-  ],
-  "USB_VBUS": [
-   "C100.1",
-   "C202.1",
-   "F200.2",
-   "R200.1",
-   "TP610.1",
-   "U117.3",
-   "U200.7"
-  ],
-  "PWR_IN": [
-   "C140.1",
-   "J400.11",
-   "J400.12",
-   "U117.6"
-  ],
-  "1V0_RAW": [
-   "C612.1",
-   "FB600.1",
-   "L602.2",
-   "TP608.1"
+  "/Radar PMIC/SUP_1V2": [
+   "R624.2",
+   "R625.1",
+   "U601.8"
   ],
   "1V0_R": [
    "C312.1",
@@ -3952,6 +4418,7 @@
    "C622.1",
    "C624.1",
    "FB600.2",
+   "FB602.2",
    "TP605.1",
    "U300.G16",
    "U300.G17",
@@ -3961,8 +4428,42 @@
    "U300.H18",
    "U300.J16",
    "U300.J17",
-   "U300.J18",
-   "U600.1"
+   "U300.J18"
+  ],
+  "MANUAL_BOOT": [
+   "R410.1",
+   "SW401.2"
+  ],
+  "USB_VBUS": [
+   "C100.1",
+   "C202.1",
+   "C204.1",
+   "D202.1",
+   "F200.2",
+   "R200.1",
+   "TP610.1",
+   "U117.3",
+   "U200.7"
+  ],
+  "Net-(C204-Pad2)": [
+   "C204.2",
+   "R210.1"
+  ],
+  "PWR_IN": [
+   "C140.1",
+   "J400.11",
+   "J400.12",
+   "U117.6"
+  ],
+  "AOP_I2C_SCL": [
+   "R605.1",
+   "U300.G3"
+  ],
+  "PMIC_SCL": [
+   "R600.2",
+   "R605.2",
+   "TP614.1",
+   "U600.5"
   ],
   "AOP_SYNC_IN": [
    "R313.1",
@@ -3990,6 +4491,7 @@
    "C311.1",
    "C611.1",
    "L601.2",
+   "R624.1",
    "TP607.1",
    "U300.A5",
    "U300.C1",
@@ -4038,8 +4540,6 @@
    "C623.1",
    "C625.1",
    "FB601.2",
-   "R600.1",
-   "R601.1",
    "R602.1",
    "TP606.1",
    "U300.A12",
@@ -4053,8 +4553,7 @@
    "U300.M17",
    "U300.M18",
    "U300.U2",
-   "U300.V11",
-   "U600.21"
+   "U300.V11"
   ],
   "unconnected-(U300B-OSC_CLKOUT-PadA14)": [
    "U300.A14"
@@ -4125,15 +4624,9 @@
    "R408.2",
    "U300.F2"
   ],
-  "unconnected-(U300B-SPIB_MOSI-PadG1)": [
-   "U300.G1"
-  ],
   "/Radar and boot/AOP_QSPI_D1": [
    "U300.G2",
    "U301.2"
-  ],
-  "unconnected-(U300B-SPIB_MISO-PadG3)": [
-   "U300.G3"
   ],
   "/Radar and boot/AOP_QSPI_CLK": [
    "U300.H2",
@@ -4297,6 +4790,7 @@
    "C602.1",
    "C603.1",
    "C604.1",
+   "C606.1",
    "R133.1",
    "TP604.1",
    "U117.2",
@@ -4306,7 +4800,9 @@
    "U600.20",
    "U600.22",
    "U600.26",
-   "U600.9"
+   "U600.9",
+   "U601.1",
+   "U601.14"
   ],
   "HOST_SYNC_IN": [
    "J400.3",
@@ -4316,15 +4812,23 @@
    "J400.7",
    "R413.1"
   ],
-  "1V8_RAW": [
-   "C613.1",
-   "FB601.1",
-   "L603.2",
-   "TP609.1"
+  "unconnected-(U601-CT4-Pad2)": [
+   "U601.2"
   ],
-  "PMIC_SDA": [
-   "R601.2",
-   "U600.6"
+  "unconnected-(U601-CT3-Pad3)": [
+   "U601.3"
+  ],
+  "unconnected-(U601-CT2-Pad4)": [
+   "U601.4"
+  ],
+  "unconnected-(U601-CT1-Pad5)": [
+   "U601.5"
+  ],
+  "unconnected-(U601-VREF-Pad13)": [
+   "U601.13"
+  ],
+  "unconnected-(U601-~{WDO}-Pad19)": [
+   "U601.19"
   ],
   "USB_D+": [
    "D200.1",
@@ -4380,10 +4884,6 @@
   ],
   "unconnected-(U600-GPIO3-Pad2)": [
    "U600.2"
-  ],
-  "PMIC_SCL": [
-   "R600.2",
-   "U600.5"
   ],
   "AOP_UART_RX": [
    "R208.2",

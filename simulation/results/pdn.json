@@ -1,0 +1,114 @@
+{
+ "20C": {
+  "1V0": {
+   "amps": 2.5,
+   "temp": 20.0,
+   "sense_to_radar_mohm": 3.733998793072493,
+   "sense_to_radar_worst_mv": 9.416661666118952,
+   "source_to_radar_mohm": 23.61294878777366,
+   "raw_rise_mv": 49.697374986752926,
+   "best_ball_above_sense_mv": -9.26265468905476,
+   "bead_to_radar_mohm": 10.602969718471249,
+   "bead_split": [
+    1.2884009250255848,
+    1.211599075180341
+   ]
+  },
+  "1V8": {
+   "amps": 0.85,
+   "temp": 20.0,
+   "sense_to_radar_mohm": 34.0568554633916,
+   "sense_to_radar_worst_mv": 40.604081526008436,
+   "source_to_radar_mohm": 72.236650927225,
+   "raw_rise_mv": 32.452826144258395,
+   "best_ball_above_sense_mv": -0.6410887027339038,
+   "bead_to_radar_mohm": 49.46412587057943,
+   "bead_split": [
+    0.8500000032096434
+   ]
+  },
+  "1V2": {
+   "amps": 1.0,
+   "temp": 20.0,
+   "sense_to_radar_mohm": 10.695242852965753,
+   "sense_to_radar_worst_mv": 15.599446669703832,
+   "source_to_radar_mohm": 12.962178718534728,
+   "raw_rise_mv": 2.266935865568974,
+   "best_ball_above_sense_mv": -7.774579417311972,
+   "bead_to_radar_mohm": null,
+   "bead_split": []
+  },
+  "3V3": {
+   "amps": 0.07,
+   "temp": 20.0,
+   "sense_to_radar_mohm": 45.804765468933795,
+   "sense_to_radar_worst_mv": 3.5820792632422522,
+   "source_to_radar_mohm": 45.94097248189736,
+   "raw_rise_mv": 0.009534490907449861,
+   "best_ball_above_sense_mv": -2.8305879024084786,
+   "bead_to_radar_mohm": null,
+   "bead_split": []
+  },
+  "GND_1V0_return": {
+   "mohm": 1.2719549376999983
+  }
+ },
+ "85C": {
+  "1V0": {
+   "amps": 2.5,
+   "temp": 85.0,
+   "sense_to_radar_mohm": 4.679942341551573,
+   "sense_to_radar_worst_mv": 11.801894268356358,
+   "source_to_radar_mohm": 29.59492600960881,
+   "raw_rise_mv": 62.28745917014308,
+   "best_ball_above_sense_mv": -11.609450163464777,
+   "bead_to_radar_mohm": 13.28850090958898,
+   "bead_split": [
+    1.288404104633385,
+    1.2115958961415612
+   ],
+   "dc_at_radar_worst": 0.9642464007812921
+  },
+  "1V8": {
+   "amps": 0.85,
+   "temp": 85.0,
+   "sense_to_radar_mohm": 42.68391711987779,
+   "sense_to_radar_worst_mv": 50.8883692775713,
+   "source_to_radar_mohm": 90.53773628074349,
+   "raw_rise_mv": 40.67574628673586,
+   "best_ball_above_sense_mv": -0.8035668947489888,
+   "bead_to_radar_mohm": 61.993372509288356,
+   "bead_split": [
+    0.8499999996796832
+   ],
+   "dc_at_radar_worst": 1.7117680510393092
+  },
+  "1V2": {
+   "amps": 1.0,
+   "temp": 85.0,
+   "sense_to_radar_mohm": 13.402762625713054,
+   "sense_to_radar_worst_mv": 19.54955044081189,
+   "source_to_radar_mohm": 16.242871131405096,
+   "raw_rise_mv": 2.840108505692037,
+   "best_ball_above_sense_mv": -9.74270169463826,
+   "bead_to_radar_mohm": null,
+   "bead_split": [],
+   "dc_at_radar_worst": 1.1548697675790474
+  },
+  "3V3": {
+   "amps": 0.07,
+   "temp": 85.0,
+   "sense_to_radar_mohm": 57.409823176645524,
+   "sense_to_radar_worst_mv": 4.489799582323438,
+   "source_to_radar_mohm": 57.58040462548272,
+   "raw_rise_mv": 0.011940701418604106,
+   "best_ball_above_sense_mv": -3.5475756624069374,
+   "bead_to_radar_mohm": null,
+   "bead_split": [],
+   "dc_at_radar_worst": 3.229399552679067
+  },
+  "GND_1V0_return": {
+   "mohm": 1.5806819801406327
+  }
+ }
+}

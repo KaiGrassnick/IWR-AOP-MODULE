@@ -205,8 +205,13 @@ def rails():
         def fn(l):
             return l.replace(f'IWR-AOP-MODULE:PWR_{a}"', f'IWR-AOP-MODULE:PWR_{b}"').replace(f'"Value" "{a}"', f'"Value" "{b}"')
         return fn
-    s.edit("#PWR8028", swap("1V0_R", "1V0_RAW"))
-    s.edit("#PWR8038", swap("1V8_R", "1V8_RAW"))
+    # FB_B2 / FB_B3: the power symbol on each feedback pin becomes a net label; the sense network
+    # (R628/C631, R629/C632) is drawn in the supervisor block below.
+    for pwr, fb in (("#PWR8028", "FB_B2"), ("#PWR8038", "FB_B3")):
+        i = s.idx(pwr)
+        x, y = re.search(r"\(at ([-\d.]+) ([-\d.]+) 0\)", s.L[i]).groups()
+        s.L[i] = (f'  (label "{fb}" (at {x} {y} 90) (effects (font (size 1.27 1.27)) (justify left)) '
+                  f'(uuid "{new_uuid()}"))')
     # I2C pull-ups to the radar I/O rail (radar VIH 2.25 V; PMIC SDA/SCL rated 6 V, VIH 1.2 V)
     s.edit("#PWR8045", swap("1V8_R", "3V3_R"))
     s.edit("#PWR8046", swap("1V8_R", "3V3_R"))
@@ -214,19 +219,19 @@ def rails():
     s.edit("R604", lambda l: prop(l.replace("(dnp no)", "(dnp yes)"), "Description",
                                   "DNP option: fitted, PGOOD also asserts reset (Rev 1.0 behaviour). Not fitted, reset is U601 + GPIO2."))
     for r in ("FB600", "FB601"):
-        s.edit(r, lambda l: prop(l, "Description", "Second-stage ferrite as on TI IWR6843AOPEVM (BLM18KG121TH1D); outside the regulation loop, FB senses the buck output."))
+        s.edit(r, lambda l: prop(l, "Description", "Second-stage ferrite as on TI IWR6843AOPEVM (BLM18KG121TH1D). Its DC drop is regulated out by the remote sense (R628/R629); the loop sees the buck output through C631/C632."))
 
     def retext(old, new):
         i = next(i for i, l in enumerate(s.L) if l.startswith("  (text") and old in l)
         s.L[i] = re.sub(r'\(text "[^"]*"', lambda m: f'(text "{new}"', s.L[i])
-    retext("Kelvin sense after ferrite", "4 MHz; short VIN/PGND loops.\\nFB2/3 sense the buck output (xx_RAW);\\nferrites are outside the loop, as on the TI EVM.")
+    retext("Kelvin sense after ferrite", "4 MHz; short VIN/PGND loops.\\nFB2/3: DC sense at the radar (R628/R629),\\nAC sense at the buck output (C631/C632).")
     retext("RC fallback", "R604 DNP: PGOOD is observed (TP613), not a reset source.\\nC605 DNP, footprint kept.\\nR600/601: I2C pull-ups to 3V3_R; bus master is the radar (R605/R606).")
     retext("open-drain reset sinks", "Reset sinks on AOP_NRESET (all open-drain):\\nU601 supervisor (all four rails), PMIC GPIO2 (falls with EN1),\\nSW400, J301.10, carrier through R417.")
 
-    # extra bulk at the buck outputs (TI EVM: 3 x 22 uF on 1.0 V, 2 x 22 uF on 1.8 V)
-    d = "Buck output bulk at the PMIC, inside the regulation loop (TI IWR6843AOPEVM uses 3 x 22 uF on 1.0 V, 2 x 22 uF on 1.8 V)."
+    # extra bulk at the buck outputs: 2 x 22 uF local on each rail. A third cap on 1.0 V would take the
+    # rail total past the LP87524 limit of 100 uF per phase (SNVSAW2B 6.5), so it is left out.
+    d = "Buck output bulk at the PMIC, inside the regulation loop (2 x 22 uF local; rail total stays under the 100 uF LP87524 limit)."
     s.cap("C624", "C626", 156.21, 167.64, "1V0_RAW", Description=d)
-    s.cap("C624", "C627", 186.69, 167.64, "1V0_RAW", Description=d)
     s.cap("C624", "C628", 186.69, 213.36, "1V8_RAW", Description=d)
     # second 1.0 V ferrite in parallel: halves DC drop and bias per bead
     s.clone("FB600", "FB602", 204.47, 180.34, Description="In parallel with FB600: 11 mohm total, 1.25 A per bead at the 2.5 A 3-TX peak.")
@@ -259,6 +264,23 @@ def rails():
         s.wire(x, 328.93, x, 334.01); s.junction(x, 331.47); s.wire(x, 331.47, x + 5.08, 331.47); s.label(lab, x + 5.08, 331.47, 0)
         res(rb, vb, x, 336.55, f"U601 threshold divider, bottom, {net}; 1 %")
         s.wire(x, 339.09, x, 342.9); s.power("GND", x, 342.9)
+
+    # ---- remote sense networks: DC from the radar end, AC from the buck output
+    part["22R"] = ("0402WGF220JTCE", "C25092")
+    s.text("FB_B2/FB_B3 REMOTE SENSE: DC through 22R from the radar balls (IR drop of ferrite and\\n"
+           "copper is regulated out), AC through 4.7 uF from the buck output (loop does not see the\\n"
+           "ferrite resonance). Crossover 1.6 kHz. Fallback to the TI EVM local sense: remove\\n"
+           "R628/R629 and fit 0R in place of C631/C632.", 320.04, 296.0)
+    for i, (rail, fb, rr, cc) in enumerate((("1V0", "FB_B2", "R628", "C631"), ("1V8", "FB_B3", "R629", "C632"))):
+        x = 335.28 + 35.56 * i
+        s.power(f"{rail}_R", x, 311.15); s.wire(x, 311.15, x, 313.69)
+        res(rr, "22R", x, 316.23, f"{fb} DC sense from the radar end of {rail}_R (Kelvin tap at the radar balls); 1 %")
+        s.wire(x, 318.77, x, 323.85); s.junction(x, 321.31); s.wire(x, 321.31, x + 5.08, 321.31); s.label(fb, x + 5.08, 321.31, 0)
+        s.clone("C605", cc, x, 327.66, dnp="no", Value="4.7uF", MPN="CL10A475KO8NNNC", LCSC="C19666", Rating="X5R 16V",
+                Datasheet="https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Samsung-Electro-Mechanics-CL10A475KO8NNNC_C19666.pdf",
+                Description=f"{fb} AC sense from the buck output {rail}_RAW; with {rr}: 100 us")
+        s.wire(x, 331.47, x, 334.01); s.wire(x, 334.01, x + 10.16, 334.01); s.wire(x + 10.16, 334.01, x + 10.16, 331.47)
+        s.power(f"{rail}_RAW", x + 10.16, 331.47)
 
     X, Y = 251.46, 340.36
     s.lib_symbol(sym_tps386000("IWR-AOP-MODULE:"))

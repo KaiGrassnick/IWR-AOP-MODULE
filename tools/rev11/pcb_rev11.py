@@ -115,7 +115,7 @@ def add_fp(b, comps, ref, x, y, rot=0, back=False):
     for fld in f.GetFields():
         fld.SetVisible(False)
         if fld.GetName() != "Reference":
-            fld.SetLayer(pcbnew.F_Fab)
+            fld.SetLayer(pcbnew.B_Fab if back else pcbnew.F_Fab)
     return f
 
 
@@ -239,7 +239,7 @@ class Router:
         self.route(netname, start, split, window, width=0.1, slop=0.015, **kw)
         self.route(netname, split, goal, window, width=0.15, **({"edge": kw["edge"]} if "edge" in kw else {}))
 
-    def via_near(self, netname, layer, x, y, window_r=3.0, via=(0.45, 0.3), width=0.3, maxd=2.5, avoid_existing=0.0, avoid_rects=()):
+    def via_near(self, netname, layer, x, y, window_r=3.0, via=(0.45, 0.3), width=0.3, maxd=2.5, avoid_existing=0.0, avoid_rects=(), optional=False):
         """Drop a via for `netname` as close as possible to (x, y) and join it on `layer`."""
         w = R.Window(self.b, x - window_r, y - window_r, x + window_r, y + window_r)
         w.build(netname)
@@ -257,6 +257,9 @@ class Router:
             d = np.where((X > ax0) & (X < ax1) & (Y > ay0) & (Y < ay1), 1e9, d)
         i = int(np.argmin(d))
         if d[i] > maxd:
+            if optional:
+                print(f"{netname}: no stitching via site near {x},{y}, skipped", flush=True)
+                return None
             self.failed.append(f"no via site for {netname} near {x},{y}")
             print("FAILED:", self.failed[-1], flush=True)
             return None
@@ -292,8 +295,6 @@ def stage1(b, comps, nets, rt):
         f.SetOrientationDegrees(270)
     sync_nets(b, comps, nets)
     win = (160, 100, 186, 124)
-    rt.route("1V0_RAW", padpt(b, "U600", "1"), "net", win, width=0.2)
-    rt.route("1V8_RAW", padpt(b, "U600", "21"), "net", win, width=0.2)
     rt.route("3V3_R", padpt(b, "R600", "1"), "net", win, width=0.3)
 
 
@@ -303,7 +304,7 @@ PLACE = {
     # second 1.0 V ferrite, mirror image of FB600 on the other side of the board
     "FB602": (172.325, 105.7, 90),
     # buck output bulk on the front, over the inductor output pads
-    "C626": (175.45, 107.675, 90), "C627": (177.55, 107.675, 90), "C628": (168.25, 107.675, 90),
+    "C626": (175.45, 107.675, 90), "C628": (168.25, 107.675, 90),
     # supervisor, VDD cap and the four dividers
     "U601": (167.6, 125.35, 90), "C606": (167.6, 122.25, 0),
     "R621": (170.75, 123.2, 90), "R620": (171.7, 123.2, 90),      # 3V3_R  -> SENSE1 (pin 10)
@@ -311,7 +312,11 @@ PLACE = {
     "R625": (173.76, 126.45, 0), "R624": (173.76, 127.4, 0),      # 1V2_R  -> SENSE3 (pin 8)
     "R626": (171.2, 126.45, 0), "R627": (171.2, 127.4, 0),      # 1V0_RAW -> SENSE4L (pin 7)
     # service pads
-    "TP613": (171.0, 116.6, 0),
+    "TP613": (170.6, 116.9, 0),
+    # remote sense: AC coupling caps on the front beside the buck output pads, DC sense resistors at the
+    # radar end (R628 on the back between the radar decoupling caps, R629 beside the 1V8_R test pad)
+    "C631": (174.2, 111.7, 0), "C632": (168.9, 110.9, 90),
+    "R628": (153.58, 113.9, 0, "B"), "R629": (161.3, 117.5, 0),
     # radar I2C to the PMIC: 0R links and bus pads
     "R605": (160.6, 124.75, 0), "R606": (159.4, 126.6, 90),
     "TP614": (162.9, 124.75, 0), "TP615": (162.75, 127.15, 0),
@@ -319,11 +324,13 @@ PLACE = {
     "C204": (127.0, 109.2, 0), "R210": (130.9, 109.2, 0), "D202": (127.4, 111.8, 0),
 }
 # pad that has to face a given point (picks between rot and rot+180)
-FACE = {"FB602": ("1", (172.325, 104.9)), "C626": ("1", (175.45, 108.6)), "C627": ("1", (177.55, 108.6)),
+FACE = {"FB602": ("1", (172.325, 104.9)), "C626": ("1", (175.45, 108.6)),
         "C628": ("1", (168.25, 108.6)), "C606": ("1", (167.1, 122.25)),
         "R621": ("1", (170.75, 123.7)), "R620": ("2", (171.7, 123.7)), "R623": ("1", (172.75, 123.7)),
         "R622": ("2", (173.7, 123.7)), "R625": ("1", (173.25, 126.45)), "R624": ("2", (173.25, 127.4)),
         "R627": ("1", (170.7, 127.4)), "R626": ("2", (170.7, 126.45)),
+        "C631": ("1", (173.4, 111.7)), "C632": ("1", (168.9, 111.7)),
+        "R628": ("1", (153.1, 113.9)), "R629": ("1", (160.8, 117.5)),
         "R605": ("2", (161.2, 124.75)), "R606": ("1", (159.4, 127.1)),
         "C204": ("1", (125.5, 109.2)), "R210": ("1", (130.1, 109.2)), "D202": ("1", (126.0, 111.8))}
 
@@ -331,8 +338,8 @@ FACE = {"FB602": ("1", (172.325, 104.9)), "C626": ("1", (175.45, 108.6)), "C627"
 def stage2(b, comps, nets, rt):
     """Place the new footprints."""
     tp_attr = b.FindFootprintByReference("TP603").GetAttributes()
-    for ref, (x, y, rot) in PLACE.items():
-        f = add_fp(b, comps, ref, x, y, rot)
+    for ref, (x, y, rot, *side) in PLACE.items():
+        f = add_fp(b, comps, ref, x, y, rot, back=bool(side))
         if ref in FACE:
             num, tgt = FACE[ref]
             p = pad(b, ref, num)
@@ -362,11 +369,10 @@ def stage3(b, comps, nets, rt):
     """Power parts: second ferrite, buck output bulk, VBUS damper."""
     north = (162, 98, 182, 114)
     rt.route("1V0_RAW", padpt(b, "FB602", "1"), "net", north, width=0.5)
-    for c in ("C626", "C627"):
-        rt.route("1V0_RAW", padpt(b, c, "1"), "net", north, width=0.5)
+    rt.route("1V0_RAW", padpt(b, "C626", "1"), "net", north, width=0.5)
     rt.route("1V8_RAW", padpt(b, "C628", "1"), "net", north, width=0.5)
     # each bulk cap and each ferrite pad gets its own via to the back-side copper
-    for ref, num, n in (("C626", "1", "1V0_RAW"), ("C627", "1", "1V0_RAW"), ("C628", "1", "1V8_RAW"),
+    for ref, num, n in (("C626", "1", "1V0_RAW"), ("C628", "1", "1V8_RAW"),
                         ("FB602", "1", "1V0_RAW"), ("FB602", "2", "1V0_R")):
         _, x, y = padpt(b, ref, num)
         rt.via_near(n, "F.Cu", x, y, width=0.5, maxd=1.2, avoid_existing=0.6)
@@ -375,7 +381,7 @@ def stage3(b, comps, nets, rt):
     straight(b, "USB_VBUS", "F.Cu", [xy(b, "C204", "1"), (125.525, 111.3), xy(b, "D202", "1")], 0.6)
     straight(b, "Net-(C204-Pad2)", "F.Cu", [xy(b, "C204", "2"), xy(b, "R210", "1")], 0.6)
     refill(b)
-    for ref, num in (("C626", "2"), ("C627", "2"), ("C628", "2"), ("R210", "2"), ("D202", "2")):
+    for ref, num in (("C626", "2"), ("C628", "2"), ("R210", "2"), ("D202", "2")):
         _, x, y = padpt(b, ref, num)
         rt.via_near("GND", "F.Cu", x, y, width=0.4)
 
@@ -392,6 +398,8 @@ def stage4(b, comps, nets, rt):
     straight(b, "SYS_5V", "F.Cu", [A("14"), xy(b, "C606", "1")], 0.2)
     rt.route("SYS_5V", padpt(b, "C606", "1"), "net", win, width=0.2)
     rt.route("SYS_5V", padpt(b, "U601", "1"), "net", win, width=0.2)
+    # PMIC pin 6 (SDA) has one way out on the back; it goes before the supervisor sense lines
+    rt.route("PMIC_SDA", padpt(b, "U600", "6"), padpt(b, "TP615", "1"), (158, 112, 184, 128.4), width=0.15)
     # ground pins into the exposed pad
     ex, ey = A("21")
     for n in ("6", "11", "12", "20"):
@@ -444,8 +452,66 @@ def stage5(b, comps, nets, rt):
     rt.route("PMIC_SDA", padpt(b, "R606", "2"), padpt(b, "R601", "2"), west, width=0.2, layers=("F.Cu",), via=None)
     rt.route("PMIC_SDA", padpt(b, "R601", "2"), padpt(b, "TP615", "1"), west, width=0.2, layers=("F.Cu",), via=None)
     east = (158, 112, 184, 128.4)
-    rt.route("PMIC_SDA", padpt(b, "U600", "6"), padpt(b, "TP615", "1"), east, width=0.15)
     rt.route("PMIC_SCL", padpt(b, "TP614", "1"), "net", east, width=0.15, exclude=[(162.0, 124.75, 1.6)])
+
+
+def stage5b(b, comps, nets, rt):
+    """Remote sense of the 1.0 V and 1.8 V rails (FB_B2 / FB_B3)."""
+    fb2, fb3 = "/Radar PMIC/FB_B2", "/Radar PMIC/FB_B3"
+    pm = (164, 106, 182, 122)
+    # PMIC feedback pins (back) up to the coupling caps (front), caps to the buck outputs
+    rt.route(fb2, padpt(b, "U600", "1"), padpt(b, "C631", "1"), pm, width=0.2)
+    rt.route(fb3, padpt(b, "U600", "21"), padpt(b, "C632", "1"), pm, width=0.2)
+    straight(b, "1V0_RAW", "F.Cu", [xy(b, "C631", "2"), xy(b, "TP608", "1")], 0.3)
+    straight(b, "1V8_RAW", "F.Cu", [xy(b, "C632", "2"), xy(b, "C628", "1")], 0.3)
+    # 1.8 V Kelvin tap: the 1V8_R test pad, which hangs on the bulk capacitors at the radar
+    straight(b, "1V8_R", "F.Cu", [xy(b, "R629", "1"), xy(b, "TP606", "1")], 0.2)
+    rt.route(fb3, padpt(b, "R629", "2"), padpt(b, "C632", "1"), (156, 108, 180, 122), width=0.15)
+    # 1.0 V Kelvin tap: a via inside R628 pad 1, between four ball pads, down to the In3 feed 3 mm
+    # from the VIN_13RF balls
+    R.add_via(b, "1V0_R", 153.1, 114.15, 0.35, 0.2)
+    rt.route(fb2, padpt(b, "R628", "2"), padpt(b, "C631", "1"), (150, 103, 180, 122), width=0.15)
+
+
+def add_zone(b, netname, layer, pts, name, clearance=0.2, min_w=0.25, priority=10):
+    z = pcbnew.ZONE(b)
+    z.SetLayer(b.GetLayerID(layer))
+    z.SetNetCode(b.GetNetcodeFromNetname(netname))
+    z.SetZoneName(name)
+    z.SetAssignedPriority(priority)
+    z.SetLocalClearance(NM(clearance))
+    z.SetMinThickness(NM(min_w))
+    z.SetPadConnection(pcbnew.ZONE_CONNECTION_FULL)
+    z.SetIslandRemovalMode(pcbnew.ISLAND_REMOVAL_MODE_ALWAYS)
+    o = z.Outline()
+    o.NewOutline()
+    for x, y in pts:
+        o.Append(NM(x), NM(y))
+    b.Add(z)
+    return z
+
+
+def stage6(b, comps, nets, rt):
+    """Wide supply feeds to the radar.
+
+    The post-layout extraction (simulation/pdn_extract.py) showed the Rev 1.0 1.0 V feed, a 0.75 mm
+    track on 17.5 um In3 copper, dropping well over 100 mV at the 2.5 A peak.  Copper areas now run
+    in parallel with the old tracks; the fill keeps its own clearance to everything else.
+    """
+    # 1.0 V: beads (172.3,106.5) -> west along the antenna notch -> radar balls G/H/J 16-18
+    add_zone(b, "1V0_R", "In3.Cu", [(157.0, 113.2), (163.2, 106.6), (173.4, 105.4), (173.4, 111.6), (163.4, 111.6),
+                                    (159.4, 115.6), (157.0, 115.6)], "1V0_R feed In3")
+    add_zone(b, "1V0_R", "In3.Cu", [(146.5, 113.2), (157.3, 113.2), (157.3, 115.6), (149.3, 115.6), (149.3, 115.75),
+                                    (146.5, 115.75)], "1V0_R feed In3, under the radar", clearance=0.1, min_w=0.15,
+             priority=11)
+    # the same path again on the 35 um front copper, stitched to In3
+    add_zone(b, "1V0_R", "F.Cu", [(156.7, 113.25), (160.4, 109.5), (169.9, 109.5), (169.9, 107.6), (171.2, 107.6),
+                                  (171.2, 105.9), (173.4, 105.9), (173.4, 113.25), (164.2, 113.25), (163.4, 115.45),
+                                  (156.7, 115.45)], "1V0_R feed F.Cu")
+    for x, y in ((157.4, 114.4), (158.3, 114.6), (157.3, 113.7), (165.0, 111.5), (168.5, 112.0), (171.5, 110.5),
+                 (172.5, 108.5)):
+        rt.via_near("1V0_R", None, x, y, maxd=0.9, avoid_existing=0.8, optional=True)
+    refill(b)
 
 
 def fix_islands(b, rt):
@@ -463,7 +529,7 @@ def fix_islands(b, rt):
     refill(b)
 
 
-STAGES = [stage1, stage2, stage3, stage4, stage5]
+STAGES = [stage1, stage2, stage3, stage4, stage5, stage5b, stage6]
 
 
 def main():
