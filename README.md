@@ -1,6 +1,6 @@
 # IWR-AOP-MODULE
 
-**Revision 1.0** · KiCad 10 · six-layer, 85.6 × 33.7 mm · in production
+**Revision 1.1** · KiCad 10 · six-layer, 85.6 × 33.7 mm · designed and simulated, not yet built
 
 A self-contained 60 GHz mmWave radar module built around TI's **IWR6843AOP** (antenna-on-package). It boots its own firmware from on-board flash and connects to a PC over USB-C or a carrier through two rear sockets.
 
@@ -12,7 +12,7 @@ A self-contained 60 GHz mmWave radar module built around TI's **IWR6843AOP** (an
 - **Standalone boot.** 32 Mbit QSPI flash (`U301`, MX25L3233F).
 - **USB-C.** One cable supplies power and two CP2105 serial ports: control/flashing and radar data. BOOT and RESET buttons select flashing mode.
 - **Carrier.** 5 V input, UART and SPI, boot-mode select, reset, disable, interrupt, hardware frame-start pulse and frame-sync input.
-- **Power.** USB-C or carrier 5 V feeds an ideal-diode OR and four-rail TI LP87524J-Q1 PMIC. The PMIC sequences the rails, holds the radar in reset until they are good, and asserts reset when the carrier disables them.
+- **Power.** USB-C or carrier 5 V feeds an ideal-diode OR and four-rail TI LP87524J-Q1 PMIC. The PMIC sequences the rails and regulates the 1.0 V and 1.8 V rails at the radar (remote sense). A small heat sink on the back under the radar carries the heat away. A TPS386000 supervisor holds the radar in reset until all four rails are good, and the PMIC asserts reset when the carrier disables them. The radar can reach the PMIC over I²C.
 - **Debug.** Rear Cortex-10 JTAG header for development off a carrier (Black Magic Probe or XDS110), debug-boot solder jumper, and test pads for every rail, enable and reset. Flashing requires only USB and the BOOT/RESET buttons.
 - **RF-ready layout.** The radar sits on the bottom edge with a notch above it, giving the 0.2 mm antenna edge gaps TI specifies. A GND pad sits under the die on both faces.
 
@@ -26,7 +26,8 @@ A self-contained 60 GHz mmWave radar module built around TI's **IWR6843AOP** (an
 | Carrier sockets | `J400` 2×6 (UART, control, 5 V in) and `J401` 2×5 (SPI, data); HCTL PM254, 2.54 mm, 8.5 mm |
 | Mounting | Three M3 holes |
 | Board | 85.6 × 33.7 mm, 6 layers, 1.6 mm, ENIG, filled and capped vias |
-| Parts | 141 assembled on 39 BOM lines, both sides (`C605` left unfitted) |
+| Parts | 164 assembled on 46 BOM lines, both sides (`R604` and `C605` left unfitted), plus a 14 × 14 × 6 mm heat sink bonded on by hand |
+| Ambient | Up to about 58 °C at 1.75 W radar power and 43 °C at 2.3 W in still air with the heat sink (model, spec §10) |
 
 Full modes, rails, boot, mechanics, stackup and firmware requirements: **[hardware specification](docs/STG-HW-SPEC-004_IWR-AOP-MODULE.md)**.
 
@@ -93,15 +94,7 @@ Back view, mm. Everything is symmetric about the board centrelines (℄). Socket
 
 ## Cost
 
-First JLCPCB order, 5 boards (USD at €1 = $1.121, 5 October 2026):
-
-| | 5 boards | Per board |
-|---|---|---|
-| PCB | $31.85 | $6.37 |
-| Assembly, including parts | $341.61 | $68.32 |
-| **Total** | **$373.46** | **$74.69** |
-
-The IWR6843AOP is about $21 of each board. Per-part prices: [docs/bom-cost.csv](docs/bom-cost.csv).
+Parts for one board cost about $37.60 at LCSC list prices for a single board and $33.10 each for 30 (15 November 2026); the IWR6843AOP is about $19.50 of that. Per-part prices are in [docs/bom-cost.csv](docs/bom-cost.csv), rebuilt by `tools/bom_cost.py`. The bare PCB, JLCPCB's assembly fees and the heat sink (bought separately, a few dollars) come on top; JLCPCB quotes those at order time.
 
 ## Repository layout
 
@@ -121,6 +114,10 @@ docs/                  Hardware specification and BOM cost
 tools/
   board_svg.py         Pinout and dimension SVG generation
   render/              Blender product renders and orbit video pipeline
+  rev11/               Scripts that generate the schematic and layout changes of revision 1.1
+  bom_cost.py          Rebuilds docs/bom-cost.csv from current LCSC prices
+  heatsink_model.py    STEP model of heat sink HS300 (CadQuery)
+simulation/            Netlist checks, post-layout extraction, ngspice and thermal models, results
 manufacturing/         JLCPCB package builder and output (jlcpcb/)
 references/            Datasheets and JLC's sample BOM format
 CHANGELOG.md           Release history
@@ -132,7 +129,7 @@ The project is self-contained: everything outside the stock KiCad 10 libraries i
 
 ## Status
 
-**In production.** Revision 1.0 is fully routed. ERC is clean; DRC reports 0 unconnected and 0 schematic-parity issues, plus 36 accepted findings (spec §7.3). The bring-up checklist is spec §9.
+**Designed and simulated, not yet built.** The board is fully routed. ERC has no errors; DRC reports 0 unconnected and 0 schematic-parity issues, plus 53 accepted findings (spec §7.3). Post-layout extraction and simulation cover rail voltages at the radar balls, sequencing and reset, loop stability, chirp load steps, ripple, USB hot plug and temperature: see [`simulation/`](simulation/README.md). Operating conditions and the basis of the models are in spec §10 and the measurements for the first boards in spec §9.
 
 ## License
 

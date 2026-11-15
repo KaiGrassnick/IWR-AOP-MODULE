@@ -1,6 +1,6 @@
 # Product renders
 
-Run these commands from the repository root. Requires KiCad 10, Blender (tested with 5.2.2 LTS), Python 3 with Pillow, and FFmpeg. Texture lettering uses macOS's `/System/Library/Fonts/HelveticaNeue.ttc`; on another platform, set `FONT` in `make_aop_texture.py` to an installed font and face index.
+Run these commands from the repository root. Requires KiCad 10, Blender (tested with 5.2.2 LTS), Python 3 with Pillow, and FFmpeg. Texture lettering uses macOS's Helvetica Neue where it exists and falls back to Inter or DejaVu Sans on Linux; on Linux, call `blender` from its install directory in place of the macOS path below and set `KICAD10_3DMODEL_DIR` (for example `/usr/share/kicad/3dmodels`) before the exports.
 
 Check DRC before exporting; review the accepted findings in the [hardware specification](../../docs/STG-HW-SPEC-004_IWR-AOP-MODULE.md) §7.3. All generated assets belong under the ignored `build/product-renders/` directory. The scripts find the repository from their location: relative GLB paths resolve from the repository root, while relative render/stitch paths resolve from `build/product-renders/` (absolute paths remain absolute).
 
@@ -14,6 +14,14 @@ python3 tools/render/make_aop_texture.py
 ```
 
 The four 3000 × 3000 package maps are written to `build/product-renders/aop-top/`. They reconstruct antenna patches and markings from TI package imagery; they are render textures, not RF design data.
+
+## Board STEP
+
+The published `docs/3d/IWR-AOP-MODULE.step` uses the top-left corner of the board outline as its origin, so the board spans x 0 to 85.6 mm and y 0 to −33.7 mm. The user origin is the outer corner of the 0.05 mm outline line at (106.253719, 94.520834) mm; recompute it if the outline moves.
+
+```sh
+kicad-cli pcb export step --force --no-dnp --subst-models --user-origin 106.253719x94.520834mm -o docs/3d/IWR-AOP-MODULE.step IWR-AOP-MODULE.kicad_pcb
+```
 
 ## Stills
 

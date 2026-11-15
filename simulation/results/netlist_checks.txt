@@ -6,7 +6,7 @@ PASS  U117 LM66200 pin 3  [USB_VBUS (want USB_VBUS)]
 PASS  U117 LM66200 pin 6  [PWR_IN (want PWR_IN)]
 PASS  U117 LM66200 pin 4  [GND (want GND)]
 PASS  U117 ST (8) unused
-PASS  U600 LP87524J pin 1 FB_B2  [1V0_R (want 1V0_R)]
+PASS  U600 LP87524J pin 1 FB_B2  [/Radar PMIC/FB_B2 (want /Radar PMIC/FB_B2)]
 PASS  U600 LP87524J pin 3 CLKIN  [GND (want GND)]
 PASS  U600 LP87524J pin 4   [GND (want GND)]
 PASS  U600 LP87524J pin 5   [PMIC_SCL (want PMIC_SCL)]
@@ -25,7 +25,7 @@ PASS  U600 LP87524J pin 17   [GND (want GND)]
 PASS  U600 LP87524J pin 18 VANA  [SYS_5V (want SYS_5V)]
 PASS  U600 LP87524J pin 19   [PMIC_INT_N (want PMIC_INT_N)]
 PASS  U600 LP87524J pin 20 NRST  [SYS_5V (want SYS_5V)]
-PASS  U600 LP87524J pin 21 FB_B3  [1V8_R (want 1V8_R)]
+PASS  U600 LP87524J pin 21 FB_B3  [/Radar PMIC/FB_B3 (want /Radar PMIC/FB_B3)]
 PASS  U600 LP87524J pin 22   [SYS_5V (want SYS_5V)]
 PASS  U600 LP87524J pin 23   [PMIC_SW3 (want PMIC_SW3)]
 PASS  U600 LP87524J pin 24   [GND (want GND)]
@@ -37,7 +37,43 @@ PASS  L600 PMIC_SW0 -> 3V3_R
 PASS  L601 PMIC_SW1 -> 1V2_R
 PASS  L602 PMIC_SW2 -> 1V0_RAW
 PASS  L603 PMIC_SW3 -> 1V8_RAW
-PASS  Buck2 VSET 1.0 V feeds VIN_13RF via FB600
+PASS  Buck2 VSET 1.0 V feeds VIN_13RF via FB600 (two beads in parallel)
+PASS  Buck2 VSET 1.0 V feeds VIN_13RF via FB602 (two beads in parallel)
+PASS  R628 DC sense 1V0_R -> FB_B2  [{'1': '1V0_R', '2': '/Radar PMIC/FB_B2'}]
+PASS  C631 AC sense 1V0_RAW -> FB_B2  [{'1': '/Radar PMIC/FB_B2', '2': '1V0_RAW'}]
+PASS  R628/C631 sense crossover well below the ferrite/capacitor resonance (~100 kHz)  [7234 Hz]
+PASS  R629 DC sense 1V8_R -> FB_B3  [{'1': '1V8_R', '2': '/Radar PMIC/FB_B3'}]
+PASS  C632 AC sense 1V8_RAW -> FB_B3  [{'1': '/Radar PMIC/FB_B3', '2': '1V8_RAW'}]
+PASS  R629/C632 sense crossover well below the ferrite/capacitor resonance (~100 kHz)  [7234 Hz]
+PASS  U601 TPS386000 pin 1 MR (no internal pull-up, tied high)  [SYS_5V (want SYS_5V)]
+PASS  U601 TPS386000 pin 6 SENSE4H unused  [GND (want GND)]
+PASS  U601 TPS386000 pin 7 SENSE4L  [/Radar PMIC/SUP_1V0 (want /Radar PMIC/SUP_1V0)]
+PASS  U601 TPS386000 pin 8 SENSE3  [/Radar PMIC/SUP_1V2 (want /Radar PMIC/SUP_1V2)]
+PASS  U601 TPS386000 pin 9 SENSE2  [/Radar PMIC/SUP_1V8 (want /Radar PMIC/SUP_1V8)]
+PASS  U601 TPS386000 pin 10 SENSE1  [/Radar PMIC/SUP_3V3 (want /Radar PMIC/SUP_3V3)]
+PASS  U601 TPS386000 pin 11   [GND (want GND)]
+PASS  U601 TPS386000 pin 12   [GND (want GND)]
+PASS  U601 TPS386000 pin 14 VDD  [SYS_5V (want SYS_5V)]
+PASS  U601 TPS386000 pin 15 RESET1  [AOP_NRESET (want AOP_NRESET)]
+PASS  U601 TPS386000 pin 16 RESET2  [AOP_NRESET (want AOP_NRESET)]
+PASS  U601 TPS386000 pin 17 RESET3  [AOP_NRESET (want AOP_NRESET)]
+PASS  U601 TPS386000 pin 18 RESET4  [AOP_NRESET (want AOP_NRESET)]
+PASS  U601 TPS386000 pin 20 WDI unused  [GND (want GND)]
+PASS  U601 TPS386000 pin 21   [GND (want GND)]
+PASS  U601 CT4 (2) open: fixed 20 ms reset delay
+PASS  U601 CT3 (3) open: fixed 20 ms reset delay
+PASS  U601 CT2 (4) open: fixed 20 ms reset delay
+PASS  U601 CT1 (5) open: fixed 20 ms reset delay
+PASS  U601 VREF (13) and WDO (19) unused
+PASS  U601 3V3_R divider R620/R621: threshold 3.067 V falling, worst-case release 3.228 V below the regulation band  [band starts at 3.234 V]
+PASS  U601 1V8_RAW divider R622/R623: threshold 1.653 V falling, worst-case release 1.737 V below the regulation band  [band starts at 1.764 V]
+PASS  U601 1V2_R divider R624/R625: threshold 1.120 V falling, worst-case release 1.174 V below the regulation band  [band starts at 1.176 V]
+PASS  U601 1V0_RAW divider R626/R627: threshold 0.900 V falling, worst-case release 0.942 V below the regulation band  [band starts at 0.980 V]
+PASS  R604 not fitted: PGOOD is not a reset source
+PASS  U300 G3 (I2C_SCL) -> R605 -> PMIC_SCL
+PASS  U300 G1 (I2C_SDA) -> R606 -> PMIC_SDA
+PASS  C204 + R210 series damper across USB_VBUS  [10uF 50V + 0.47R]
+PASS  D202 TVS across USB_VBUS  [SMF5.0A]
 PASS  Buck3 VSET 1.8 V feeds 1.8 V loads via FB601
 PASS  U301 MX25L3233F pin 1  [/Radar and boot/AOP_QSPI_CS_N]
 PASS  U301 MX25L3233F pin 2  [/Radar and boot/AOP_QSPI_D1]
@@ -94,8 +130,8 @@ PASS  pull on /Radar and boot/AOP_NERROR_IN -> 3V3_R  [[('R309', '10kR', '3V3_R'
 PASS  pull on /Radar and boot/AOP_WARM_RESET -> 3V3_R  [[('R310', '10kR', '3V3_R')]]
 PASS  pull on AOP_NRESET -> 3V3_R  [[('R604', '0R', 'PMIC_PGOOD'), ('R417', '1kR', 'HOST_NRESET'), ('R603', '10kR', '3V3_R')]]
 PASS  pull on AOP_SYNC_IN -> GND  [[('R313', '10kR', 'GND'), ('R415', '22R', 'HOST_SYNC_IN')]]
-PASS  pull on PMIC_SCL -> 1V8_R  [[('R600', '10kR', '1V8_R')]]
-PASS  pull on PMIC_SDA -> 1V8_R  [[('R601', '10kR', '1V8_R')]]
+PASS  pull on PMIC_SCL -> 3V3_R  [[('R605', '0R', 'AOP_I2C_SCL'), ('R600', '10kR', '3V3_R')]]
+PASS  pull on PMIC_SDA -> 3V3_R  [[('R601', '10kR', '3V3_R'), ('R606', '0R', 'AOP_I2C_SDA')]]
 PASS  pull on PMIC_ENABLE -> SYS_5V  [[('R133', '10kR', 'SYS_5V')]]
 PASS  pull on USB_BRIDGE_RESET_N -> USB_3V45  [[('R202', '4.7kR', 'USB_3V45')]]
 PASS  Carrier reset: J400.8 low through R417 vs R603 -> radar NRESET < 0.65 V  [0.300 V]
@@ -108,8 +144,9 @@ PASS  CP2105 VIO = USB_3V45 (3.45 V) into radar RX: <= VIOIN abs max (VIOIN + 0.
 PASS  CP2105 VIO (3.45 V) is at the top of radar VIOIN recommended range (3.13-3.45 V)  [info]
 PASS  Buck0 3V3 total output C <= 100 uF (SNVSAW2B 6.5)  [42.4 uF nominal]
 PASS  Buck1 1V2 total output C <= 100 uF (SNVSAW2B 6.5)  [33.1 uF nominal]
-PASS  Buck2 1V0 total output C <= 100 uF (SNVSAW2B 6.5)  [70.7 uF nominal]
-PASS  Buck3 1V8 total output C <= 100 uF (SNVSAW2B 6.5)  [66.3 uF nominal]
+PASS  Buck2 1V0 total output C <= 174 uF (TI IWR6843AOPEVM; datasheet figure is 100 uF)  [136.7 uF nominal]
+PASS  Buck3 1V8 total output C <= 100 uF (SNVSAW2B 6.5)  [88.3 uF nominal]
+PASS  Buck2 soft-start charging current (3.8 mV/us ramp) well under the 5 A limit  [0.52 A]
 PASS  Y300 load: C346/C347 18 pF -> CL = 9 pF + stray (2-4 pF) vs crystal CL 12 pF, radar max 12 pF  [11-13 pF]
 
-113/113 checks pass
+150/150 checks pass

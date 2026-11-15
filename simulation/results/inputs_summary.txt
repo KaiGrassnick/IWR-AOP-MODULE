@@ -1,8 +1,12 @@
-USB-C hot plug into USB_VBUS (2 uF ceramic, no TVS); limit: LM66200 VIN abs max 6.0 V
-cable                         peak USB_VBUS
-0.3 m, 0.25 uH, 60 mohm             7.94 V  OVER 6 V abs max
-1 m, 0.7 uH, 120 mohm               8.04 V  OVER 6 V abs max
-2 m, 1.4 uH, 200 mohm               7.98 V  OVER 6 V abs max
+USB-C hot plug into USB_VBUS; limit: LM66200 VIN abs max 6.0 V
+The board has the C204 + R210 damper and the D202 TVS; the second column is the same input with 2 uF of ceramic only
+source, cable                                     peak      undamped
+5.0 V, 0.3 m, 0.25 uH, 60 mohm                 5.27 V       7.94 V  ok
+5.0 V, 1 m, 0.7 uH, 120 mohm                   5.00 V       8.04 V  ok
+5.0 V, 2 m, 1.4 uH, 200 mohm                   5.02 V       7.98 V  ok
+5.25 V (USB max), 1 m                          5.25 V       8.45 V  ok
+5.5 V (charger high), 1 m                      5.50 V       8.85 V  ok
+PASS  hot-plug peak under 6.0 V for every source and cable
 
 Load release 1.3 A -> 0.3 A at the 5 V input; limit: LP87524 VANA OVP 5.6 V min (latches off)
 supply                                  peak SYS_5V

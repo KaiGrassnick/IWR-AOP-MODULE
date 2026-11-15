@@ -1,8 +1,9 @@
+Ferrites BLM18KG260TN1 (6 A rated, 1.25 A at most per bead here); inductance swept down to 25 % for DC bias
 Switching ripple, fundamental at 4 MHz (Table 7-2 gives the limit at 4.4 MHz)
-rail   ferrite L  at PMIC (uVrms)  at radar (uVrms)  limit
-1V0_R       20nH             1262              37.9   13 uV  FAIL
-1V0_R      150nH             1280              16.8   13 uV  FAIL
-1V0_R      300nH             1279               3.0   13 uV  PASS
-1V8_R       20nH             1919              52.0   19 uV  FAIL
-1V8_R      150nH             1945              17.8   19 uV  PASS
-1V8_R      300nH             1938               0.5   19 uV  PASS
+rail      bead L  at PMIC (uVrms)  at radar (uVrms)  limit
+1V0_R      100 %              634               2.7   13 uV  PASS
+1V0_R       50 %              633               5.1   13 uV  PASS
+1V0_R       25 %              629              10.0   13 uV  PASS
+1V8_R      100 %              967               1.9   19 uV  PASS
+1V8_R       50 %              965               3.7   19 uV  PASS
+1V8_R       25 %              963               7.3   19 uV  PASS

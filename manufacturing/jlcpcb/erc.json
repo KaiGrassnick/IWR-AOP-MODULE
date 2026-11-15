@@ -1,7 +1,7 @@
 {
     "$schema": "https://schemas.kicad.org/erc.v1.json",
     "coordinate_units": "mm",
-    "date": "2026-10-05T14:28:29",
+    "date": "2026-11-15T12:55:54",
     "ignored_checks": [
         {
             "description": "Global label only appears once in the schematic",
@@ -25,7 +25,7 @@
         "warning",
         "exclusion"
     ],
-    "kicad_version": "10.0.3",
+    "kicad_version": "10.0.8",
     "sheets": [
         {
             "path": "/",
@@ -35,7 +35,169 @@
         {
             "path": "/Radar PMIC/",
             "uuid_path": "/aa2ac780-2721-4c8d-9e61-36df9bfa9575/bd81ccb4-884d-414b-a160-7550e1f2d37c",
-            "violations": []
+            "violations": [
+                {
+                    "description": "Local and global labels have same name",
+                    "items": [
+                        {
+                            "description": "Symbol #PWR8046 Pin 1 [3V3_R, Power input, Line]",
+                            "pos": {
+                                "x": 139.7,
+                                "y": 255.27
+                            },
+                            "uuid": "1a8a78f5-c4e0-40e6-98df-6e04035018f5"
+                        },
+                        {
+                            "description": "Label '3V3_R'",
+                            "pos": {
+                                "x": 223.52,
+                                "y": 22.86
+                            },
+                            "uuid": "690f71f2-7bff-4089-b618-7b6939017abb"
+                        }
+                    ],
+                    "severity": "warning",
+                    "type": "same_local_global_label"
+                },
+                {
+                    "description": "Local and global labels have same name",
+                    "items": [
+                        {
+                            "description": "Symbol #PWR11013 Pin 1 [1V2_R, Power input, Line]",
+                            "pos": {
+                                "x": 161.29,
+                                "y": 320.04
+                            },
+                            "uuid": "3dd54b19-4154-46c4-a48b-481189e820ab"
+                        },
+                        {
+                            "description": "Label '1V2_R'",
+                            "pos": {
+                                "x": 170.18,
+                                "y": 114.3
+                            },
+                            "uuid": "01afe4f5-8a15-47b1-88ab-6144f8bb5f5b"
+                        }
+                    ],
+                    "severity": "warning",
+                    "type": "same_local_global_label"
+                },
+                {
+                    "description": "Local and global labels have same name",
+                    "items": [
+                        {
+                            "description": "Symbol #PWR8047 Pin 1 [1V8_R, Power input, Line]",
+                            "pos": {
+                                "x": 171.45,
+                                "y": 255.27
+                            },
+                            "uuid": "227a81f5-0712-41e9-9f25-3ca56e7a71ac"
+                        },
+                        {
+                            "description": "Label '1V8_R'",
+                            "pos": {
+                                "x": 229.87,
+                                "y": 205.74
+                            },
+                            "uuid": "a8d93b96-fdf2-43bd-8cd3-da1eb867722c"
+                        }
+                    ],
+                    "severity": "warning",
+                    "type": "same_local_global_label"
+                },
+                {
+                    "description": "Local and global labels have same name",
+                    "items": [
+                        {
+                            "description": "Symbol #PWR11003 Pin 1 [1V8_RAW, Power input, Line]",
+                            "pos": {
+                                "x": 186.69,
+                                "y": 205.74
+                            },
+                            "uuid": "4dd52337-f31e-4c33-a5fa-34098aa2e05b"
+                        },
+                        {
+                            "description": "Label '1V8_RAW'",
+                            "pos": {
+                                "x": 200.66,
+                                "y": 210.82
+                            },
+                            "uuid": "39c53bd6-b928-41cf-a719-4cc0d7217763"
+                        }
+                    ],
+                    "severity": "warning",
+                    "type": "same_local_global_label"
+                },
+                {
+                    "description": "Local and global labels have same name",
+                    "items": [
+                        {
+                            "description": "Symbol #PWR10303 Pin 1 [Power input, Line]",
+                            "pos": {
+                                "x": 256.54,
+                                "y": 175.26
+                            },
+                            "uuid": "0431b188-d1e7-47bd-8b51-1666d2e7a6d9"
+                        },
+                        {
+                            "description": "Label 'GND'",
+                            "pos": {
+                                "x": 85.09,
+                                "y": 109.22
+                            },
+                            "uuid": "cb34addf-3a00-40d7-a5a1-f2ff5c5c5bed"
+                        }
+                    ],
+                    "severity": "warning",
+                    "type": "same_local_global_label"
+                },
+                {
+                    "description": "Local and global labels have same name",
+                    "items": [
+                        {
+                            "description": "Symbol #PWR10201 Pin 1 [1V0_R, Power input, Line]",
+                            "pos": {
+                                "x": 334.01,
+                                "y": 171.45
+                            },
+                            "uuid": "0320603b-b8c1-4189-8cc4-999a7b126e73"
+                        },
+                        {
+                            "description": "Label '1V0_R'",
+                            "pos": {
+                                "x": 29.21,
+                                "y": 270.51
+                            },
+                            "uuid": "0fcfb0a2-2b10-426f-a85f-6e60b00384e9"
+                        }
+                    ],
+                    "severity": "warning",
+                    "type": "same_local_global_label"
+                },
+                {
+                    "description": "Local and global labels have same name",
+                    "items": [
+                        {
+                            "description": "Symbol #PWR11018 Pin 1 [1V0_RAW, Power input, Line]",
+                            "pos": {
+                                "x": 345.44,
+                                "y": 331.47
+                            },
+                            "uuid": "26bfb716-2b6d-40d3-96c9-4fdf6b1b0ad6"
+                        },
+                        {
+                            "description": "Label '1V0_RAW'",
+                            "pos": {
+                                "x": 200.66,
+                                "y": 165.1
+                            },
+                            "uuid": "3a902126-111e-40ae-a9ea-8a1ceddc8fd2"
+                        }
+                    ],
+                    "severity": "warning",
+                    "type": "same_local_global_label"
+                }
+            ]
         },
         {
             "path": "/Radar and boot/",
