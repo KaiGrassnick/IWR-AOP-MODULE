@@ -120,6 +120,7 @@ tools/
 simulation/            Netlist checks, post-layout extraction, ngspice and thermal models, results
 cosim/                 Firmware running on a model of the board, chirp load replayed in ngspice
 manufacturing/         JLCPCB package builder and output (jlcpcb/)
+case/                  Notes for the enclosure design: heat path, antenna window, geometry
 references/            Datasheets and JLC's sample BOM format
 CHANGELOG.md           Release history
 LICENSE                MIT license
