@@ -67,3 +67,10 @@
   (condition "A.intersectsCourtyard('J200') && B.intersectsCourtyard('J200')")
   (constraint clearance (min 0.15mm))
   (constraint hole_clearance (min 0.15mm)))
+
+# Rev 1.1: ball G1 (I2C_SDA) sits in the outer row with a 1V8_R strap above it and a
+# decoupling capacitor under it, so it leaves along the board-edge side of row 1,
+# still under the package body. 0.3 mm copper-to-edge for this one net (JLC floor 0.2 mm).
+(rule "Radar I2C SDA edge escape"
+  (condition "A.NetName == 'AOP_I2C_SDA' || B.NetName == 'AOP_I2C_SDA'")
+  (constraint edge_clearance (min 0.3mm)))
