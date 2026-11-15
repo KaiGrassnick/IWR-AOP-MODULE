@@ -42,8 +42,8 @@ Design guidance:
 
 - **Preferred for a plastic case:** vent slots above and below the heat sink so air can rise past it, with the heat sink fins vertical in the mounted position where possible.
 - **Preferred for a metal case or a metal mounting plate:** leave out the heat sink and bridge from the back of the board under the radar to the metal with a thermal gap pad. The pad area is the 14 × 14 mm heat sink outline; the parts under it are 0.55 mm tall 0402 capacitors, so use a soft pad of 1 mm or more and little clamping force. The pad must be electrically insulating.
-- **Heat sink part:** Fischer Elektronik ICK BGA 14 × 14 × 6 is the default (29 K/W in natural convection); Same Sky HSB03-141406 is the alternative (39.7 K/W). Both fit the same outline.
-- **Safety net in firmware, in every case:** read the radar's on-chip temperature sensor each frame, reduce frame rate or duty cycle above about 90 °C and stop transmitting above about 100 °C. Radar power follows the transmit duty cycle, so this always works, whatever the mounting.
+- **Heat sink part:** the board names both parts, and both fit the same outline. Prefer the Fischer Elektronik ICK BGA 14 × 14 × 6 (29 K/W in natural convection) over the Same Sky HSB03-141406 (39.7 K/W). The board's thermal figures (spec §10) assume the Same Sky part, the worse of the two.
+- **Safety net in firmware, in every case:** the test firmware's thermal governor reads the radar's on-chip temperature sensor once per second, halves the frame rate from 90 °C and stops transmitting at 100 °C ([`cosim/`](../cosim/README.md#safety-layer-firmwaresrcsafetyc), spec §8). Radar power follows the transmit duty cycle, so this works whatever the mounting. It cannot take the radar below its idle temperature, so above roughly 80 °C around the board only switching the module off helps.
 - Check the finished unit with the on-chip sensor at the intended duty cycle (spec §9, item 8).
 
 ## Antenna window

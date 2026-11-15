@@ -16,6 +16,8 @@ Checks of the board, run from the routed layout and the datasheets with **KiCad 
 | `thermal_board.py` | pcbnew, scipy | Steady-state board temperature from the real copper of all six layers and every via, for four radar power levels in still air, with and without the heat sink `HS300`. |
 | `plot.py` | matplotlib | Draws `results/power_sequences.png` and `results/loadstep.png`. |
 
+Firmware behaviour on this board, and whole radar frames replayed through the `run_loadstep.py` model, are in [`cosim/`](../cosim/README.md). Enclosure what-if runs of `thermal_board.py` are in [`case/`](../case/README.md).
+
 Models (`spice/`, datasheets in `references/datasheets/`):
 
 - **LP87524J-Q1** timing (`lp87524j_behav.lib`): start delays, ramp, shutdown delay, discharge resistors, GPIO2, PGOOD window, UVLO and OVP, from the J OTP tables in SNVU663A. Loop dynamics are a separate averaged current-mode model in `run_loadstep.py`, calibrated so that TI's datasheet test (0.1 → 2 A in 1 µs with 22 µF + 22 µF) gives −40 mV.
@@ -65,7 +67,7 @@ Summaries are written to `results/*_summary.txt` and `results/netlist_checks.txt
 
 **Design trade-off**
 
-- **Full three-transmitter step with a fast edge on 1.0 V.** For 0.1 → 2.5 A with a 1–10 µs edge, 1V0_R dips to 0.911–0.942 V and stays under 0.95 V for 7–11 µs. With a 10 µs edge and half the ferrite inductance the figure is 0.934 V; the filter of the TI EVM, on this board's copper, gives 0.875 V under the same conditions. TI does not publish how fast the radar's supply current steps; spec §9 has the measurement, and firmware can raise Buck2 in 5 mV steps for headroom. `loadstep_summary.txt` lists the alternatives that were modelled and not built: three times the radar-side capacitance (0.948 V), four ferrites (0.941 V), a 0.1 µF sense capacitor (0.954 V, but 22° phase margin at 130 % ferrite inductance and oscillation with the worst tolerance stack) and sensing only at the radar (0.968 V, 48°). A faster sense path buys dip only by spending stability margin, so the board keeps the 7 kHz blend; spec §3.2 has the table.
+- **Full three-transmitter step with a fast edge on 1.0 V.** For 0.1 → 2.5 A with a 1–10 µs edge, 1V0_R dips to 0.911–0.942 V and stays under 0.95 V for 7–11 µs. With a 10 µs edge and half the ferrite inductance the figure is 0.934 V; the filter of the TI EVM, on this board's copper, gives 0.875 V under the same conditions. TI does not publish how fast the radar's supply current steps; spec §9 has the measurement. Firmware can trim Buck2 only to 1000–1005 mV: the frame replay in [`cosim/`](../cosim/README.md) shows a larger trim lifts the frame-end overshoot over 1.05 V. `loadstep_summary.txt` lists the alternatives that were modelled and not built: three times the radar-side capacitance (0.948 V), four ferrites (0.941 V), a 0.1 µF sense capacitor (0.954 V, but 22° phase margin at 130 % ferrite inductance and oscillation with the worst tolerance stack) and sensing only at the radar (0.968 V, 48°). A faster sense path buys dip only by spending stability margin, so the board keeps the 7 kHz blend; spec §3.2 has the table.
 
 ## What this cannot show
 
