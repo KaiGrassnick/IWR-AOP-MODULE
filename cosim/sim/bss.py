@@ -43,9 +43,12 @@ PMIC_K_PER_W = 22.5      # PMIC junction rise per radar watt with HS300 (thermal
 
 
 class BSS:
-    def __init__(self, sim, board, ambient=25.0, rth=27.3):
+    def __init__(self, sim, board, ambient=25.0, rth=27.3, tau=TAU_THERMAL):
         self.sim, self.board = sim, board
-        self.ambient, self.rth = ambient, rth
+        self.ambient, self.rth, self.tau = ambient, rth, tau
+        self.fail_temp = False    # inject failing temperature reads
+        self.pmic_extra = 0.0     # extra PMIC die rise, to inject a PMIC over-temperature
+        self.temp_trace = []      # (t, radar Tj) at every thermal update
         self.tj = ambient
         self.t_thermal = 0.0
         self.p_avg = 0.0
@@ -193,6 +196,8 @@ class BSS:
                 self._post(ID["EV_STOPPED"], [])
             return
         if mid == ID["GET_TEMP"]:
+            if self.fail_temp:
+                return self._respond(mid, seq, ERR_UNKNOWN)
             self._thermal_update()
             return self._respond(mid, seq, OK, [int(self.tj * 1000)])
         return self._respond(mid, seq, ERR_UNKNOWN)
@@ -300,7 +305,11 @@ class BSS:
             (self.idle_power() if self.on else 0.0)
         self.p_avg = p
         target = self.ambient + self.rth * p
-        self.tj = target + (self.tj - target) * math.exp(-dt / TAU_THERMAL)
+        self.tj = target + (self.tj - target) * math.exp(-dt / self.tau)
+        self.temp_trace.append((t, self.tj))
+        warn = 137 if self.board.pmic.regs[0x19] & 0x08 else 125     # TDIE_WARN_LEVEL (CONFIG)
+        if self.pmic_tj() > warn:
+            self.board.pmic.flag(0x1A, 0x04)                          # INT_TOP1.TDIE_WARN
 
     def pmic_tj(self):
-        return self.ambient + PMIC_K_PER_W * self.p_avg + 5.0
+        return self.ambient + PMIC_K_PER_W * getattr(self, "p_avg", 0.0) + 5.0 + self.pmic_extra

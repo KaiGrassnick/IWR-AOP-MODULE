@@ -7,7 +7,7 @@
 
 #include "hw.h"
 
-#define FW_VERSION "0.3.0-cosim"
+#define FW_VERSION "0.4.0-cosim"
 
 /* Pin mux, spec 8.3 and 8.6, modes from SWRS237C Table 6-1. */
 struct pinmux_entry {
@@ -44,5 +44,30 @@ struct pinmux_entry {
  * worst-case DC level under 1.05 V. SNVSAW2B: with VIN > 4 V do not set an output under 1.0 V. */
 #define BUCK2_MV_MIN 1000u
 #define BUCK2_MV_MAX 1005u   /* cosim/results/replay_summary.txt: higher pushes 1V0 over 1.05 V at frame end */
+
+
+/* Safety limits (safety.c). The host can tighten these, never loosen them.
+ * Radar junction limit 105 C (SWRS237C 7.3); thermal analysis: spec section 10 and
+ * simulation/results/thermal_summary.txt (27 K/W with HS300, tau about 150 s). */
+#define SAFE_THROTTLE_C_MIN 60
+#define SAFE_THROTTLE_C_MAX 90     /* halve the frame rate from here */
+#define SAFE_STOP_C_MIN 70
+#define SAFE_STOP_C_MAX 100        /* stop transmitting from here: 5 K under the junction limit */
+#define SAFE_HYST_C_MIN 3          /* release/resume at least this far under throttle/stop */
+#define SAFE_HOLD_MS_MIN 100
+#define SAFE_HOLD_MS_MAX 600000
+#define SAFE_HOLD_MS_DEFAULT 20000 /* about tau/8 of the board with the heat sink */
+#define SAFE_MAX_LEVEL 2u          /* deepest throttle: frame period x4 */
+#define SAFE_TEMP_FAILS_MAX 3u
+/* RF limits checked at sensorStart. Three TX at once does not fit the 1V0 window in the replay
+ * (cosim/results/replay_summary.txt) until it is measured on hardware, so only the debug build
+ * allows it. */
+#ifdef FW_DEBUG_PMIC
+#define SAFE_MAX_TX_PER_CHIRP 3u
+#else
+#define SAFE_MAX_TX_PER_CHIRP 2u
+#endif
+#define SAFE_MAX_DUTY_PCT 50u      /* chirping time per frame period */
+#define SAFE_MIN_PERIOD_US 10000u
 
 #endif

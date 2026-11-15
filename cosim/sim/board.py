@@ -92,7 +92,7 @@ class HostUart:
 
 
 class Board:
-    def __init__(self, fw_elf, ambient=25.0, name="board"):
+    def __init__(self, fw_elf, ambient=25.0, name="board", rth=None, thermal_tau=None):
         self.sim = Sim(name)
         self.fw = load_elf(fw_elf)
         self.flash = Flash(self.sim)
@@ -101,7 +101,8 @@ class Board:
         self.power.pmic = self.pmic
         self.bus = I2CBus(self.sim, {LP87524.ADDR: self.pmic})
         from . import calib
-        self.bss = BSS(self.sim, self, ambient=ambient, rth=calib.load()["rth_hs"])
+        kw = {"tau": thermal_tau} if thermal_tau else {}
+        self.bss = BSS(self.sim, self, ambient=ambient, rth=rth or calib.load()["rth_hs"], **kw)
         self.boot_button = False
         self.jp300 = False
         self.carrier_present = False
@@ -280,8 +281,10 @@ class Board:
                     pkt["points"] = [struct.unpack_from("<4f", body, k) for k in range(0, ln, 16)]
                 elif typ == 0x4D01:
                     b2, i2f, i2, i3f, i3, tmc, fl = struct.unpack("<5IiI", body[:28])
+                    th = struct.unpack("<I", body[28:32])[0] if ln >= 32 else 0
                     pkt["telemetry"] = dict(buck2_mv=b2, buck2_frame_ma=i2f, buck2_idle_ma=i2, buck3_frame_ma=i3f,
-                                            buck3_idle_ma=i3, temp_c=tmc / 1000, pmic_flags=fl)
+                                            buck3_idle_ma=i3, temp_c=tmc / 1000, pmic_flags=fl,
+                                            safe_state=th >> 8, throttle_level=th & 0xFF)
                 j += 8 + ln
             out.append(pkt)
             i = d.find(magic, i + total)

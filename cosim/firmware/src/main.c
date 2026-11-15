@@ -4,7 +4,8 @@
  * Boot: pin mux, interrupts, 1 ms tick, UARTA CLI at 115200 (CP2105 ECI / J400), UARTB data
  * at 460800 (CP2105 SCI / J401.9), PMIC check over I2C, wait for the radar subsystem.
  * CLI: TI mmWave demo style (channelCfg, profileCfg, chirpCfg, frameCfg, sensorStart,
- * sensorStop) plus board commands (status, pmic, pmicTrim, buck2, load, temp).
+ * sensorStop) plus board commands (status, pmic, pmicTrim, buck2, load, temp) and the host
+ * configuration (cfg, thermal; limits in board.h, governor in safety.c).
  * Data: one TI-style packet per frame on UARTB (magic 0102 0304 0506 0708), with the
  * points TLV and a board telemetry TLV.
  */
@@ -15,6 +16,7 @@
 #include "bss_msg.h"
 #include "pmic.h"
 #include "radar.h"
+#include "safety.h"
 #include "soc.h"
 
 #define PROMPT "aop:/>"
@@ -24,7 +26,6 @@ static bool debug_unlocked;
 #endif
 static uint32_t telemetry_buck2_ma, telemetry_buck3_ma;        /* between frames */
 static uint32_t telemetry_buck2_frame_ma, telemetry_buck3_frame_ma; /* while chirping */
-static uint32_t pmic_flags_seen;
 static volatile uint32_t frame_start_pending, frame_starts;
 
 /* RADARSS frame start (VIM 98): used to time the PMIC current measurement into the chirps */
@@ -90,7 +91,7 @@ static void send_frame_packet(const uint32_t *ev)
 {
     /* TI mmWave demo output: header of 40 bytes, then TLVs (type, length, payload) */
     uint32_t npts = ev[5] > 8 ? 8 : ev[5];
-    uint32_t tlv1 = 8 + 16 * npts, tlv2 = 8 + 28;
+    uint32_t tlv1 = 8 + 16 * npts, tlv2 = 8 + 32;
     uint32_t total = 40 + tlv1 + tlv2;
     total = (total + 31u) & ~31u; /* padded to 32 bytes like the TI demo */
     static const uint16_t magic[4] = {0x0102, 0x0304, 0x0506, 0x0708};
@@ -107,11 +108,12 @@ static void send_frame_packet(const uint32_t *ev)
         float p[4] = {x, y, z, v};
         sci_write(&sci_data, p, 16);
     }
-    uint32_t t2[2] = {0x4D01u, 28u};
-    uint32_t tel[7] = {pmic_vset_to_mv(pmic.vout[2]), telemetry_buck2_frame_ma, telemetry_buck2_ma,
-                       telemetry_buck3_frame_ma, telemetry_buck3_ma, (uint32_t)radar.temp_mc, pmic_flags_seen};
+    uint32_t t2[2] = {0x4D01u, 32u};
+    uint32_t tel[8] = {pmic_vset_to_mv(pmic.vout[2]), telemetry_buck2_frame_ma, telemetry_buck2_ma,
+                       telemetry_buck3_frame_ma, telemetry_buck3_ma, (uint32_t)radar.temp_mc, safety.pmic_flags,
+                       ((uint32_t)safety.state << 8) | safety.level};
     sci_write(&sci_data, t2, 8);
-    sci_write(&sci_data, tel, 28);
+    sci_write(&sci_data, tel, 32);
     for (uint32_t n = 40 + tlv1 + tlv2; n < total; n++)
         sci_putc(&sci_data, 0);
 }
@@ -140,12 +142,35 @@ static void cli_exec(char *line)
         if (!st)
             st = pmic_poll();
         print_pmic();
+    } else if (!strcmp(cmd, "cfg")) {
+        if (argc == 1) {
+            for (unsigned i = 0; i < cfg_count; i++) {
+                const cfg_item_t *c = &cfg_items[i];
+                uprintf(&sci_cli, "%-20s %6d %-2s  [%d..%d, default %d]  %s\n", c->key, (int)*c->val, c->unit,
+                        (int)c->min, (int)c->max, (int)c->def, c->help);
+            }
+        } else if (argc == 2) {
+            const cfg_item_t *c = cfg_find(argv[1]);
+            if (c)
+                uprintf(&sci_cli, "%s %d\n", c->key, (int)*c->val);
+            else
+                st = SAFE_ERR_KEY;
+        } else {
+            st = cfg_set(argv[1], (int32_t)atoi(argv[2]));
+        }
+    } else if (!strcmp(cmd, "thermal")) {
+        uprintf(&sci_cli, "thermal: %s, level %u (frame period x%u), radar %d mC, PMIC warning %s\n",
+                safety_state_name(), safety.level, 1u << safety.level, (int)safety.temp_mc,
+                safety.pmic_hot ? "yes" : "no");
+        uprintf(&sci_cli, "throttle %d C, release %d C, stop %d C, resume %d C, hold %d ms; throttled %u, stopped %u, restarted %u\n",
+                (int)cfg_throttle_c, (int)cfg_release_c, (int)cfg_stop_c, (int)cfg_resume_c, (int)cfg_hold_ms,
+                safety.throttles, safety.stops, safety.restarts);
     } else if (!strcmp(cmd, "pmicTrim") && argc >= 2) {
         uint32_t mv = (uint32_t)atoi(argv[1]);
         if (mv && (mv < BUCK2_MV_MIN || mv > BUCK2_MV_MAX))
-            st = -20;
+            st = SAFE_ERR_RANGE;
         else
-            radar_cfg.buck2_mv_running = mv;
+            st = cfg_set("pmic.trim_mv", mv ? (int32_t)(mv - BUCK2_MV_MIN) : 0);
     } else if (!strcmp(cmd, "buck2") && argc >= 2) {
         st = pmic_buck2_set_mv((uint32_t)atoi(argv[1]));
     } else if (!strcmp(cmd, "load")) {
@@ -199,9 +224,9 @@ static void cli_exec(char *line)
         radar_cfg.frames = (uint32_t)atoi(argv[4]);
         radar_cfg.period_us = centi(argv[5]) * 10u;
     } else if (!strcmp(cmd, "sensorStart")) {
-        st = radar_start();
+        st = safety_start();
     } else if (!strcmp(cmd, "sensorStop")) {
-        st = radar_stop();
+        st = safety_stop();
     } else {
         done = false;
         uprintf(&sci_cli, "'%s' ignored\n", cmd);
@@ -242,21 +267,18 @@ static void handle_event(uint32_t *ev)
         radar.frames_done++;
         radar.last_frame = ev[3];
         if (radar.frames_done % 10u == 1u) {
-            /* every 10th frame: PMIC flags, rail current, temperature */
-            if (!pmic_poll())
-                pmic_flags_seen |= (uint32_t)pmic.int_top1 | ((uint32_t)pmic.int_b23 << 8);
+            /* every 10th frame: rail current between frames */
             pmic_load_ma(2, &telemetry_buck2_ma);
             pmic_load_ma(3, &telemetry_buck3_ma);
-            radar_get_temp(&radar.temp_mc);
-            if (pmic.int_top1 & LP_INT_TOP1_TDIE_WARN)
-                uprintf(&sci_cli, "\nwarning: PMIC thermal warning\n");
         }
         send_frame_packet(ev);
+        safety_on_frame(); /* temperature every frame, PMIC status every 10th; may throttle or stop */
         break;
     case BSS_EV_ERROR:
         radar.errors++;
         radar.last_error = ev[3];
         radar.running = false;
+        safety_on_radar_error(ev[3]);
         uprintf(&sci_cli, "\nradar error %u\n", ev[3]);
         break;
     case BSS_EV_STOPPED:
@@ -275,6 +297,7 @@ int main(void)
     vim_attach(VIM_CH_SCIA_LVL0, sci_isr_cli);
     radar_link_init();
     radar_defaults();
+    cfg_defaults();
     vim_attach(VIM_CH_FRAME_START, frame_start_isr);
     i2c_init(I2C_SCL_HZ);
     irq_enable();
@@ -317,6 +340,7 @@ int main(void)
             }
         }
         cli_poll();
+        safety_poll();
         while (radar_poll_event(ev))
             handle_event(ev);
         uint32_t key = irq_disable();

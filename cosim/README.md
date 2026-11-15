@@ -5,7 +5,7 @@ Runs radar firmware, compiled for the IWR6843's Cortex-R4F, on a model of the Re
 ```
 firmware/            Bare-metal test firmware for the MSS (C, arm-none-eabi-gcc)
 sim/                 Board model in Python: CPU, peripherals, power tree, PMIC, radar stand-in
-run_cosim.py         14 scenarios (power-up, flashing, resets, dropouts, trim, 3-TX stress)
+run_cosim.py         20 scenarios (power-up, flashing, resets, dropouts, trim, 3-TX stress, thermal, host limits)
 replay/              ngspice replay of recorded frames on 1V0 and 1V8
 results/             cosim_summary.txt, replay_summary.txt, plots, frame traces
 ```
@@ -36,14 +36,14 @@ Needs `arm-none-eabi-gcc` (Ubuntu: `gcc-arm-none-eabi`), Python 3.10+ with `pip 
 
 ```
 make -C cosim/firmware                 # build/fw.elf, and build/fw_debug.elf with raw PMIC writes
-python3 cosim/run_cosim.py              # about 40 s, writes results/cosim_summary.txt and results/traces/
+python3 cosim/run_cosim.py              # about 3 min, writes results/cosim_summary.txt and results/traces/
 python3 cosim/replay/replay_rails.py    # about 1 min, writes results/replay_summary.txt and replay_*.png
 python3 cosim/run_cosim.py usb_boot     # one scenario, printed only
 ```
 
 ## Results
 
-All 14 scenarios pass (`results/cosim_summary.txt`):
+All 20 scenarios pass (`results/cosim_summary.txt`):
 
 - **Power-up and boot**, from USB or from the carrier: reset releases at 29.64 ms, the ROM starts the image 6 ms later, the firmware reads the PMIC at 400 kHz (OTP_REV 0x72) and the CLI answers on the right port. No rule violations, no unmodelled register accesses.
 - **Streaming**: the default TDM-MIMO profile and a three-TX-at-once profile start (LDO bypass first), stream TI-style packets at 460800 Bd with no framing errors, and the PMIC current readback reports 1040 mA (one TX) and 1500 mA (three TX) on Buck2 during chirps.
@@ -57,6 +57,44 @@ Two findings for the firmware and the bench:
 2. **A 1025 mV trim pushes 1V0 over 1.05 V when the chirps stop** (`results/replay_summary.txt`, `replay_1V0.png`). With the remote sense, 1V0 at the radar already sits at 1.000 V and the dip and overshoot are about the same size. Raising the setpoint moves both up: at 1025 mV the first version of this replay reached 1.077 V for about 10 µs at frame end with the default profile and Table 7-3 worst-case current. The firmware's trim window is therefore now 1000-1005 mV; at 1005 mV the worst case is 1.057 V for 6 µs (1 µs edges, bead at zero bias) and the other three cases pass. Without the trim, the default profile stays inside 0.95-1.05 V in 3 of 4 cases (worst: 1.052 V for 3 µs). Each case lists the setpoint range that would fit, which is about 0.98-1.00 V. With three TX at once and 1 µs edges, no setpoint fits: there is 145 mV peak to peak, against a 100 mV window. Recommendation: leave Buck2 at 1000 mV until the first boards are measured (spec §9). Then set the trim from the measured dip and overshoot at the radar, not from the DC level. The excursions are far below the 1.4 V absolute maximum. 1V8 passes in every case.
 
 The 921600 Bd data rate is marginal: the SCI has no fractional divider and makes 892857 Bd (-3.3 % against the CP2105). The firmware uses 460800 (+0.3 %).
+
+## Safety layer (firmware/src/safety.c)
+
+The firmware is safe by default: the limits below are compiled in (`SAFE_*` in `firmware/src/board.h`). A host can make them stricter but never looser. No command switches the governor off.
+
+**Thermal governor.** The firmware reads the radar's temperature sensor on every frame and the PMIC status on every 10th frame.
+
+| Condition | Action |
+|---|---|
+| radar ≥ 90 °C (`thermal.throttle_c`) | halve the frame rate (frame period ×2, then ×4); at most one step per hold time |
+| radar ≤ 85 °C (`thermal.release_c`) | undo one step, again at most one per hold time |
+| radar ≥ 100 °C (`thermal.stop_c`), or the LP87524 die-temperature warning | stop the radar, so TX are off. It restarts by itself at ×4 once under 90 °C (`thermal.resume_c`) and the PMIC warning has cleared |
+| 3 temperature reads fail in a row | stop the radar (no reading, no RF); the host must send `sensorStart` again |
+| `sensorStart` while already over 90 °C | wait, and start once cool |
+
+The radar's limit is 105 °C junction (SWRS237C 7.3), so the defaults keep 5 K of margin. The hold time (`thermal.hold_ms`, default 20 s) lets the heat sink respond before the next step; the board's thermal time constant is about 150 s. Stopping the radar cannot take it below its idle temperature: about 21 K over ambient with HS300 and 28 K without it (thermal_summary.txt). Above roughly 80 °C ambient with the heat sink, only the host can help, by switching the module off.
+
+**Host configuration.** The UART CLI is the host interface for now; a binary protocol can map onto the same table later. `cfg` lists every setting with its bounds, `cfg <key>` reads one and `cfg <key> <value>` sets one. `thermal` shows the governor's state. Settings outside the bounds are refused (`Error -51`), and so is a pair that would lose its hysteresis (`-52`, at least 3 K between throttle and release and between stop and resume). The telemetry TLV 0x4D01 now carries the governor state and throttle level in its 8th word.
+
+| key | bounds | default |
+|---|---|---|
+| `thermal.throttle_c` | 60–90 °C | 90 |
+| `thermal.release_c` | 50–87 °C | 85 |
+| `thermal.stop_c` | 70–100 °C | 100 |
+| `thermal.resume_c` | 50–97 °C | 90 |
+| `thermal.hold_ms` | 100 ms–600 s | 20 s |
+| `pmic.trim_mv` | 0–5 mV above 1000 mV | 0 |
+
+Radar settings still use the TI-style commands (`profileCfg`, `chirpCfg`, `frameCfg`). `sensorStart` checks them against these limits:
+- at most 2 TX per chirp (`-53`); three at once only in `fw_debug.elf`, until the 1V0 replay is confirmed on hardware
+- chirps take at most 50 % of the frame period (`-54`)
+- frame period at least 10 ms (`-55`)
+
+**Simulation** (`results/thermal_governor.png`). These scenarios compress the thermal time constant to 2 s and the hold time to 300 ms, in the same ratio, so a run takes seconds instead of minutes. The load is a heavy profile of 2 TX per chirp, 129 chirps every 33 ms, which is 1.49 W unthrottled.
+- **55 °C ambient with the heat sink:** unthrottled, the radar would settle at 96 °C. The governor throttles once and it settles at 86 °C while data keeps streaming.
+- **66 °C ambient without the heat sink:** it throttles twice and stops at 100.0 °C. It stays stopped while idle heat alone keeps it at 94 °C. When the ambient drops to 55 °C it restarts at ×4 and holds at 90 °C.
+
+Other scenarios cover a host that tightens the limits (throttle at 70 °C, stop at 74 °C), the PMIC thermal warning, failing temperature reads, a start while hot, and every out-of-bounds setting.
 
 ## Limits
 
