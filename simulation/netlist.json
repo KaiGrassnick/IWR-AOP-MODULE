@@ -1,0 +1,4494 @@
+{
+ "parts": {
+  "H4": {
+   "value": "MountingHole_3.2mm_M3",
+   "fp": "MountingHole:MountingHole_3.2mm_M3",
+   "props": {
+    "Value": "MountingHole_3.2mm_M3",
+    "KiLib_Generator": "mounting_hardware/mounting_hole"
+   },
+   "attr": [
+    "board_only",
+    "exclude_from_pos_files",
+    "exclude_from_bom"
+   ],
+   "pads": {}
+  },
+  "R604": {
+   "value": "0R",
+   "fp": "Resistor_SMD:R_0402_1005Metric",
+   "props": {
+    "Value": "0R",
+    "KiLib_Generator": "SMD_2terminal_chip_molded",
+    "MPN": "0402WGF0000TCE",
+    "Manufacturer": "UNI-ROYAL(Uniroyal Elec)",
+    "LCSC": "C17168"
+   },
+   "attr": [
+    "smd"
+   ],
+   "pads": {
+    "1": "PMIC_PGOOD",
+    "2": "AOP_NRESET"
+   }
+  },
+  "TP611": {
+   "value": "PMIC_ENABLE",
+   "fp": "TestPoint:TestPoint_Pad_D1.0mm",
+   "props": {
+    "Value": "PMIC_ENABLE",
+    "MPN": "PCB_TEST_PAD_1MM",
+    "Manufacturer": "PCB fabrication",
+    "LCSC": ""
+   },
+   "attr": [
+    "exclude_from_pos_files",
+    "exclude_from_bom"
+   ],
+   "pads": {
+    "1": "PMIC_ENABLE"
+   }
+  },
+  "TP603": {
+   "value": "AOP_NRESET",
+   "fp": "TestPoint:TestPoint_Pad_D1.0mm",
+   "props": {
+    "Value": "AOP_NRESET",
+    "MPN": "PCB_TEST_PAD_1MM",
+    "Manufacturer": "PCB fabrication",
+    "LCSC": "",
+    "ki_keywords": "test point tp",
+    "Sheetname": "Radar PMIC",
+    "Sheetfile": "rails.kicad_sch",
+    "ki_fp_filters": "Pin* Test*"
+   },
+   "attr": [
+    "exclude_from_pos_files",
+    "exclude_from_bom"
+   ],
+   "pads": {
+    "1": "AOP_NRESET"
+   }
+  },
+  "SW400": {
+   "value": "RESET",
+   "fp": "IWR-AOP-MODULE:XKB_TS-1187A-B-A-B_5.1x5.1mm",
+   "props": {
+    "Value": "RESET",
+    "ki_keywords": "switch normally-open pushbutton push-button",
+    "Sheetname": "Carrier interfaces",
+    "Sheetfile": "interfaces.kicad_sch",
+    "LCSC": "C318884",
+    "MPN": "TS-1187A-B-A-B",
+    "Manufacturer": "XKB Connection"
+   },
+   "attr": [
+    "smd"
+   ],
+   "pads": {
+    "1": "AOP_NRESET",
+    "2": "GND"
+   }
+  },
+  "TP602": {
+   "value": "PMIC_INT_N",
+   "fp": "TestPoint:TestPoint_Pad_D1.0mm",
+   "props": {
+    "Value": "PMIC_INT_N",
+    "MPN": "PCB_TEST_PAD_1MM",
+    "Manufacturer": "PCB fabrication",
+    "LCSC": "",
+    "ki_keywords": "test point tp",
+    "Sheetname": "Radar PMIC",
+    "Sheetfile": "rails.kicad_sch",
+    "ki_fp_filters": "Pin* Test*"
+   },
+   "attr": [
+    "exclude_from_pos_files",
+    "exclude_from_bom"
+   ],
+   "pads": {
+    "1": "PMIC_INT_N"
+   }
+  },
+  "Q402": {
+   "value": "MMBT3904",
+   "fp": "Package_TO_SOT_SMD:SOT-23",
+   "props": {
+    "Value": "MMBT3904",
+    "KiLib_Generator": "package/gullwing",
+    "ki_keywords": "NPN Transistor",
+    "Sheetname": "Carrier interfaces",
+    "Sheetfile": "interfaces.kicad_sch",
+    "LCSC": "C20526",
+    "MPN": "MMBT3904",
+    "Manufacturer": "Jiangsu Changjing Electronics Technology Co., Ltd."
+   },
+   "attr": [
+    "smd"
+   ],
+   "pads": {
+    "1": "Q402_BASE",
+    "2": "GND",
+    "3": "PMIC_ENABLE"
+   }
+  },
+  "SW401": {
+   "value": "BOOT",
+   "fp": "IWR-AOP-MODULE:XKB_TS-1187A-B-A-B_5.1x5.1mm",
+   "props": {
+    "Value": "BOOT",
+    "ki_keywords": "switch normally-open pushbutton push-button",
+    "Sheetname": "Carrier interfaces",
+    "Sheetfile": "interfaces.kicad_sch",
+    "LCSC": "C318884",
+    "MPN": "TS-1187A-B-A-B",
+    "Manufacturer": "XKB Connection"
+   },
+   "attr": [
+    "smd"
+   ],
+   "pads": {
+    "1": "3V3_R",
+    "2": "MANUAL_BOOT"
+   }
+  },
+  "TH300": {
+   "value": "AOP_ALP180_DieThermalPad",
+   "fp": "IWR-AOP-MODULE:AOP_ALP180_DieThermalPad",
+   "props": {
+    "Value": "AOP_ALP180_DieThermalPad"
+   },
+   "attr": [
+    "board_only",
+    "exclude_from_pos_files",
+    "exclude_from_bom"
+   ],
+   "pads": {
+    "1": "GND"
+   }
+  },
+  "TP610": {
+   "value": "USB_VBUS",
+   "fp": "TestPoint:TestPoint_Pad_D1.0mm",
+   "props": {
+    "Value": "USB_VBUS",
+    "MPN": "PCB_TEST_PAD_1MM",
+    "Manufacturer": "PCB fabrication",
+    "LCSC": ""
+   },
+   "attr": [
+    "exclude_from_pos_files",
+    "exclude_from_bom"
+   ],
+   "pads": {
+    "1": "USB_VBUS"
+   }
+  },
+  "C140": {
+   "value": "10uF 10V",
+   "fp": "Capacitor_SMD:C_0805_2012Metric",
+   "props": {
+    "Value": "10uF 10V",
+    "KiLib_Generator": "SMD_2terminal_chip_molded",
+    "MPN": "GRM21BR71A106KE51L",
+    "Manufacturer": "Murata Electronics",
+    "LCSC": "C86038"
+   },
+   "attr": [
+    "smd"
+   ],
+   "pads": {
+    "1": "PWR_IN",
+    "2": "GND"
+   }
+  },
+  "R414": {
+   "value": "100kR",
+   "fp": "Resistor_SMD:R_0402_1005Metric",
+   "props": {
+    "Value": "100kR",
+    "KiLib_Generator": "SMD_2terminal_chip_molded",
+    "ki_keywords": "r resistor",
+    "Sheetname": "Carrier interfaces",
+    "Sheetfile": "interfaces.kicad_sch",
+    "LCSC": "C25741",
+    "MPN": "0402WGF1003TCE",
+    "Manufacturer": "UNI-ROYAL(Uniroyal Elec)"
+   },
+   "attr": [
+    "smd"
+   ],
+   "pads": {
+    "1": "Q402_BASE",
+    "2": "GND"
+   }
+  },
+  "TP608": {
+   "value": "1V0_RAW",
+   "fp": "TestPoint:TestPoint_Pad_D1.0mm",
+   "props": {
+    "Value": "1V0_RAW",
+    "MPN": "PCB_TEST_PAD_1MM",
+    "Manufacturer": "PCB fabrication",
+    "LCSC": ""
+   },
+   "attr": [
+    "exclude_from_pos_files",
+    "exclude_from_bom"
+   ],
+   "pads": {
+    "1": "1V0_RAW"
+   }
+  },
+  "H3": {
+   "value": "MountingHole_3.2mm_M3",
+   "fp": "MountingHole:MountingHole_3.2mm_M3",
+   "props": {
+    "Value": "MountingHole_3.2mm_M3",
+    "KiLib_Generator": "mounting_hardware/mounting_hole"
+   },
+   "attr": [
+    "board_only",
+    "exclude_from_pos_files",
+    "exclude_from_bom"
+   ],
+   "pads": {}
+  },
+  "TP605": {
+   "value": "1V0_R",
+   "fp": "TestPoint:TestPoint_Pad_D1.0mm",
+   "props": {
+    "Value": "1V0_R",
+    "MPN": "PCB_TEST_PAD_1MM",
+    "Manufacturer": "PCB fabrication",
+    "LCSC": ""
+   },
+   "attr": [
+    "exclude_from_pos_files",
+    "exclude_from_bom"
+   ],
+   "pads": {
+    "1": "1V0_R"
+   }
+  },
+  "R313": {
+   "value": "10kR",
+   "fp": "Resistor_SMD:R_0402_1005Metric",
+   "props": {
+    "Value": "10kR",
+    "KiLib_Generator": "SMD_2terminal_chip_molded",
+    "MPN": "0402WGF1002TCE",
+    "Manufacturer": "UNI-ROYAL(Uniroyal Elec)",
+    "LCSC": "C25744",
+    "ki_keywords": "r resistor",
+    "Sheetname": "Radar and boot",
+    "Sheetfile": "aop.kicad_sch",
+    "ki_fp_filters": "R_*"
+   },
+   "attr": [
+    "smd"
+   ],
+   "pads": {
+    "1": "AOP_SYNC_IN",
+    "2": "GND"
+   }
+  },
+  "U300": {
+   "value": "IWR6843ARQGALPR",
+   "fp": "IWR-AOP-MODULE:BGA180C80P18X18_1500X1500X97N",
+   "props": {
+    "Value": "IWR6843ARQGALPR",
+    "Field4": "REF**",
+    "MPN": "IWR6843ARQGALPR",
+    "Manufacturer": "Texas Instruments",
+    "LCSC": "C2871887",
+    "Power Mode": "1V RF LDO bypass;PA LDO disabled;external1V VOUT_PA",
+    "Architecture": "Radar owns chirp scheduling, R4F/C674x/HWA DSP, tracking, shot trigger and rolling history; the carrier host consumes compact packets.",
+    "Pinmux_contract": "SPIA D2/F2/D1/C2 mode1; control V16 mode2/U16 mode5; telemetry E2 mode6; K3 hardware FRAME_START mode13; U12 SYNC_IN mode1; L3 SYNC_OUT mode2",
+    "Timing_contract": "K3 pinmux13 outputs hardware FRAME_START. Host timestamps the hardware edge; radar packets separately carry derived shot timestamps. Qualify frame-edge-to-exposure latency and host clock correlation before camera use.",
+    "Sheetname": "Radar and boot",
+    "Sheetfile": "aop.kicad_sch"
+   },
+   "attr": [
+    "smd"
+   ],
+   "pads": {
+    "A1": "GND",
+    "A2": "GND",
+    "A3": "unconnected-(U300B-GPIO_42_(DP11)-PadA3)",
+    "A4": "unconnected-(U300B-GPIO_44_(DP13)-PadA4)",
+    "A5": "1V2_R",
+    "A6": "GND",
+    "A7": "/Radar and boot/AOP_CLKP",
+    "A8": "GND",
+    "A9": "/Radar and boot/AOP_VOUT_14SYNTH",
+    "A10": "/Radar and boot/AOP_VOUT_14APLL",
+    "A11": "GND",
+    "A12": "1V8_R",
+    "A13": "GND",
+    "A14": "unconnected-(U300B-OSC_CLKOUT-PadA14)",
+    "A15": "GND",
+    "A16": "/Radar and boot/AOP_VBGAP",
+    "A17": "GND",
+    "A18": "GND",
+    "B1": "1V8_R",
+    "B2": "AOP_HOST_INTR",
+    "B3": "unconnected-(U300B-GPIO_40_(DP9)-PadB3)",
+    "B4": "unconnected-(U300B-GPIO_43_(DP12)-PadB4)",
+    "B5": "unconnected-(U300B-GPIO_46_(DP15)-PadB5)",
+    "B6": "GND",
+    "B7": "/Radar and boot/AOP_CLKM",
+    "B8": "GND",
+    "B9": "GND",
+    "B10": "GND",
+    "B11": "GND",
+    "B12": "GND",
+    "B13": "GND",
+    "B14": "GND",
+    "B15": "GND",
+    "B16": "GND",
+    "B17": "GND",
+    "B18": "GND",
+    "C1": "1V2_R",
+    "C2": "AOP_SPI_CS_N",
+    "C3": "unconnected-(U300B-GPIO_39_(DP8)-PadC3)",
+    "C4": "unconnected-(U300B-GPIO_41_(DP10)-PadC4)",
+    "C5": "unconnected-(U300B-GPIO_45_(DP14)-PadC5)",
+    "C6": "GND",
+    "C7": "GND",
+    "C8": "GND",
+    "C9": "unconnected-(U300B-ANAMUX_{slash}_GPADC5-PadC9)",
+    "C10": "unconnected-(U300B-VSENSE_{slash}_GPADC6-PadC10)",
+    "C11": "1V8_R",
+    "C12": "GND",
+    "C13": "GND",
+    "C14": "GND",
+    "C15": "1V8_R",
+    "C16": "GND",
+    "C17": "GND",
+    "C18": "1V8_R",
+    "D1": "AOP_SPI_MISO",
+    "D2": "AOP_SPI_CLK",
+    "D3": "unconnected-(U300B-SPIB_CS_N-PadD3)",
+    "D16": "GND",
+    "D17": "GND",
+    "D18": "GND",
+    "E1": "1V2_R",
+    "E2": "AOP_DATA_TX",
+    "E3": "GND",
+    "E16": "GND",
+    "E17": "GND",
+    "E18": "GND",
+    "F1": "1V8_R",
+    "F2": "AOP_SPI_MOSI",
+    "F3": "GND",
+    "F16": "GND",
+    "F17": "GND",
+    "F18": "GND",
+    "G1": "unconnected-(U300B-SPIB_MOSI-PadG1)",
+    "G2": "/Radar and boot/AOP_QSPI_D1",
+    "G3": "unconnected-(U300B-SPIB_MISO-PadG3)",
+    "G16": "1V0_R",
+    "G17": "1V0_R",
+    "G18": "1V0_R",
+    "H1": "3V3_R",
+    "H2": "/Radar and boot/AOP_QSPI_CLK",
+    "H3": "/Radar and boot/AOP_QSPI_D0",
+    "H16": "1V0_R",
+    "H17": "1V0_R",
+    "H18": "1V0_R",
+    "J1": "1V2_R",
+    "J2": "/Radar and boot/AOP_QSPI_CS_N",
+    "J3": "/Radar and boot/AOP_QSPI_D2",
+    "J16": "1V0_R",
+    "J17": "1V0_R",
+    "J18": "1V0_R",
+    "K1": "1V8_R",
+    "K2": "/Radar and boot/AOP_QSPI_D3",
+    "K3": "FRAME_START",
+    "K16": "GND",
+    "K17": "GND",
+    "K18": "GND",
+    "L1": "unconnected-(U300B-GPIO_38_(DP7)-PadL1)",
+    "L2": "unconnected-(U300B-GPIO_37_(DP6)-PadL2)",
+    "L3": "unconnected-(U300B-GPIO_1-PadL3)",
+    "L16": "GND",
+    "L17": "GND",
+    "L18": "GND",
+    "M1": "unconnected-(U300B-GPIO_36_(DP5)-PadM1)",
+    "M2": "unconnected-(U300A-GPIO_0-PadM2)",
+    "M3": "/Radar and boot/AOP_SOP1",
+    "M16": "1V8_R",
+    "M17": "1V8_R",
+    "M18": "1V8_R",
+    "N1": "unconnected-(U300B-LVDS_TXM[0]-PadN1)",
+    "N2": "unconnected-(U300B-LVDS_TXP[0]-PadN2)",
+    "N3": "GND",
+    "N16": "GND",
+    "N17": "GND",
+    "N18": "GND",
+    "P1": "unconnected-(U300B-LVDS_TXM[1]-PadP1)",
+    "P2": "unconnected-(U300B-LVDS_TXP[1]-PadP2)",
+    "P3": "GND",
+    "P16": "GND",
+    "P17": "unconnected-(U300B-Analog_Test2_{slash}_GPADC2-PadP17)",
+    "P18": "unconnected-(U300B-Analog_Test1_{slash}_GPADC1-PadP18)",
+    "R1": "unconnected-(U300B-LVDS_CLKP-PadR1)",
+    "R2": "unconnected-(U300B-LVDS_CLKM-PadR2)",
+    "R3": "GND",
+    "R16": "GND",
+    "R17": "GND",
+    "R18": "unconnected-(U300B-Analog_Test3_{slash}_GPADC3-PadR18)",
+    "T1": "unconnected-(U300B-LVDS_FRCLKP-PadT1)",
+    "T2": "unconnected-(U300B-LVDS_FRCLKM-PadT2)",
+    "T3": "/Radar and boot/AOP_JTAG_TCK",
+    "T4": "GND",
+    "T5": "GND",
+    "T6": "GND",
+    "T7": "GND",
+    "T8": "GND",
+    "T9": "GND",
+    "T10": "GND",
+    "T11": "GND",
+    "T12": "GND",
+    "T13": "GND",
+    "T14": "GND",
+    "T15": "GND",
+    "T16": "GND",
+    "T17": "GND",
+    "T18": "unconnected-(U300B-Analog_Test4_{slash}_GPADC4-PadT18)",
+    "U1": "GND",
+    "U2": "1V8_R",
+    "U3": "unconnected-(U300B-GPIO_47_(DMM_CLK)-PadU3)",
+    "U4": "unconnected-(U300B-DMM_SYNC-PadU4)",
+    "U5": "unconnected-(U300B-GPIO_34_(DP3)-PadU5)",
+    "U6": "unconnected-(U300B-GPIO_32_(DP1)-PadU6)",
+    "U7": "unconnected-(U300B-GPIO_31_(DP0)-PadU7)",
+    "U8": "/Radar and boot/AOP_JTAG_TMS",
+    "U9": "/Radar and boot/AOP_JTAG_TDI",
+    "U10": "/Radar and boot/AOP_SOP0",
+    "U11": "AOP_NRESET",
+    "U12": "AOP_SYNC_IN",
+    "U13": "/Radar and boot/AOP_WARM_RESET",
+    "U14": "/Radar and boot/AOP_NERROR_IN",
+    "U15": "AOP_NERROR_OUT",
+    "U16": "AOP_UART_TX",
+    "U17": "GND",
+    "U18": "GND",
+    "V1": "GND",
+    "V2": "unconnected-(U300B-VPP-PadV2)",
+    "V3": "unconnected-(U300B-GPIO_35_(DP4)-PadV3)",
+    "V4": "1V2_R",
+    "V5": "unconnected-(U300B-GPIO_33_(DP2)-PadV5)",
+    "V6": "1V2_R",
+    "V7": "1V2_R",
+    "V8": "1V2_R",
+    "V9": "3V3_R",
+    "V10": "AOP_SOP2",
+    "V11": "1V8_R",
+    "V12": "1V2_R",
+    "V13": "unconnected-(U300B-MCU_CLKOUT-PadV13)",
+    "V14": "1V2_R",
+    "V15": "1V2_R",
+    "V16": "/Radar and boot/AOP_UART_RX_BALL",
+    "V17": "GND",
+    "V18": "GND"
+   }
+  },
+  "H1": {
+   "value": "MountingHole_3.2mm_M3",
+   "fp": "MountingHole:MountingHole_3.2mm_M3",
+   "props": {
+    "Value": "MountingHole_3.2mm_M3",
+    "KiLib_Generator": "mounting_hardware/mounting_hole"
+   },
+   "attr": [
+    "board_only",
+    "exclude_from_pos_files",
+    "exclude_from_bom"
+   ],
+   "pads": {}
+  },
+  "TP607": {
+   "value": "1V2_R",
+   "fp": "TestPoint:TestPoint_Pad_D1.0mm",
+   "props": {
+    "Value": "1V2_R",
+    "MPN": "PCB_TEST_PAD_1MM",
+    "Manufacturer": "PCB fabrication",
+    "LCSC": ""
+   },
+   "attr": [
+    "exclude_from_pos_files",
+    "exclude_from_bom"
+   ],
+   "pads": {
+    "1": "1V2_R"
+   }
+  },
+  "TP604": {
+   "value": "SYS_5V",
+   "fp": "TestPoint:TestPoint_Pad_D1.0mm",
+   "props": {
+    "Value": "SYS_5V",
+    "MPN": "PCB_TEST_PAD_1MM",
+    "Manufacturer": "PCB fabrication",
+    "LCSC": ""
+   },
+   "attr": [
+    "exclude_from_pos_files",
+    "exclude_from_bom"
+   ],
+   "pads": {
+    "1": "SYS_5V"
+   }
+  },
+  "R415": {
+   "value": "22R",
+   "fp": "Resistor_SMD:R_0402_1005Metric",
+   "props": {
+    "Value": "22R",
+    "KiLib_Generator": "SMD_2terminal_chip_molded",
+    "ki_keywords": "r resistor",
+    "Sheetname": "Carrier interfaces",
+    "Sheetfile": "interfaces.kicad_sch",
+    "LCSC": "C25092",
+    "MPN": "0402WGF220JTCE",
+    "Manufacturer": "UNI-ROYAL(Uniroyal Elec)",
+    "ki_fp_filters": "R_*"
+   },
+   "attr": [
+    "smd"
+   ],
+   "pads": {
+    "1": "HOST_SYNC_IN",
+    "2": "AOP_SYNC_IN"
+   }
+  },
+  "R133": {
+   "value": "10kR",
+   "fp": "Resistor_SMD:R_0402_1005Metric",
+   "props": {
+    "Value": "10kR",
+    "KiLib_Generator": "SMD_2terminal_chip_molded",
+    "MPN": "0402WGF1002TCE",
+    "Manufacturer": "UNI-ROYAL(Uniroyal Elec)",
+    "LCSC": "C25744",
+    "ki_keywords": "r resistor",
+    "Sheetname": "/",
+    "Sheetfile": "IWR-AOP-MODULE.kicad_sch",
+    "ki_fp_filters": "R_*"
+   },
+   "attr": [
+    "smd"
+   ],
+   "pads": {
+    "1": "SYS_5V",
+    "2": "PMIC_ENABLE"
+   }
+  },
+  "R413": {
+   "value": "10kR",
+   "fp": "Resistor_SMD:R_0402_1005Metric",
+   "props": {
+    "Value": "10kR",
+    "KiLib_Generator": "SMD_2terminal_chip_molded",
+    "ki_keywords": "r resistor",
+    "Sheetname": "Carrier interfaces",
+    "Sheetfile": "interfaces.kicad_sch",
+    "LCSC": "C25744",
+    "MPN": "0402WGF1002TCE",
+    "Manufacturer": "UNI-ROYAL(Uniroyal Elec)"
+   },
+   "attr": [
+    "smd"
+   ],
+   "pads": {
+    "1": "HOST_DISABLE",
+    "2": "Q402_BASE"
+   }
+  },
+  "TP606": {
+   "value": "1V8_R",
+   "fp": "TestPoint:TestPoint_Pad_D1.0mm",
+   "props": {
+    "Value": "1V8_R",
+    "MPN": "PCB_TEST_PAD_1MM",
+    "Manufacturer": "PCB fabrication",
+    "LCSC": ""
+   },
+   "attr": [
+    "exclude_from_pos_files",
+    "exclude_from_bom"
+   ],
+   "pads": {
+    "1": "1V8_R"
+   }
+  },
+  "TP609": {
+   "value": "1V8_RAW",
+   "fp": "TestPoint:TestPoint_Pad_D1.0mm",
+   "props": {
+    "Value": "1V8_RAW",
+    "MPN": "PCB_TEST_PAD_1MM",
+    "Manufacturer": "PCB fabrication",
+    "LCSC": ""
+   },
+   "attr": [
+    "exclude_from_pos_files",
+    "exclude_from_bom"
+   ],
+   "pads": {
+    "1": "1V8_RAW"
+   }
+  },
+  "R308": {
+   "value": "10kR",
+   "fp": "Resistor_SMD:R_0402_1005Metric",
+   "props": {
+    "Value": "10kR",
+    "KiLib_Generator": "SMD_2terminal_chip_molded",
+    "MPN": "0402WGF1002TCE",
+    "Manufacturer": "UNI-ROYAL(Uniroyal Elec)",
+    "LCSC": "C25744",
+    "ki_keywords": "r resistor",
+    "Sheetname": "Radar and boot",
+    "Sheetfile": "aop.kicad_sch",
+    "ki_fp_filters": "R_*"
+   },
+   "attr": [
+    "smd"
+   ],
+   "pads": {
+    "1": "3V3_R",
+    "2": "AOP_NERROR_OUT"
+   }
+  },
+  "TP612": {
+   "value": "GND",
+   "fp": "TestPoint:TestPoint_Pad_D1.0mm",
+   "props": {
+    "Value": "GND",
+    "MPN": "PCB_TEST_PAD_1MM",
+    "Manufacturer": "PCB fabrication",
+    "LCSC": ""
+   },
+   "attr": [
+    "exclude_from_pos_files",
+    "exclude_from_bom"
+   ],
+   "pads": {
+    "1": "GND"
+   }
+  },
+  "R310": {
+   "value": "10kR",
+   "fp": "Resistor_SMD:R_0402_1005Metric",
+   "props": {
+    "Value": "10kR",
+    "KiLib_Generator": "SMD_2terminal_chip_molded",
+    "MPN": "0402WGF1002TCE",
+    "Manufacturer": "UNI-ROYAL(Uniroyal Elec)",
+    "LCSC": "C25744",
+    "ki_keywords": "r resistor",
+    "Sheetname": "Radar and boot",
+    "Sheetfile": "aop.kicad_sch",
+    "ki_fp_filters": "R_*"
+   },
+   "attr": [
+    "smd"
+   ],
+   "pads": {
+    "1": "3V3_R",
+    "2": "/Radar and boot/AOP_WARM_RESET"
+   }
+  },
+  "R601": {
+   "value": "10kR",
+   "fp": "Resistor_SMD:R_0402_1005Metric",
+   "props": {
+    "Value": "10kR",
+    "KiLib_Generator": "SMD_2terminal_chip_molded",
+    "MPN": "0402WGF1002TCE",
+    "Manufacturer": "UNI-ROYAL(Uniroyal Elec)",
+    "LCSC": "C25744",
+    "ki_keywords": "r resistor",
+    "Sheetname": "Radar PMIC",
+    "Sheetfile": "rails.kicad_sch",
+    "ki_fp_filters": "R_*"
+   },
+   "attr": [
+    "smd"
+   ],
+   "pads": {
+    "1": "1V8_R",
+    "2": "PMIC_SDA"
+   }
+  },
+  "R311": {
+   "value": "10kR",
+   "fp": "Resistor_SMD:R_0402_1005Metric",
+   "props": {
+    "Value": "10kR",
+    "KiLib_Generator": "SMD_2terminal_chip_molded",
+    "MPN": "0402WGF1002TCE",
+    "Manufacturer": "UNI-ROYAL(Uniroyal Elec)",
+    "LCSC": "C25744",
+    "ki_keywords": "r resistor",
+    "Sheetname": "Radar and boot",
+    "Sheetfile": "aop.kicad_sch",
+    "ki_fp_filters": "R_*"
+   },
+   "attr": [
+    "smd"
+   ],
+   "pads": {
+    "1": "3V3_R",
+    "2": "/Radar and boot/AOP_QSPI_D2"
+   }
+  },
+  "C313": {
+   "value": "1uF",
+   "fp": "Capacitor_SMD:C_0603_1608Metric",
+   "props": {
+    "Value": "1uF",
+    "KiLib_Generator": "SMD_2terminal_chip_molded",
+    "MPN": "CL10A105KB8NNNC",
+    "Manufacturer": "Samsung Electro-Mechanics",
+    "LCSC": "C15849",
+    "ki_keywords": "cap capacitor",
+    "Sheetname": "Radar and boot",
+    "Sheetfile": "aop.kicad_sch",
+    "ki_fp_filters": "C_*"
+   },
+   "attr": [
+    "smd"
+   ],
+   "pads": {
+    "1": "1V0_R",
+    "2": "GND"
+   }
+  },
+  "C342": {
+   "value": "100nF",
+   "fp": "Capacitor_SMD:C_0402_1005Metric",
+   "props": {
+    "Value": "100nF",
+    "KiLib_Generator": "SMD_2terminal_chip_molded",
+    "MPN": "CL05B104KO5NNNC",
+    "Manufacturer": "Samsung Electro-Mechanics",
+    "LCSC": "C1525",
+    "ki_keywords": "cap capacitor",
+    "Sheetname": "Radar and boot",
+    "Sheetfile": "aop.kicad_sch",
+    "ki_fp_filters": "C_*"
+   },
+   "attr": [
+    "smd"
+   ],
+   "pads": {
+    "1": "1V0_R",
+    "2": "GND"
+   }
+  },
+  "D200": {
+   "value": "H5VUT2U",
+   "fp": "Package_TO_SOT_SMD:SOT-23",
+   "props": {
+    "Value": "H5VUT2U",
+    "KiLib_Generator": "package/gullwing",
+    "MPN": "H5VUT2U",
+    "Manufacturer": "hongjiacheng",
+    "LCSC": "C20615824"
+   },
+   "attr": [
+    "smd"
+   ],
+   "pads": {
+    "1": "USB_D+",
+    "2": "USB_D-",
+    "3": "GND"
+   }
+  },
+  "C337": {
+   "value": "1uF",
+   "fp": "Capacitor_SMD:C_0603_1608Metric",
+   "props": {
+    "Value": "1uF",
+    "KiLib_Generator": "SMD_2terminal_chip_molded",
+    "MPN": "CL10A105KB8NNNC",
+    "Manufacturer": "Samsung Electro-Mechanics",
+    "LCSC": "C15849",
+    "ki_keywords": "cap capacitor",
+    "Sheetname": "Radar and boot",
+    "Sheetfile": "aop.kicad_sch",
+    "ki_fp_filters": "C_*"
+   },
+   "attr": [
+    "smd"
+   ],
+   "pads": {
+    "1": "/Radar and boot/AOP_VOUT_14SYNTH",
+    "2": "GND"
+   }
+  },
+  "C348": {
+   "value": "100nF",
+   "fp": "Capacitor_SMD:C_0402_1005Metric",
+   "props": {
+    "Value": "100nF",
+    "KiLib_Generator": "SMD_2terminal_chip_molded",
+    "MPN": "CL05B104KO5NNNC",
+    "Manufacturer": "Samsung Electro-Mechanics",
+    "LCSC": "C1525",
+    "ki_keywords": "cap capacitor",
+    "Sheetname": "Radar and boot",
+    "Sheetfile": "aop.kicad_sch",
+    "ki_fp_filters": "C_*"
+   },
+   "attr": [
+    "smd"
+   ],
+   "pads": {
+    "1": "3V3_R",
+    "2": "GND"
+   }
+  },
+  "C335": {
+   "value": "100nF",
+   "fp": "Capacitor_SMD:C_0402_1005Metric",
+   "props": {
+    "Value": "100nF",
+    "KiLib_Generator": "SMD_2terminal_chip_molded",
+    "MPN": "CL05B104KO5NNNC",
+    "Manufacturer": "Samsung Electro-Mechanics",
+    "LCSC": "C1525",
+    "ki_keywords": "cap capacitor",
+    "Sheetname": "Radar and boot",
+    "Sheetfile": "aop.kicad_sch",
+    "ki_fp_filters": "C_*"
+   },
+   "attr": [
+    "smd"
+   ],
+   "pads": {
+    "1": "3V3_R",
+    "2": "GND"
+   }
+  },
+  "L601": {
+   "value": "0.47uH",
+   "fp": "Inductor_SMD:L_Sunlord_MWSA0402S",
+   "props": {
+    "Value": "0.47uH",
+    "KiLib_Generator": "inductor/SMD",
+    "MPN": "MWSA0402S-R47MT",
+    "Manufacturer": "Sunlord",
+    "LCSC": "C6331050",
+    "ki_keywords": "inductor choke coil reactor magnetic",
+    "Sheetname": "Radar PMIC",
+    "Sheetfile": "rails.kicad_sch",
+    "ki_fp_filters": "Choke_* *Coil* Inductor_* L_*"
+   },
+   "attr": [
+    "smd"
+   ],
+   "pads": {
+    "1": "PMIC_SW1",
+    "2": "1V2_R"
+   }
+  },
+  "C340": {
+   "value": "100nF",
+   "fp": "Capacitor_SMD:C_0402_1005Metric",
+   "props": {
+    "Value": "100nF",
+    "KiLib_Generator": "SMD_2terminal_chip_molded",
+    "MPN": "CL05B104KO5NNNC",
+    "Manufacturer": "Samsung Electro-Mechanics",
+    "LCSC": "C1525",
+    "ki_keywords": "cap capacitor",
+    "Sheetname": "Radar and boot",
+    "Sheetfile": "aop.kicad_sch",
+    "ki_fp_filters": "C_*"
+   },
+   "attr": [
+    "smd"
+   ],
+   "pads": {
+    "1": "/Radar and boot/AOP_VOUT_14APLL",
+    "2": "GND"
+   }
+  },
+  "J400": {
+   "value": "UART / CONTROL / 5V IN",
+   "fp": "IWR-AOP-MODULE:HCTL_PM254-2-06-S-8.5",
+   "props": {
+    "Value": "UART / CONTROL / 5V IN",
+    "MPN": "PM254-2-06-S-8.5",
+    "Manufacturer": "HCTL",
+    "LCSC": "C3975151"
+   },
+   "attr": [
+    "smd"
+   ],
+   "pads": {
+    "1": "AOP_UART_TX",
+    "2": "HOST_UART_TX",
+    "3": "HOST_SYNC_IN",
+    "4": "GND",
+    "5": "AOP_SOP2",
+    "6": "AOP_NERROR_OUT",
+    "7": "HOST_DISABLE",
+    "8": "HOST_NRESET",
+    "9": "GND",
+    "10": "GND",
+    "11": "PWR_IN",
+    "12": "PWR_IN"
+   }
+  },
+  "C602": {
+   "value": "22uF",
+   "fp": "Capacitor_SMD:C_1210_3225Metric",
+   "props": {
+    "Value": "22uF",
+    "KiLib_Generator": "SMD_2terminal_chip_molded",
+    "MPN": "GRM32ER71E226KE15L",
+    "Manufacturer": "Murata Electronics",
+    "LCSC": "C21397",
+    "Tolerance": "10%",
+    "ki_keywords": "cap capacitor",
+    "Rating": "X7R 25V",
+    "Sheetname": "Radar PMIC",
+    "Sheetfile": "rails.kicad_sch",
+    "ki_fp_filters": "C_*"
+   },
+   "attr": [
+    "smd"
+   ],
+   "pads": {
+    "1": "SYS_5V",
+    "2": "GND"
+   }
+  },
+  "R304": {
+   "value": "10kR",
+   "fp": "Resistor_SMD:R_0402_1005Metric",
+   "props": {
+    "Value": "10kR",
+    "KiLib_Generator": "SMD_2terminal_chip_molded",
+    "MPN": "0402WGF1002TCE",
+    "Manufacturer": "UNI-ROYAL(Uniroyal Elec)",
+    "LCSC": "C25744",
+    "ki_keywords": "r resistor",
+    "Sheetname": "Radar and boot",
+    "Sheetfile": "aop.kicad_sch",
+    "ki_fp_filters": "R_*"
+   },
+   "attr": [
+    "smd"
+   ],
+   "pads": {
+    "1": "3V3_R",
+    "2": "/Radar and boot/AOP_SOP0"
+   }
+  },
+  "C302": {
+   "value": "100nF",
+   "fp": "Capacitor_SMD:C_0402_1005Metric",
+   "props": {
+    "Value": "100nF",
+    "KiLib_Generator": "SMD_2terminal_chip_molded",
+    "MPN": "CL05B104KO5NNNC",
+    "Manufacturer": "Samsung Electro-Mechanics",
+    "LCSC": "C1525",
+    "ki_keywords": "cap capacitor",
+    "Sheetname": "Radar and boot",
+    "Sheetfile": "aop.kicad_sch",
+    "ki_fp_filters": "C_*"
+   },
+   "attr": [
+    "smd"
+   ],
+   "pads": {
+    "1": "1V2_R",
+    "2": "GND"
+   }
+  },
+  "R403": {
+   "value": "100kR",
+   "fp": "Resistor_SMD:R_0402_1005Metric",
+   "props": {
+    "Value": "100kR",
+    "KiLib_Generator": "SMD_2terminal_chip_molded",
+    "ki_keywords": "r resistor",
+    "Sheetname": "Carrier interfaces",
+    "Sheetfile": "interfaces.kicad_sch",
+    "LCSC": "C25741",
+    "MPN": "0402WGF1003TCE",
+    "Manufacturer": "UNI-ROYAL(Uniroyal Elec)",
+    "ki_fp_filters": "R_*"
+   },
+   "attr": [
+    "smd"
+   ],
+   "pads": {
+    "1": "AOP_SPI_MOSI",
+    "2": "GND"
+   }
+  },
+  "R206": {
+   "value": "100kR",
+   "fp": "Resistor_SMD:R_0402_1005Metric",
+   "props": {
+    "Value": "100kR",
+    "KiLib_Generator": "SMD_2terminal_chip_molded",
+    "ki_keywords": "r resistor",
+    "Sheetname": "Carrier interfaces",
+    "Sheetfile": "interfaces.kicad_sch",
+    "LCSC": "C25741",
+    "MPN": "0402WGF1003TCE",
+    "Manufacturer": "UNI-ROYAL(Uniroyal Elec)"
+   },
+   "attr": [
+    "smd"
+   ],
+   "pads": {
+    "1": "3V3_R",
+    "2": "AOP_DATA_TX"
+   }
+  },
+  "L600": {
+   "value": "0.47uH",
+   "fp": "Inductor_SMD:L_Sunlord_MWSA0402S",
+   "props": {
+    "Value": "0.47uH",
+    "KiLib_Generator": "inductor/SMD",
+    "MPN": "MWSA0402S-R47MT",
+    "Manufacturer": "Sunlord",
+    "LCSC": "C6331050",
+    "ki_keywords": "inductor choke coil reactor magnetic",
+    "Sheetname": "Radar PMIC",
+    "Sheetfile": "rails.kicad_sch",
+    "ki_fp_filters": "Choke_* *Coil* Inductor_* L_*"
+   },
+   "attr": [
+    "smd"
+   ],
+   "pads": {
+    "1": "PMIC_SW0",
+    "2": "3V3_R"
+   }
+  },
+  "R613": {
+   "value": "3.9R",
+   "fp": "Resistor_SMD:R_0603_1608Metric",
+   "props": {
+    "Value": "3.9R",
+    "KiLib_Generator": "SMD_2terminal_chip_molded",
+    "MPN": "RC0603FR-073R9L",
+    "Manufacturer": "YAGEO",
+    "LCSC": "C482845",
+    "Tolerance": "1%",
+    "ki_keywords": "r resistor",
+    "Rating": "100mW",
+    "Sheetname": "Radar PMIC",
+    "Sheetfile": "rails.kicad_sch",
+    "ki_fp_filters": "R_*"
+   },
+   "attr": [
+    "smd"
+   ],
+   "pads": {
+    "1": "PMIC_SW3",
+    "2": "Net-(C617-Pad1)"
+   }
+  },
+  "R612": {
+   "value": "3.9R",
+   "fp": "Resistor_SMD:R_0603_1608Metric",
+   "props": {
+    "Value": "3.9R",
+    "KiLib_Generator": "SMD_2terminal_chip_molded",
+    "MPN": "RC0603FR-073R9L",
+    "Manufacturer": "YAGEO",
+    "LCSC": "C482845",
+    "Tolerance": "1%",
+    "ki_keywords": "r resistor",
+    "Rating": "100mW",
+    "Sheetname": "Radar PMIC",
+    "Sheetfile": "rails.kicad_sch",
+    "ki_fp_filters": "R_*"
+   },
+   "attr": [
+    "smd"
+   ],
+   "pads": {
+    "1": "PMIC_SW2",
+    "2": "Net-(C616-Pad1)"
+   }
+  },
+  "C614": {
+   "value": "390pF",
+   "fp": "Capacitor_SMD:C_0402_1005Metric",
+   "props": {
+    "Value": "390pF",
+    "KiLib_Generator": "SMD_2terminal_chip_molded",
+    "MPN": "GRM1555C1H391JA01D",
+    "Manufacturer": "Murata Electronics",
+    "LCSC": "C76967",
+    "Tolerance": "5%",
+    "ki_keywords": "cap capacitor",
+    "Rating": "C0G 50V",
+    "Sheetname": "Radar PMIC",
+    "Sheetfile": "rails.kicad_sch",
+    "ki_fp_filters": "C_*"
+   },
+   "attr": [
+    "smd"
+   ],
+   "pads": {
+    "1": "Net-(C614-Pad1)",
+    "2": "GND"
+   }
+  },
+  "R306": {
+   "value": "10kR",
+   "fp": "Resistor_SMD:R_0402_1005Metric",
+   "props": {
+    "Value": "10kR",
+    "KiLib_Generator": "SMD_2terminal_chip_molded",
+    "MPN": "0402WGF1002TCE",
+    "Manufacturer": "UNI-ROYAL(Uniroyal Elec)",
+    "LCSC": "C25744",
+    "ki_keywords": "r resistor",
+    "Sheetname": "Radar and boot",
+    "Sheetfile": "aop.kicad_sch",
+    "ki_fp_filters": "R_*"
+   },
+   "attr": [
+    "smd"
+   ],
+   "pads": {
+    "1": "AOP_SOP2",
+    "2": "GND"
+   }
+  },
+  "C332": {
+   "value": "100nF",
+   "fp": "Capacitor_SMD:C_0402_1005Metric",
+   "props": {
+    "Value": "100nF",
+    "KiLib_Generator": "SMD_2terminal_chip_molded",
+    "MPN": "CL05B104KO5NNNC",
+    "Manufacturer": "Samsung Electro-Mechanics",
+    "LCSC": "C1525",
+    "ki_keywords": "cap capacitor",
+    "Sheetname": "Radar and boot",
+    "Sheetfile": "aop.kicad_sch",
+    "ki_fp_filters": "C_*"
+   },
+   "attr": [
+    "smd"
+   ],
+   "pads": {
+    "1": "1V8_R",
+    "2": "GND"
+   }
+  },
+  "U600": {
+   "value": "LP87524JRNFRQ1",
+   "fp": "IWR-AOP-MODULE:Texas_RNF0026C_LP87524J",
+   "props": {
+    "Value": "LP87524JRNFRQ1",
+    "MPN": "LP87524JRNFRQ1",
+    "Manufacturer": "Texas Instruments",
+    "LCSC": "C701982",
+    "Sheetname": "Radar PMIC",
+    "Sheetfile": "rails.kicad_sch"
+   },
+   "attr": [
+    "smd"
+   ],
+   "pads": {
+    "1": "1V0_R",
+    "2": "unconnected-(U600-GPIO3-Pad2)",
+    "3": "GND",
+    "4": "GND",
+    "5": "PMIC_SCL",
+    "6": "PMIC_SDA",
+    "7": "PMIC_ENABLE",
+    "8": "3V3_R",
+    "9": "SYS_5V",
+    "10": "PMIC_SW0",
+    "11": "GND",
+    "12": "PMIC_SW1",
+    "13": "SYS_5V",
+    "14": "1V2_R",
+    "15": "AOP_NRESET",
+    "16": "PMIC_PGOOD",
+    "17": "GND",
+    "18": "SYS_5V",
+    "19": "PMIC_INT_N",
+    "20": "SYS_5V",
+    "21": "1V8_R",
+    "22": "SYS_5V",
+    "23": "PMIC_SW3",
+    "24": "GND",
+    "25": "PMIC_SW2",
+    "26": "SYS_5V",
+    "27": "GND"
+   }
+  },
+  "C629": {
+   "value": "10uF",
+   "fp": "Capacitor_SMD:C_0805_2012Metric",
+   "props": {
+    "Value": "10uF",
+    "KiLib_Generator": "SMD_2terminal_chip_molded",
+    "MPN": "GRM21BR71A106KE51L",
+    "Manufacturer": "Murata Electronics",
+    "LCSC": "C86038",
+    "Tolerance": "10%",
+    "ki_keywords": "cap capacitor",
+    "Rating": "X7R 10V",
+    "Sheetname": "/",
+    "Sheetfile": "IWR-AOP-MODULE.kicad_sch",
+    "ki_fp_filters": "C_*"
+   },
+   "attr": [
+    "smd"
+   ],
+   "pads": {
+    "1": "3V3_R",
+    "2": "GND"
+   }
+  },
+  "C310": {
+   "value": "100nF",
+   "fp": "Capacitor_SMD:C_0402_1005Metric",
+   "props": {
+    "Value": "100nF",
+    "KiLib_Generator": "SMD_2terminal_chip_molded",
+    "MPN": "CL05B104KO5NNNC",
+    "Manufacturer": "Samsung Electro-Mechanics",
+    "LCSC": "C1525",
+    "ki_keywords": "cap capacitor",
+    "Sheetname": "Radar and boot",
+    "Sheetfile": "aop.kicad_sch",
+    "ki_fp_filters": "C_*"
+   },
+   "attr": [
+    "smd"
+   ],
+   "pads": {
+    "1": "1V2_R",
+    "2": "GND"
+   }
+  },
+  "C100": {
+   "value": "1uF 25V",
+   "fp": "Capacitor_SMD:C_0805_2012Metric",
+   "props": {
+    "Value": "1uF 25V",
+    "KiLib_Generator": "SMD_2terminal_chip_molded",
+    "ki_keywords": "cap capacitor",
+    "Sheetname": "/",
+    "Sheetfile": "IWR-AOP-MODULE.kicad_sch",
+    "LCSC": "C28323",
+    "MPN": "CL21B105KBFNNNE",
+    "Manufacturer": "Samsung Electro-Mechanics"
+   },
+   "attr": [
+    "smd"
+   ],
+   "pads": {
+    "1": "USB_VBUS",
+    "2": "GND"
+   }
+  },
+  "C322": {
+   "value": "100nF",
+   "fp": "Capacitor_SMD:C_0402_1005Metric",
+   "props": {
+    "Value": "100nF",
+    "KiLib_Generator": "SMD_2terminal_chip_molded",
+    "MPN": "CL05B104KO5NNNC",
+    "Manufacturer": "Samsung Electro-Mechanics",
+    "LCSC": "C1525",
+    "ki_keywords": "cap capacitor",
+    "Sheetname": "Radar and boot",
+    "Sheetfile": "aop.kicad_sch",
+    "ki_fp_filters": "C_*"
+   },
+   "attr": [
+    "smd"
+   ],
+   "pads": {
+    "1": "1V8_R",
+    "2": "GND"
+   }
+  },
+  "R314": {
+   "value": "0R",
+   "fp": "Resistor_SMD:R_0402_1005Metric",
+   "props": {
+    "Value": "0R",
+    "KiLib_Generator": "SMD_2terminal_chip_molded",
+    "MPN": "0402WGF0000TCE",
+    "Manufacturer": "UNI-ROYAL(Uniroyal Elec)",
+    "LCSC": "C17168",
+    "Purpose": "Remove for external UART probe; prevents host buffer contention",
+    "ki_keywords": "r resistor",
+    "Sheetname": "Radar and boot",
+    "Sheetfile": "aop.kicad_sch",
+    "ki_fp_filters": "R_*"
+   },
+   "attr": [
+    "smd"
+   ],
+   "pads": {
+    "1": "AOP_UART_RX",
+    "2": "/Radar and boot/AOP_UART_RX_BALL"
+   }
+  },
+  "C346": {
+   "value": "18pF",
+   "fp": "Capacitor_SMD:C_0402_1005Metric",
+   "props": {
+    "Value": "18pF",
+    "KiLib_Generator": "SMD_2terminal_chip_molded",
+    "MPN": "0402CG180J500NT",
+    "Manufacturer": "FH (Guangdong Fenghua Advanced Tech)",
+    "LCSC": "C1549",
+    "ki_keywords": "cap capacitor",
+    "Sheetname": "Radar and boot",
+    "Sheetfile": "aop.kicad_sch",
+    "ki_fp_filters": "C_*"
+   },
+   "attr": [
+    "smd"
+   ],
+   "pads": {
+    "1": "/Radar and boot/AOP_CLKP",
+    "2": "GND"
+   }
+  },
+  "C304": {
+   "value": "100nF",
+   "fp": "Capacitor_SMD:C_0402_1005Metric",
+   "props": {
+    "Value": "100nF",
+    "KiLib_Generator": "SMD_2terminal_chip_molded",
+    "MPN": "CL05B104KO5NNNC",
+    "Manufacturer": "Samsung Electro-Mechanics",
+    "LCSC": "C1525",
+    "ki_keywords": "cap capacitor",
+    "Sheetname": "Radar and boot",
+    "Sheetfile": "aop.kicad_sch",
+    "ki_fp_filters": "C_*"
+   },
+   "attr": [
+    "smd"
+   ],
+   "pads": {
+    "1": "1V2_R",
+    "2": "GND"
+   }
+  },
+  "C314": {
+   "value": "100nF",
+   "fp": "Capacitor_SMD:C_0402_1005Metric",
+   "props": {
+    "Value": "100nF",
+    "KiLib_Generator": "SMD_2terminal_chip_molded",
+    "MPN": "CL05B104KO5NNNC",
+    "Manufacturer": "Samsung Electro-Mechanics",
+    "LCSC": "C1525",
+    "ki_keywords": "cap capacitor",
+    "Sheetname": "Radar and boot",
+    "Sheetfile": "aop.kicad_sch",
+    "ki_fp_filters": "C_*"
+   },
+   "attr": [
+    "smd"
+   ],
+   "pads": {
+    "1": "1V0_R",
+    "2": "GND"
+   }
+  },
+  "C610": {
+   "value": "22uF",
+   "fp": "Capacitor_SMD:C_1210_3225Metric",
+   "props": {
+    "Value": "22uF",
+    "KiLib_Generator": "SMD_2terminal_chip_molded",
+    "MPN": "GRM32ER71E226KE15L",
+    "Manufacturer": "Murata Electronics",
+    "LCSC": "C21397",
+    "Tolerance": "10%",
+    "ki_keywords": "cap capacitor",
+    "Rating": "X7R 25V",
+    "Sheetname": "Radar PMIC",
+    "Sheetfile": "rails.kicad_sch",
+    "ki_fp_filters": "C_*"
+   },
+   "attr": [
+    "smd"
+   ],
+   "pads": {
+    "1": "3V3_R",
+    "2": "GND"
+   }
+  },
+  "C620": {
+   "value": "10uF",
+   "fp": "Capacitor_SMD:C_0805_2012Metric",
+   "props": {
+    "Value": "10uF",
+    "KiLib_Generator": "SMD_2terminal_chip_molded",
+    "MPN": "GRM21BR71A106KE51L",
+    "Manufacturer": "Murata Electronics",
+    "LCSC": "C86038",
+    "Tolerance": "10%",
+    "ki_keywords": "cap capacitor",
+    "Rating": "X7R 10V",
+    "Sheetname": "Radar PMIC",
+    "Sheetfile": "rails.kicad_sch",
+    "ki_fp_filters": "C_*"
+   },
+   "attr": [
+    "smd"
+   ],
+   "pads": {
+    "1": "1V0_R",
+    "2": "GND"
+   }
+  },
+  "C309": {
+   "value": "100nF",
+   "fp": "Capacitor_SMD:C_0402_1005Metric",
+   "props": {
+    "Value": "100nF",
+    "KiLib_Generator": "SMD_2terminal_chip_molded",
+    "MPN": "CL05B104KO5NNNC",
+    "Manufacturer": "Samsung Electro-Mechanics",
+    "LCSC": "C1525",
+    "ki_keywords": "cap capacitor",
+    "Sheetname": "Radar and boot",
+    "Sheetfile": "aop.kicad_sch",
+    "ki_fp_filters": "C_*"
+   },
+   "attr": [
+    "smd"
+   ],
+   "pads": {
+    "1": "1V2_R",
+    "2": "GND"
+   }
+  },
+  "L603": {
+   "value": "0.47uH",
+   "fp": "Inductor_SMD:L_Sunlord_MWSA0402S",
+   "props": {
+    "Value": "0.47uH",
+    "KiLib_Generator": "inductor/SMD",
+    "MPN": "MWSA0402S-R47MT",
+    "Manufacturer": "Sunlord",
+    "LCSC": "C6331050",
+    "ki_keywords": "inductor choke coil reactor magnetic",
+    "Sheetname": "Radar PMIC",
+    "Sheetfile": "rails.kicad_sch",
+    "ki_fp_filters": "Choke_* *Coil* Inductor_* L_*"
+   },
+   "attr": [
+    "smd"
+   ],
+   "pads": {
+    "1": "PMIC_SW3",
+    "2": "1V8_RAW"
+   }
+  },
+  "F200": {
+   "value": "3A 32V 0467003.NRHF",
+   "fp": "Fuse:Fuse_0603_1608Metric",
+   "props": {
+    "Value": "3A 32V 0467003.NRHF",
+    "KiLib_Generator": "SMD_2terminal_chip_molded",
+    "MPN": "0467003.NRHF",
+    "Manufacturer": "Littelfuse",
+    "LCSC": "C99558",
+    "ki_keywords": "fuse",
+    "Sheetname": "Carrier interfaces",
+    "Sheetfile": "interfaces.kicad_sch"
+   },
+   "attr": [
+    "smd"
+   ],
+   "pads": {
+    "1": "USB_CONN_VBUS",
+    "2": "USB_VBUS"
+   }
+  },
+  "R201": {
+   "value": "47kR",
+   "fp": "Resistor_SMD:R_0402_1005Metric",
+   "props": {
+    "Value": "47kR",
+    "KiLib_Generator": "SMD_2terminal_chip_molded",
+    "ki_keywords": "r resistor",
+    "Sheetname": "Carrier interfaces",
+    "Sheetfile": "interfaces.kicad_sch",
+    "LCSC": "C25792",
+    "MPN": "0402WGF4702TCE",
+    "Manufacturer": "UNI-ROYAL(Uniroyal Elec)"
+   },
+   "attr": [
+    "smd"
+   ],
+   "pads": {
+    "1": "USB_VBUS_SENSE",
+    "2": "GND"
+   }
+  },
+  "J200": {
+   "value": "USB4105-GF-A",
+   "fp": "Connector_USB:USB_C_Receptacle_GCT_USB4105-xx-A_16P_TopMnt_Horizontal",
+   "props": {
+    "Value": "USB4105-GF-A",
+    "MPN": "USB4105-GF-A",
+    "Manufacturer": "Global Connector Technology",
+    "LCSC": "C3020560",
+    "Sheetname": "Carrier interfaces",
+    "Sheetfile": "interfaces.kicad_sch"
+   },
+   "attr": [
+    "smd"
+   ],
+   "pads": {
+    "A1": "GND",
+    "A4": "USB_CONN_VBUS",
+    "A5": "USB_CC1",
+    "A6": "USB_D+",
+    "A7": "USB_D-",
+    "A8": "unconnected-(J200-SBU1-PadA8)",
+    "A9": "USB_CONN_VBUS",
+    "A12": "GND",
+    "B1": "GND",
+    "B4": "USB_CONN_VBUS",
+    "B5": "USB_CC2",
+    "B6": "USB_D+",
+    "B7": "USB_D-",
+    "B8": "unconnected-(J200-SBU2-PadB8)",
+    "B9": "USB_CONN_VBUS",
+    "B12": "GND",
+    "SH": "GND"
+   }
+  },
+  "C307": {
+   "value": "100nF",
+   "fp": "Capacitor_SMD:C_0402_1005Metric",
+   "props": {
+    "Value": "100nF",
+    "KiLib_Generator": "SMD_2terminal_chip_molded",
+    "MPN": "CL05B104KO5NNNC",
+    "Manufacturer": "Samsung Electro-Mechanics",
+    "LCSC": "C1525",
+    "ki_keywords": "cap capacitor",
+    "Sheetname": "Radar and boot",
+    "Sheetfile": "aop.kicad_sch",
+    "ki_fp_filters": "C_*"
+   },
+   "attr": [
+    "smd"
+   ],
+   "pads": {
+    "1": "1V2_R",
+    "2": "GND"
+   }
+  },
+  "U301": {
+   "value": "MX25L3233FM2I-08G",
+   "fp": "Package_SO:SOIC-8_5.3x5.3mm_P1.27mm",
+   "props": {
+    "Value": "MX25L3233FM2I-08G",
+    "KiLib_Generator": "package/gullwing",
+    "MPN": "MX25L3233FM2I-08G",
+    "Manufacturer": "Macronix",
+    "LCSC": "C190802",
+    "Power_rating": "2.65-3.6V; quad read max17mA at133MHz; program/erase max15mA; shares switched3V3_R only",
+    "Boot_requirement": "Program via SOP5 UARTA; verify NV SR.QE(bit6)=1 before quad boot; factory QE=0. Cold-boot qualify the assembled board.",
+    "Compatibility_source": "https://www.ti.com/lit/an/sprach9g/sprach9g.pdf Table3-2 lists MX25L3233F; fast/quad reads to133MHz, legacy03h read limited50MHz; retain TI SFDP boot flow and qualify exact ordering code",
+    "Sheetname": "Radar and boot",
+    "Sheetfile": "aop.kicad_sch"
+   },
+   "attr": [
+    "smd"
+   ],
+   "pads": {
+    "1": "/Radar and boot/AOP_QSPI_CS_N",
+    "2": "/Radar and boot/AOP_QSPI_D1",
+    "3": "/Radar and boot/AOP_QSPI_D2",
+    "4": "GND",
+    "5": "/Radar and boot/AOP_QSPI_D0",
+    "6": "/Radar and boot/AOP_QSPI_CLK",
+    "7": "/Radar and boot/AOP_QSPI_D3",
+    "8": "3V3_R"
+   }
+  },
+  "C315": {
+   "value": "100nF",
+   "fp": "Capacitor_SMD:C_0402_1005Metric",
+   "props": {
+    "Value": "100nF",
+    "KiLib_Generator": "SMD_2terminal_chip_molded",
+    "MPN": "CL05B104KO5NNNC",
+    "Manufacturer": "Samsung Electro-Mechanics",
+    "LCSC": "C1525",
+    "ki_keywords": "cap capacitor",
+    "Sheetname": "Radar and boot",
+    "Sheetfile": "aop.kicad_sch",
+    "ki_fp_filters": "C_*"
+   },
+   "attr": [
+    "smd"
+   ],
+   "pads": {
+    "1": "1V0_R",
+    "2": "GND"
+   }
+  },
+  "R417": {
+   "value": "1kR",
+   "fp": "Resistor_SMD:R_0402_1005Metric",
+   "props": {
+    "Value": "1kR",
+    "KiLib_Generator": "SMD_2terminal_chip_molded",
+    "MPN": "0402WGF1001TCE",
+    "Manufacturer": "UNI-ROYAL(Uniroyal Elec)",
+    "LCSC": "C11702"
+   },
+   "attr": [
+    "smd"
+   ],
+   "pads": {
+    "1": "HOST_NRESET",
+    "2": "AOP_NRESET"
+   }
+  },
+  "R305": {
+   "value": "10kR",
+   "fp": "Resistor_SMD:R_0402_1005Metric",
+   "props": {
+    "Value": "10kR",
+    "KiLib_Generator": "SMD_2terminal_chip_molded",
+    "MPN": "0402WGF1002TCE",
+    "Manufacturer": "UNI-ROYAL(Uniroyal Elec)",
+    "LCSC": "C25744",
+    "ki_keywords": "r resistor",
+    "Sheetname": "Radar and boot",
+    "Sheetfile": "aop.kicad_sch",
+    "ki_fp_filters": "R_*"
+   },
+   "attr": [
+    "smd"
+   ],
+   "pads": {
+    "1": "/Radar and boot/AOP_SOP1",
+    "2": "GND"
+   }
+  },
+  "C622": {
+   "value": "100nF",
+   "fp": "Capacitor_SMD:C_0402_1005Metric",
+   "props": {
+    "Value": "100nF",
+    "KiLib_Generator": "SMD_2terminal_chip_molded",
+    "MPN": "CL05B104KO5NNNC",
+    "Manufacturer": "Samsung Electro-Mechanics",
+    "LCSC": "C1525",
+    "ki_keywords": "cap capacitor",
+    "Sheetname": "Radar PMIC",
+    "Sheetfile": "rails.kicad_sch",
+    "ki_fp_filters": "C_*"
+   },
+   "attr": [
+    "smd"
+   ],
+   "pads": {
+    "1": "1V0_R",
+    "2": "GND"
+   }
+  },
+  "C316": {
+   "value": "100nF",
+   "fp": "Capacitor_SMD:C_0402_1005Metric",
+   "props": {
+    "Value": "100nF",
+    "KiLib_Generator": "SMD_2terminal_chip_molded",
+    "MPN": "CL05B104KO5NNNC",
+    "Manufacturer": "Samsung Electro-Mechanics",
+    "LCSC": "C1525",
+    "ki_keywords": "cap capacitor",
+    "Sheetname": "Radar and boot",
+    "Sheetfile": "aop.kicad_sch",
+    "ki_fp_filters": "C_*"
+   },
+   "attr": [
+    "smd"
+   ],
+   "pads": {
+    "1": "1V0_R",
+    "2": "GND"
+   }
+  },
+  "C624": {
+   "value": "22uF",
+   "fp": "Capacitor_SMD:C_0805_2012Metric",
+   "props": {
+    "Value": "22uF",
+    "KiLib_Generator": "SMD_2terminal_chip_molded",
+    "MPN": "CL21A226MAQNNNE",
+    "Manufacturer": "Samsung Electro-Mechanics",
+    "LCSC": "C45783",
+    "Rating": "X5R 25V",
+    "Tolerance": "20%"
+   },
+   "attr": [
+    "smd"
+   ],
+   "pads": {
+    "1": "1V0_R",
+    "2": "GND"
+   }
+  },
+  "C347": {
+   "value": "18pF",
+   "fp": "Capacitor_SMD:C_0402_1005Metric",
+   "props": {
+    "Value": "18pF",
+    "KiLib_Generator": "SMD_2terminal_chip_molded",
+    "MPN": "0402CG180J500NT",
+    "Manufacturer": "FH (Guangdong Fenghua Advanced Tech)",
+    "LCSC": "C1549",
+    "ki_keywords": "cap capacitor",
+    "Sheetname": "Radar and boot",
+    "Sheetfile": "aop.kicad_sch",
+    "ki_fp_filters": "C_*"
+   },
+   "attr": [
+    "smd"
+   ],
+   "pads": {
+    "1": "/Radar and boot/AOP_CLKM",
+    "2": "GND"
+   }
+  },
+  "R205": {
+   "value": "100kR",
+   "fp": "Resistor_SMD:R_0402_1005Metric",
+   "props": {
+    "Value": "100kR",
+    "KiLib_Generator": "SMD_2terminal_chip_molded",
+    "ki_keywords": "r resistor",
+    "Sheetname": "Carrier interfaces",
+    "Sheetfile": "interfaces.kicad_sch",
+    "LCSC": "C25741",
+    "MPN": "0402WGF1003TCE",
+    "Manufacturer": "UNI-ROYAL(Uniroyal Elec)"
+   },
+   "attr": [
+    "smd"
+   ],
+   "pads": {
+    "1": "3V3_R",
+    "2": "AOP_UART_TX"
+   }
+  },
+  "R101": {
+   "value": "5.1kR 1%",
+   "fp": "Resistor_SMD:R_0402_1005Metric",
+   "props": {
+    "Value": "5.1kR 1%",
+    "KiLib_Generator": "SMD_2terminal_chip_molded",
+    "ki_keywords": "r resistor",
+    "Sheetname": "/",
+    "Sheetfile": "IWR-AOP-MODULE.kicad_sch",
+    "LCSC": "C25905",
+    "MPN": "0402WGF5101TCE",
+    "Manufacturer": "UNI-ROYAL(Uniroyal Elec)"
+   },
+   "attr": [
+    "smd"
+   ],
+   "pads": {
+    "1": "USB_CC2",
+    "2": "GND"
+   }
+  },
+  "C338": {
+   "value": "100nF",
+   "fp": "Capacitor_SMD:C_0402_1005Metric",
+   "props": {
+    "Value": "100nF",
+    "KiLib_Generator": "SMD_2terminal_chip_molded",
+    "MPN": "CL05B104KO5NNNC",
+    "Manufacturer": "Samsung Electro-Mechanics",
+    "LCSC": "C1525",
+    "ki_keywords": "cap capacitor",
+    "Sheetname": "Radar and boot",
+    "Sheetfile": "aop.kicad_sch",
+    "ki_fp_filters": "C_*"
+   },
+   "attr": [
+    "smd"
+   ],
+   "pads": {
+    "1": "/Radar and boot/AOP_VOUT_14SYNTH",
+    "2": "GND"
+   }
+  },
+  "C341": {
+   "value": "4.7uF",
+   "fp": "Capacitor_SMD:C_0603_1608Metric",
+   "props": {
+    "Value": "4.7uF",
+    "KiLib_Generator": "SMD_2terminal_chip_molded",
+    "MPN": "CL10A475KO8NNNC",
+    "Manufacturer": "Samsung Electro-Mechanics",
+    "LCSC": "C19666",
+    "ki_keywords": "cap capacitor",
+    "Sheetname": "Radar and boot",
+    "Sheetfile": "aop.kicad_sch",
+    "ki_fp_filters": "C_*"
+   },
+   "attr": [
+    "smd"
+   ],
+   "pads": {
+    "1": "1V0_R",
+    "2": "GND"
+   }
+  },
+  "C611": {
+   "value": "22uF",
+   "fp": "Capacitor_SMD:C_1210_3225Metric",
+   "props": {
+    "Value": "22uF",
+    "KiLib_Generator": "SMD_2terminal_chip_molded",
+    "MPN": "GRM32ER71E226KE15L",
+    "Manufacturer": "Murata Electronics",
+    "LCSC": "C21397",
+    "Tolerance": "10%",
+    "ki_keywords": "cap capacitor",
+    "Rating": "X7R 25V",
+    "Sheetname": "Radar PMIC",
+    "Sheetfile": "rails.kicad_sch",
+    "ki_fp_filters": "C_*"
+   },
+   "attr": [
+    "smd"
+   ],
+   "pads": {
+    "1": "1V2_R",
+    "2": "GND"
+   }
+  },
+  "C311": {
+   "value": "100nF",
+   "fp": "Capacitor_SMD:C_0402_1005Metric",
+   "props": {
+    "Value": "100nF",
+    "KiLib_Generator": "SMD_2terminal_chip_molded",
+    "MPN": "CL05B104KO5NNNC",
+    "Manufacturer": "Samsung Electro-Mechanics",
+    "LCSC": "C1525",
+    "ki_keywords": "cap capacitor",
+    "Sheetname": "Radar and boot",
+    "Sheetfile": "aop.kicad_sch",
+    "ki_fp_filters": "C_*"
+   },
+   "attr": [
+    "smd"
+   ],
+   "pads": {
+    "1": "1V2_R",
+    "2": "GND"
+   }
+  },
+  "R416": {
+   "value": "10kR",
+   "fp": "Resistor_SMD:R_0402_1005Metric",
+   "props": {
+    "Value": "10kR",
+    "KiLib_Generator": "SMD_2terminal_chip_molded",
+    "ki_keywords": "r resistor",
+    "Sheetname": "Carrier interfaces",
+    "Sheetfile": "interfaces.kicad_sch",
+    "LCSC": "C25744",
+    "MPN": "0402WGF1002TCE",
+    "Manufacturer": "UNI-ROYAL(Uniroyal Elec)"
+   },
+   "attr": [
+    "smd"
+   ],
+   "pads": {
+    "1": "3V3_R",
+    "2": "AOP_UART_RX"
+   }
+  },
+  "C601": {
+   "value": "22uF",
+   "fp": "Capacitor_SMD:C_1210_3225Metric",
+   "props": {
+    "Value": "22uF",
+    "KiLib_Generator": "SMD_2terminal_chip_molded",
+    "MPN": "GRM32ER71E226KE15L",
+    "Manufacturer": "Murata Electronics",
+    "LCSC": "C21397",
+    "Tolerance": "10%",
+    "ki_keywords": "cap capacitor",
+    "Rating": "X7R 25V",
+    "Sheetname": "Radar PMIC",
+    "Sheetfile": "rails.kicad_sch",
+    "ki_fp_filters": "C_*"
+   },
+   "attr": [
+    "smd"
+   ],
+   "pads": {
+    "1": "SYS_5V",
+    "2": "GND"
+   }
+  },
+  "R610": {
+   "value": "3.9R",
+   "fp": "Resistor_SMD:R_0603_1608Metric",
+   "props": {
+    "Value": "3.9R",
+    "KiLib_Generator": "SMD_2terminal_chip_molded",
+    "MPN": "RC0603FR-073R9L",
+    "Manufacturer": "YAGEO",
+    "LCSC": "C482845",
+    "Tolerance": "1%",
+    "ki_keywords": "r resistor",
+    "Rating": "100mW",
+    "Sheetname": "Radar PMIC",
+    "Sheetfile": "rails.kicad_sch",
+    "ki_fp_filters": "R_*"
+   },
+   "attr": [
+    "smd"
+   ],
+   "pads": {
+    "1": "PMIC_SW0",
+    "2": "Net-(C614-Pad1)"
+   }
+  },
+  "R307": {
+   "value": "10kR",
+   "fp": "Resistor_SMD:R_0402_1005Metric",
+   "props": {
+    "Value": "10kR",
+    "KiLib_Generator": "SMD_2terminal_chip_molded",
+    "MPN": "0402WGF1002TCE",
+    "Manufacturer": "UNI-ROYAL(Uniroyal Elec)",
+    "LCSC": "C25744",
+    "ki_keywords": "r resistor",
+    "Sheetname": "Radar and boot",
+    "Sheetfile": "aop.kicad_sch",
+    "ki_fp_filters": "R_*"
+   },
+   "attr": [
+    "smd"
+   ],
+   "pads": {
+    "1": "3V3_R",
+    "2": "AOP_HOST_INTR"
+   }
+  },
+  "C336": {
+   "value": "100nF",
+   "fp": "Capacitor_SMD:C_0402_1005Metric",
+   "props": {
+    "Value": "100nF",
+    "KiLib_Generator": "SMD_2terminal_chip_molded",
+    "MPN": "CL05B104KO5NNNC",
+    "Manufacturer": "Samsung Electro-Mechanics",
+    "LCSC": "C1525",
+    "ki_keywords": "cap capacitor",
+    "Sheetname": "Radar and boot",
+    "Sheetfile": "aop.kicad_sch",
+    "ki_fp_filters": "C_*"
+   },
+   "attr": [
+    "smd"
+   ],
+   "pads": {
+    "1": "3V3_R",
+    "2": "GND"
+   }
+  },
+  "U117": {
+   "value": "LM66200DRLR",
+   "fp": "Package_TO_SOT_SMD:SOT-583-8",
+   "props": {
+    "Value": "LM66200DRLR",
+    "MPN": "LM66200DRLR",
+    "Manufacturer": "Texas Instruments",
+    "LCSC": "C3235556",
+    "Sheetname": "/",
+    "Sheetfile": "IWR-AOP-MODULE.kicad_sch",
+    "ki_keywords": "ideal diode ORing automatic switchover reverse current blocking",
+    "ki_fp_filters": "SOT?5?3*"
+   },
+   "attr": [
+    "smd"
+   ],
+   "pads": {
+    "1": "GND",
+    "2": "SYS_5V",
+    "3": "USB_VBUS",
+    "4": "GND",
+    "5": "GND",
+    "6": "PWR_IN",
+    "7": "SYS_5V",
+    "8": "unconnected-(U117-ST-Pad8)"
+   }
+  },
+  "C303": {
+   "value": "100nF",
+   "fp": "Capacitor_SMD:C_0402_1005Metric",
+   "props": {
+    "Value": "100nF",
+    "KiLib_Generator": "SMD_2terminal_chip_molded",
+    "MPN": "CL05B104KO5NNNC",
+    "Manufacturer": "Samsung Electro-Mechanics",
+    "LCSC": "C1525",
+    "ki_keywords": "cap capacitor",
+    "Sheetname": "Radar and boot",
+    "Sheetfile": "aop.kicad_sch",
+    "ki_fp_filters": "C_*"
+   },
+   "attr": [
+    "smd"
+   ],
+   "pads": {
+    "1": "1V2_R",
+    "2": "GND"
+   }
+  },
+  "C312": {
+   "value": "10uF",
+   "fp": "Capacitor_SMD:C_0805_2012Metric",
+   "props": {
+    "Value": "10uF",
+    "KiLib_Generator": "SMD_2terminal_chip_molded",
+    "MPN": "CL21A106KAYNNNE",
+    "Manufacturer": "Samsung Electro-Mechanics",
+    "LCSC": "C15850",
+    "ki_keywords": "cap capacitor",
+    "Sheetname": "Radar and boot",
+    "Sheetfile": "aop.kicad_sch",
+    "ki_fp_filters": "C_*"
+   },
+   "attr": [
+    "smd"
+   ],
+   "pads": {
+    "1": "1V0_R",
+    "2": "GND"
+   }
+  },
+  "C318": {
+   "value": "100nF",
+   "fp": "Capacitor_SMD:C_0402_1005Metric",
+   "props": {
+    "Value": "100nF",
+    "KiLib_Generator": "SMD_2terminal_chip_molded",
+    "MPN": "CL05B104KO5NNNC",
+    "Manufacturer": "Samsung Electro-Mechanics",
+    "LCSC": "C1525",
+    "ki_keywords": "cap capacitor",
+    "Sheetname": "Radar and boot",
+    "Sheetfile": "aop.kicad_sch",
+    "ki_fp_filters": "C_*"
+   },
+   "attr": [
+    "smd"
+   ],
+   "pads": {
+    "1": "1V0_R",
+    "2": "GND"
+   }
+  },
+  "C328": {
+   "value": "100nF",
+   "fp": "Capacitor_SMD:C_0402_1005Metric",
+   "props": {
+    "Value": "100nF",
+    "KiLib_Generator": "SMD_2terminal_chip_molded",
+    "MPN": "CL05B104KO5NNNC",
+    "Manufacturer": "Samsung Electro-Mechanics",
+    "LCSC": "C1525",
+    "ki_keywords": "cap capacitor",
+    "Sheetname": "Radar and boot",
+    "Sheetfile": "aop.kicad_sch",
+    "ki_fp_filters": "C_*"
+   },
+   "attr": [
+    "smd"
+   ],
+   "pads": {
+    "1": "1V8_R",
+    "2": "GND"
+   }
+  },
+  "R300": {
+   "value": "10kR",
+   "fp": "Resistor_SMD:R_0402_1005Metric",
+   "props": {
+    "Value": "10kR",
+    "KiLib_Generator": "SMD_2terminal_chip_molded",
+    "MPN": "0402WGF1002TCE",
+    "Manufacturer": "UNI-ROYAL(Uniroyal Elec)",
+    "LCSC": "C25744",
+    "ki_keywords": "r resistor",
+    "Sheetname": "Radar and boot",
+    "Sheetfile": "aop.kicad_sch"
+   },
+   "attr": [
+    "smd"
+   ],
+   "pads": {
+    "1": "3V3_R",
+    "2": "/Radar and boot/AOP_QSPI_CS_N"
+   }
+  },
+  "C300": {
+   "value": "10uF",
+   "fp": "Capacitor_SMD:C_0805_2012Metric",
+   "props": {
+    "Value": "10uF",
+    "KiLib_Generator": "SMD_2terminal_chip_molded",
+    "MPN": "CL21A106KAYNNNE",
+    "Manufacturer": "Samsung Electro-Mechanics",
+    "LCSC": "C15850",
+    "ki_keywords": "cap capacitor",
+    "Sheetname": "Radar and boot",
+    "Sheetfile": "aop.kicad_sch",
+    "ki_fp_filters": "C_*"
+   },
+   "attr": [
+    "smd"
+   ],
+   "pads": {
+    "1": "1V2_R",
+    "2": "GND"
+   }
+  },
+  "FB601": {
+   "value": "120R@100MHz / 3A",
+   "fp": "Inductor_SMD:L_0603_1608Metric",
+   "props": {
+    "Value": "120R@100MHz / 3A",
+    "KiLib_Generator": "SMD_2terminal_chip_molded",
+    "MPN": "BLM18KG121TH1D",
+    "Manufacturer": "Murata",
+    "LCSC": "C437404",
+    "ki_keywords": "L ferrite bead inductor filter",
+    "Sheetname": "Radar PMIC",
+    "Sheetfile": "rails.kicad_sch",
+    "ki_fp_filters": "Inductor_* L_* *Ferrite*"
+   },
+   "attr": [
+    "smd"
+   ],
+   "pads": {
+    "1": "1V8_RAW",
+    "2": "1V8_R"
+   }
+  },
+  "C317": {
+   "value": "100nF",
+   "fp": "Capacitor_SMD:C_0402_1005Metric",
+   "props": {
+    "Value": "100nF",
+    "KiLib_Generator": "SMD_2terminal_chip_molded",
+    "MPN": "CL05B104KO5NNNC",
+    "Manufacturer": "Samsung Electro-Mechanics",
+    "LCSC": "C1525",
+    "ki_keywords": "cap capacitor",
+    "Sheetname": "Radar and boot",
+    "Sheetfile": "aop.kicad_sch",
+    "ki_fp_filters": "C_*"
+   },
+   "attr": [
+    "smd"
+   ],
+   "pads": {
+    "1": "1V0_R",
+    "2": "GND"
+   }
+  },
+  "C625": {
+   "value": "22uF",
+   "fp": "Capacitor_SMD:C_0805_2012Metric",
+   "props": {
+    "Value": "22uF",
+    "KiLib_Generator": "SMD_2terminal_chip_molded",
+    "MPN": "CL21A226MAQNNNE",
+    "Manufacturer": "Samsung Electro-Mechanics",
+    "LCSC": "C45783",
+    "Rating": "X5R 25V",
+    "Tolerance": "20%"
+   },
+   "attr": [
+    "smd"
+   ],
+   "pads": {
+    "1": "1V8_R",
+    "2": "GND"
+   }
+  },
+  "C612": {
+   "value": "22uF",
+   "fp": "Capacitor_SMD:C_1210_3225Metric",
+   "props": {
+    "Value": "22uF",
+    "KiLib_Generator": "SMD_2terminal_chip_molded",
+    "MPN": "GRM32ER71E226KE15L",
+    "Manufacturer": "Murata Electronics",
+    "LCSC": "C21397",
+    "Tolerance": "10%",
+    "ki_keywords": "cap capacitor",
+    "Rating": "X7R 25V",
+    "Sheetname": "Radar PMIC",
+    "Sheetfile": "rails.kicad_sch",
+    "ki_fp_filters": "C_*"
+   },
+   "attr": [
+    "smd"
+   ],
+   "pads": {
+    "1": "1V0_RAW",
+    "2": "GND"
+   }
+  },
+  "C333": {
+   "value": "100nF",
+   "fp": "Capacitor_SMD:C_0402_1005Metric",
+   "props": {
+    "Value": "100nF",
+    "KiLib_Generator": "SMD_2terminal_chip_molded",
+    "MPN": "CL05B104KO5NNNC",
+    "Manufacturer": "Samsung Electro-Mechanics",
+    "LCSC": "C1525",
+    "ki_keywords": "cap capacitor",
+    "Sheetname": "Radar and boot",
+    "Sheetfile": "aop.kicad_sch",
+    "ki_fp_filters": "C_*"
+   },
+   "attr": [
+    "smd"
+   ],
+   "pads": {
+    "1": "1V8_R",
+    "2": "GND"
+   }
+  },
+  "C202": {
+   "value": "1uF 25V",
+   "fp": "Capacitor_SMD:C_0805_2012Metric",
+   "props": {
+    "Value": "1uF 25V",
+    "KiLib_Generator": "SMD_2terminal_chip_molded",
+    "ki_keywords": "cap capacitor",
+    "Sheetname": "Carrier interfaces",
+    "Sheetfile": "interfaces.kicad_sch",
+    "LCSC": "C28323",
+    "MPN": "CL21B105KBFNNNE",
+    "Manufacturer": "Samsung Electro-Mechanics"
+   },
+   "attr": [
+    "smd"
+   ],
+   "pads": {
+    "1": "USB_VBUS",
+    "2": "GND"
+   }
+  },
+  "C326": {
+   "value": "100nF",
+   "fp": "Capacitor_SMD:C_0402_1005Metric",
+   "props": {
+    "Value": "100nF",
+    "KiLib_Generator": "SMD_2terminal_chip_molded",
+    "MPN": "CL05B104KO5NNNC",
+    "Manufacturer": "Samsung Electro-Mechanics",
+    "LCSC": "C1525",
+    "ki_keywords": "cap capacitor",
+    "Sheetname": "Radar and boot",
+    "Sheetfile": "aop.kicad_sch",
+    "ki_fp_filters": "C_*"
+   },
+   "attr": [
+    "smd"
+   ],
+   "pads": {
+    "1": "1V8_R",
+    "2": "GND"
+   }
+  },
+  "C308": {
+   "value": "100nF",
+   "fp": "Capacitor_SMD:C_0402_1005Metric",
+   "props": {
+    "Value": "100nF",
+    "KiLib_Generator": "SMD_2terminal_chip_molded",
+    "MPN": "CL05B104KO5NNNC",
+    "Manufacturer": "Samsung Electro-Mechanics",
+    "LCSC": "C1525",
+    "ki_keywords": "cap capacitor",
+    "Sheetname": "Radar and boot",
+    "Sheetfile": "aop.kicad_sch",
+    "ki_fp_filters": "C_*"
+   },
+   "attr": [
+    "smd"
+   ],
+   "pads": {
+    "1": "1V2_R",
+    "2": "GND"
+   }
+  },
+  "C616": {
+   "value": "390pF",
+   "fp": "Capacitor_SMD:C_0402_1005Metric",
+   "props": {
+    "Value": "390pF",
+    "KiLib_Generator": "SMD_2terminal_chip_molded",
+    "MPN": "GRM1555C1H391JA01D",
+    "Manufacturer": "Murata Electronics",
+    "LCSC": "C76967",
+    "Tolerance": "5%",
+    "ki_keywords": "cap capacitor",
+    "Rating": "C0G 50V",
+    "Sheetname": "Radar PMIC",
+    "Sheetfile": "rails.kicad_sch",
+    "ki_fp_filters": "C_*"
+   },
+   "attr": [
+    "smd"
+   ],
+   "pads": {
+    "1": "Net-(C616-Pad1)",
+    "2": "GND"
+   }
+  },
+  "J301": {
+   "value": "RADAR JTAG",
+   "fp": "IWR-AOP-MODULE:XKB_X1270WVS-2x05B-9TV01_2x05_P1.27mm_Vertical",
+   "props": {
+    "Value": "RADAR JTAG",
+    "MPN": "X1270WVS-2x05B-9TV01",
+    "Manufacturer": "XKB Connection",
+    "LCSC": "C2962219",
+    "Debug_interface": "IEEE 1149.1 JTAG; Cortex 10-pin 1.27 mm; no SWD",
+    "Power_constraint": "VTref = 3V3_R sense only. Disable probe target power. No drive while radar rail is absent.",
+    "Boot_mode": "SOP2/SOP1/SOP0 = 0/1/1: BOOT released; bridge JP300 (SOP1 HIGH) while nRESET low, then cold reset.",
+    "Cable_constraint": "Standard Black Magic 2x5 1.27 mm IDC cable; all ten socket positions open; housing key; pin 7 NC.",
+    "ki_keywords": "Cortex Debug Connector ARM SWD JTAG",
+    "Sheetname": "Radar and boot",
+    "Sheetfile": "aop.kicad_sch"
+   },
+   "attr": [
+    "smd"
+   ],
+   "pads": {
+    "1": "3V3_R",
+    "2": "/Radar and boot/AOP_JTAG_TMS",
+    "3": "GND",
+    "4": "/Radar and boot/AOP_JTAG_TCK",
+    "5": "GND",
+    "6": "/Radar and boot/AOP_SOP0",
+    "7": "unconnected-(J301-KEY-Pad7)",
+    "8": "/Radar and boot/AOP_JTAG_TDI",
+    "9": "GND",
+    "10": "AOP_NRESET"
+   }
+  },
+  "C605": {
+   "value": "1uF",
+   "fp": "Capacitor_SMD:C_0603_1608Metric",
+   "props": {
+    "Value": "1uF",
+    "KiLib_Generator": "SMD_2terminal_chip_molded",
+    "MPN": "CL10A105KB8NNNC",
+    "Manufacturer": "Samsung Electro-Mechanics",
+    "LCSC": "C15849"
+   },
+   "attr": [
+    "smd",
+    "dnp"
+   ],
+   "pads": {
+    "1": "AOP_NRESET",
+    "2": "GND"
+   }
+  },
+  "R209": {
+   "value": "100R",
+   "fp": "Resistor_SMD:R_0402_1005Metric",
+   "props": {
+    "Value": "100R",
+    "KiLib_Generator": "SMD_2terminal_chip_molded",
+    "MPN": "0402WGF1000TCE",
+    "Manufacturer": "UNI-ROYAL(Uniroyal Elec)",
+    "LCSC": "C25076",
+    "Sheetname": "Carrier interfaces",
+    "Sheetfile": "interfaces.kicad_sch",
+    "ki_keywords": "r resistor",
+    "ki_fp_filters": "R_*"
+   },
+   "attr": [
+    "smd"
+   ],
+   "pads": {
+    "1": "HOST_UART_TX",
+    "2": "AOP_UART_RX"
+   }
+  },
+  "R603": {
+   "value": "10kR",
+   "fp": "Resistor_SMD:R_0402_1005Metric",
+   "props": {
+    "Value": "10kR",
+    "KiLib_Generator": "SMD_2terminal_chip_molded",
+    "MPN": "0402WGF1002TCE",
+    "Manufacturer": "UNI-ROYAL(Uniroyal Elec)",
+    "LCSC": "C25744",
+    "ki_keywords": "r resistor",
+    "Sheetname": "Radar PMIC",
+    "Sheetfile": "rails.kicad_sch",
+    "ki_fp_filters": "R_*"
+   },
+   "attr": [
+    "smd"
+   ],
+   "pads": {
+    "1": "3V3_R",
+    "2": "AOP_NRESET"
+   }
+  },
+  "C203": {
+   "value": "4.7uF 16V",
+   "fp": "Capacitor_SMD:C_0805_2012Metric",
+   "props": {
+    "Value": "4.7uF 16V",
+    "KiLib_Generator": "SMD_2terminal_chip_molded",
+    "ki_keywords": "cap capacitor",
+    "Sheetname": "Carrier interfaces",
+    "Sheetfile": "interfaces.kicad_sch",
+    "LCSC": "C1779",
+    "MPN": "CL21A475KAQNNNE",
+    "Manufacturer": "Samsung Electro-Mechanics"
+   },
+   "attr": [
+    "smd"
+   ],
+   "pads": {
+    "1": "USB_VPP",
+    "2": "GND"
+   }
+  },
+  "C324": {
+   "value": "100nF",
+   "fp": "Capacitor_SMD:C_0402_1005Metric",
+   "props": {
+    "Value": "100nF",
+    "KiLib_Generator": "SMD_2terminal_chip_molded",
+    "MPN": "CL05B104KO5NNNC",
+    "Manufacturer": "Samsung Electro-Mechanics",
+    "LCSC": "C1525",
+    "ki_keywords": "cap capacitor",
+    "Sheetname": "Radar and boot",
+    "Sheetfile": "aop.kicad_sch",
+    "ki_fp_filters": "C_*"
+   },
+   "attr": [
+    "smd"
+   ],
+   "pads": {
+    "1": "1V8_R",
+    "2": "GND"
+   }
+  },
+  "C306": {
+   "value": "100nF",
+   "fp": "Capacitor_SMD:C_0402_1005Metric",
+   "props": {
+    "Value": "100nF",
+    "KiLib_Generator": "SMD_2terminal_chip_molded",
+    "MPN": "CL05B104KO5NNNC",
+    "Manufacturer": "Samsung Electro-Mechanics",
+    "LCSC": "C1525"
+   },
+   "attr": [
+    "smd"
+   ],
+   "pads": {
+    "1": "1V2_R",
+    "2": "GND"
+   }
+  },
+  "R200": {
+   "value": "24kR",
+   "fp": "Resistor_SMD:R_0402_1005Metric",
+   "props": {
+    "Value": "24kR",
+    "KiLib_Generator": "SMD_2terminal_chip_molded",
+    "ki_keywords": "r resistor",
+    "Sheetname": "Carrier interfaces",
+    "Sheetfile": "interfaces.kicad_sch",
+    "LCSC": "C25769",
+    "MPN": "0402WGF2402TCE",
+    "Manufacturer": "UNI-ROYAL(Uniroyal Elec)"
+   },
+   "attr": [
+    "smd"
+   ],
+   "pads": {
+    "1": "USB_VBUS",
+    "2": "USB_VBUS_SENSE"
+   }
+  },
+  "C615": {
+   "value": "390pF",
+   "fp": "Capacitor_SMD:C_0402_1005Metric",
+   "props": {
+    "Value": "390pF",
+    "KiLib_Generator": "SMD_2terminal_chip_molded",
+    "MPN": "GRM1555C1H391JA01D",
+    "Manufacturer": "Murata Electronics",
+    "LCSC": "C76967",
+    "Tolerance": "5%",
+    "ki_keywords": "cap capacitor",
+    "Rating": "C0G 50V",
+    "Sheetname": "Radar PMIC",
+    "Sheetfile": "rails.kicad_sch",
+    "ki_fp_filters": "C_*"
+   },
+   "attr": [
+    "smd"
+   ],
+   "pads": {
+    "1": "Net-(C615-Pad1)",
+    "2": "GND"
+   }
+  },
+  "C200": {
+   "value": "4.7uF 16V",
+   "fp": "Capacitor_SMD:C_0805_2012Metric",
+   "props": {
+    "Value": "4.7uF 16V",
+    "KiLib_Generator": "SMD_2terminal_chip_molded",
+    "ki_keywords": "cap capacitor",
+    "Sheetname": "Carrier interfaces",
+    "Sheetfile": "interfaces.kicad_sch",
+    "LCSC": "C1779",
+    "MPN": "CL21A475KAQNNNE",
+    "Manufacturer": "Samsung Electro-Mechanics"
+   },
+   "attr": [
+    "smd"
+   ],
+   "pads": {
+    "1": "USB_3V45",
+    "2": "GND"
+   }
+  },
+  "C319": {
+   "value": "100nF",
+   "fp": "Capacitor_SMD:C_0402_1005Metric",
+   "props": {
+    "Value": "100nF",
+    "KiLib_Generator": "SMD_2terminal_chip_molded",
+    "MPN": "CL05B104KO5NNNC",
+    "Manufacturer": "Samsung Electro-Mechanics",
+    "LCSC": "C1525",
+    "ki_keywords": "cap capacitor",
+    "Sheetname": "Radar and boot",
+    "Sheetfile": "aop.kicad_sch",
+    "ki_fp_filters": "C_*"
+   },
+   "attr": [
+    "smd"
+   ],
+   "pads": {
+    "1": "1V0_R",
+    "2": "GND"
+   }
+  },
+  "U200": {
+   "value": "CP2105-F01-GMR",
+   "fp": "Package_DFN_QFN:QFN-24-1EP_4x4mm_P0.5mm_EP2.7x2.6mm",
+   "props": {
+    "Value": "CP2105-F01-GMR",
+    "KiLib_Generator": "package/no_lead",
+    "MPN": "CP2105-F01-GMR",
+    "Manufacturer": "Silicon Laboratories",
+    "LCSC": "C109102",
+    "Sheetname": "Carrier interfaces",
+    "Sheetfile": "interfaces.kicad_sch"
+   },
+   "attr": [
+    "smd"
+   ],
+   "pads": {
+    "1": "unconnected-(U200-~{SUSPEND_SCI}-Pad1)",
+    "2": "GND",
+    "3": "USB_D+",
+    "4": "USB_D-",
+    "5": "USB_3V45",
+    "6": "USB_3V45",
+    "7": "USB_VBUS",
+    "8": "USB_VBUS_SENSE",
+    "9": "USB_BRIDGE_RESET_N",
+    "10": "GND",
+    "11": "unconnected-(U200-RTS_ECI-Pad11)",
+    "12": "AOP_UART_TX",
+    "13": "USB_UART_TX",
+    "14": "unconnected-(U200-GPIO1_ECI-Pad14)",
+    "15": "unconnected-(U200-GPIO0_ECI-Pad15)",
+    "16": "USB_VPP",
+    "17": "unconnected-(U200-~{SUSPEND_ECI}-Pad17)",
+    "18": "GND",
+    "19": "unconnected-(U200-RTS_SCI-Pad19)",
+    "20": "AOP_DATA_TX",
+    "21": "unconnected-(U200-TXD_SCI-Pad21)",
+    "22": "unconnected-(U200-GPIO2_SCI-Pad22)",
+    "23": "unconnected-(U200-GPIO1_SCI-Pad23)",
+    "24": "unconnected-(U200-GPIO0_SCI-Pad24)",
+    "25": "GND"
+   }
+  },
+  "C621": {
+   "value": "10uF",
+   "fp": "Capacitor_SMD:C_0805_2012Metric",
+   "props": {
+    "Value": "10uF",
+    "KiLib_Generator": "SMD_2terminal_chip_molded",
+    "MPN": "GRM21BR71A106KE51L",
+    "Manufacturer": "Murata Electronics",
+    "LCSC": "C86038",
+    "Tolerance": "10%",
+    "ki_keywords": "cap capacitor",
+    "Rating": "X7R 10V",
+    "Sheetname": "Radar PMIC",
+    "Sheetfile": "rails.kicad_sch",
+    "ki_fp_filters": "C_*"
+   },
+   "attr": [
+    "smd"
+   ],
+   "pads": {
+    "1": "1V8_R",
+    "2": "GND"
+   }
+  },
+  "C603": {
+   "value": "22uF",
+   "fp": "Capacitor_SMD:C_1210_3225Metric",
+   "props": {
+    "Value": "22uF",
+    "KiLib_Generator": "SMD_2terminal_chip_molded",
+    "MPN": "GRM32ER71E226KE15L",
+    "Manufacturer": "Murata Electronics",
+    "LCSC": "C21397",
+    "Tolerance": "10%",
+    "ki_keywords": "cap capacitor",
+    "Rating": "X7R 25V",
+    "Sheetname": "Radar PMIC",
+    "Sheetfile": "rails.kicad_sch",
+    "ki_fp_filters": "C_*"
+   },
+   "attr": [
+    "smd"
+   ],
+   "pads": {
+    "1": "SYS_5V",
+    "2": "GND"
+   }
+  },
+  "C321": {
+   "value": "1uF",
+   "fp": "Capacitor_SMD:C_0603_1608Metric",
+   "props": {
+    "Value": "1uF",
+    "KiLib_Generator": "SMD_2terminal_chip_molded",
+    "MPN": "CL10A105KB8NNNC",
+    "Manufacturer": "Samsung Electro-Mechanics",
+    "LCSC": "C15849",
+    "ki_keywords": "cap capacitor",
+    "Sheetname": "Radar and boot",
+    "Sheetfile": "aop.kicad_sch",
+    "ki_fp_filters": "C_*"
+   },
+   "attr": [
+    "smd"
+   ],
+   "pads": {
+    "1": "1V8_R",
+    "2": "GND"
+   }
+  },
+  "R312": {
+   "value": "10kR",
+   "fp": "Resistor_SMD:R_0402_1005Metric",
+   "props": {
+    "Value": "10kR",
+    "KiLib_Generator": "SMD_2terminal_chip_molded",
+    "MPN": "0402WGF1002TCE",
+    "Manufacturer": "UNI-ROYAL(Uniroyal Elec)",
+    "LCSC": "C25744",
+    "ki_keywords": "r resistor",
+    "Sheetname": "Radar and boot",
+    "Sheetfile": "aop.kicad_sch",
+    "ki_fp_filters": "R_*"
+   },
+   "attr": [
+    "smd"
+   ],
+   "pads": {
+    "1": "3V3_R",
+    "2": "/Radar and boot/AOP_QSPI_D3"
+   }
+  },
+  "C330": {
+   "value": "100nF",
+   "fp": "Capacitor_SMD:C_0402_1005Metric",
+   "props": {
+    "Value": "100nF",
+    "KiLib_Generator": "SMD_2terminal_chip_molded",
+    "MPN": "CL05B104KO5NNNC",
+    "Manufacturer": "Samsung Electro-Mechanics",
+    "LCSC": "C1525",
+    "ki_keywords": "cap capacitor",
+    "Sheetname": "Radar and boot",
+    "Sheetfile": "aop.kicad_sch",
+    "ki_fp_filters": "C_*"
+   },
+   "attr": [
+    "smd"
+   ],
+   "pads": {
+    "1": "1V8_R",
+    "2": "GND"
+   }
+  },
+  "C617": {
+   "value": "390pF",
+   "fp": "Capacitor_SMD:C_0402_1005Metric",
+   "props": {
+    "Value": "390pF",
+    "KiLib_Generator": "SMD_2terminal_chip_molded",
+    "MPN": "GRM1555C1H391JA01D",
+    "Manufacturer": "Murata Electronics",
+    "LCSC": "C76967",
+    "Tolerance": "5%",
+    "ki_keywords": "cap capacitor",
+    "Rating": "C0G 50V",
+    "Sheetname": "Radar PMIC",
+    "Sheetfile": "rails.kicad_sch",
+    "ki_fp_filters": "C_*"
+   },
+   "attr": [
+    "smd"
+   ],
+   "pads": {
+    "1": "Net-(C617-Pad1)",
+    "2": "GND"
+   }
+  },
+  "L602": {
+   "value": "0.47uH",
+   "fp": "Inductor_SMD:L_Sunlord_MWSA0402S",
+   "props": {
+    "Value": "0.47uH",
+    "KiLib_Generator": "inductor/SMD",
+    "MPN": "MWSA0402S-R47MT",
+    "Manufacturer": "Sunlord",
+    "LCSC": "C6331050",
+    "ki_keywords": "inductor choke coil reactor magnetic",
+    "Sheetname": "Radar PMIC",
+    "Sheetfile": "rails.kicad_sch",
+    "ki_fp_filters": "Choke_* *Coil* Inductor_* L_*"
+   },
+   "attr": [
+    "smd"
+   ],
+   "pads": {
+    "1": "PMIC_SW2",
+    "2": "1V0_RAW"
+   }
+  },
+  "C623": {
+   "value": "100nF",
+   "fp": "Capacitor_SMD:C_0402_1005Metric",
+   "props": {
+    "Value": "100nF",
+    "KiLib_Generator": "SMD_2terminal_chip_molded",
+    "MPN": "CL05B104KO5NNNC",
+    "Manufacturer": "Samsung Electro-Mechanics",
+    "LCSC": "C1525",
+    "ki_keywords": "cap capacitor",
+    "Sheetname": "Radar PMIC",
+    "Sheetfile": "rails.kicad_sch",
+    "ki_fp_filters": "C_*"
+   },
+   "attr": [
+    "smd"
+   ],
+   "pads": {
+    "1": "1V8_R",
+    "2": "GND"
+   }
+  },
+  "R600": {
+   "value": "10kR",
+   "fp": "Resistor_SMD:R_0402_1005Metric",
+   "props": {
+    "Value": "10kR",
+    "KiLib_Generator": "SMD_2terminal_chip_molded",
+    "MPN": "0402WGF1002TCE",
+    "Manufacturer": "UNI-ROYAL(Uniroyal Elec)",
+    "LCSC": "C25744",
+    "ki_keywords": "r resistor",
+    "Sheetname": "Radar PMIC",
+    "Sheetfile": "rails.kicad_sch",
+    "ki_fp_filters": "R_*"
+   },
+   "attr": [
+    "smd"
+   ],
+   "pads": {
+    "1": "1V8_R",
+    "2": "PMIC_SCL"
+   }
+  },
+  "R407": {
+   "value": "22R",
+   "fp": "Resistor_SMD:R_0402_1005Metric",
+   "props": {
+    "Value": "22R",
+    "KiLib_Generator": "SMD_2terminal_chip_molded",
+    "ki_keywords": "r resistor",
+    "Sheetname": "Carrier interfaces",
+    "Sheetfile": "interfaces.kicad_sch",
+    "LCSC": "C25092",
+    "MPN": "0402WGF220JTCE",
+    "Manufacturer": "UNI-ROYAL(Uniroyal Elec)",
+    "ki_fp_filters": "R_*"
+   },
+   "attr": [
+    "smd"
+   ],
+   "pads": {
+    "1": "HOST_SPI_CLK",
+    "2": "AOP_SPI_CLK"
+   }
+  },
+  "C331": {
+   "value": "100nF",
+   "fp": "Capacitor_SMD:C_0402_1005Metric",
+   "props": {
+    "Value": "100nF",
+    "KiLib_Generator": "SMD_2terminal_chip_molded",
+    "MPN": "CL05B104KO5NNNC",
+    "Manufacturer": "Samsung Electro-Mechanics",
+    "LCSC": "C1525",
+    "ki_keywords": "cap capacitor",
+    "Sheetname": "Radar and boot",
+    "Sheetfile": "aop.kicad_sch",
+    "ki_fp_filters": "C_*"
+   },
+   "attr": [
+    "smd"
+   ],
+   "pads": {
+    "1": "1V8_R",
+    "2": "GND"
+   }
+  },
+  "C613": {
+   "value": "22uF",
+   "fp": "Capacitor_SMD:C_1210_3225Metric",
+   "props": {
+    "Value": "22uF",
+    "KiLib_Generator": "SMD_2terminal_chip_molded",
+    "MPN": "GRM32ER71E226KE15L",
+    "Manufacturer": "Murata Electronics",
+    "LCSC": "C21397",
+    "Tolerance": "10%",
+    "ki_keywords": "cap capacitor",
+    "Rating": "X7R 25V",
+    "Sheetname": "Radar PMIC",
+    "Sheetfile": "rails.kicad_sch",
+    "ki_fp_filters": "C_*"
+   },
+   "attr": [
+    "smd"
+   ],
+   "pads": {
+    "1": "1V8_RAW",
+    "2": "GND"
+   }
+  },
+  "C334": {
+   "value": "10uF",
+   "fp": "Capacitor_SMD:C_0805_2012Metric",
+   "props": {
+    "Value": "10uF",
+    "KiLib_Generator": "SMD_2terminal_chip_molded",
+    "MPN": "CL21A106KAYNNNE",
+    "Manufacturer": "Samsung Electro-Mechanics",
+    "LCSC": "C15850",
+    "ki_keywords": "cap capacitor",
+    "Sheetname": "Radar and boot",
+    "Sheetfile": "aop.kicad_sch",
+    "ki_fp_filters": "C_*"
+   },
+   "attr": [
+    "smd"
+   ],
+   "pads": {
+    "1": "3V3_R",
+    "2": "GND"
+   }
+  },
+  "C305": {
+   "value": "100nF",
+   "fp": "Capacitor_SMD:C_0402_1005Metric",
+   "props": {
+    "Value": "100nF",
+    "KiLib_Generator": "SMD_2terminal_chip_molded",
+    "MPN": "CL05B104KO5NNNC",
+    "Manufacturer": "Samsung Electro-Mechanics",
+    "LCSC": "C1525",
+    "ki_keywords": "cap capacitor",
+    "Sheetname": "Radar and boot",
+    "Sheetfile": "aop.kicad_sch",
+    "ki_fp_filters": "C_*"
+   },
+   "attr": [
+    "smd"
+   ],
+   "pads": {
+    "1": "1V2_R",
+    "2": "GND"
+   }
+  },
+  "R202": {
+   "value": "4.7kR",
+   "fp": "Resistor_SMD:R_0402_1005Metric",
+   "props": {
+    "Value": "4.7kR",
+    "KiLib_Generator": "SMD_2terminal_chip_molded",
+    "ki_keywords": "r resistor",
+    "Sheetname": "Carrier interfaces",
+    "Sheetfile": "interfaces.kicad_sch",
+    "LCSC": "C25900",
+    "MPN": "0402WGF4701TCE",
+    "Manufacturer": "UNI-ROYAL(Uniroyal Elec)"
+   },
+   "attr": [
+    "smd"
+   ],
+   "pads": {
+    "1": "USB_3V45",
+    "2": "USB_BRIDGE_RESET_N"
+   }
+  },
+  "C600": {
+   "value": "22uF",
+   "fp": "Capacitor_SMD:C_1210_3225Metric",
+   "props": {
+    "Value": "22uF",
+    "KiLib_Generator": "SMD_2terminal_chip_molded",
+    "MPN": "GRM32ER71E226KE15L",
+    "Manufacturer": "Murata Electronics",
+    "LCSC": "C21397",
+    "Tolerance": "10%",
+    "ki_keywords": "cap capacitor",
+    "Rating": "X7R 25V",
+    "Sheetname": "Radar PMIC",
+    "Sheetfile": "rails.kicad_sch",
+    "ki_fp_filters": "C_*"
+   },
+   "attr": [
+    "smd"
+   ],
+   "pads": {
+    "1": "SYS_5V",
+    "2": "GND"
+   }
+  },
+  "C339": {
+   "value": "1uF",
+   "fp": "Capacitor_SMD:C_0603_1608Metric",
+   "props": {
+    "Value": "1uF",
+    "KiLib_Generator": "SMD_2terminal_chip_molded",
+    "MPN": "CL10A105KB8NNNC",
+    "Manufacturer": "Samsung Electro-Mechanics",
+    "LCSC": "C15849",
+    "ki_keywords": "cap capacitor",
+    "Sheetname": "Radar and boot",
+    "Sheetfile": "aop.kicad_sch",
+    "ki_fp_filters": "C_*"
+   },
+   "attr": [
+    "smd"
+   ],
+   "pads": {
+    "1": "/Radar and boot/AOP_VOUT_14APLL",
+    "2": "GND"
+   }
+  },
+  "C604": {
+   "value": "100nF",
+   "fp": "Capacitor_SMD:C_0402_1005Metric",
+   "props": {
+    "Value": "100nF",
+    "KiLib_Generator": "SMD_2terminal_chip_molded",
+    "MPN": "CL05B104KO5NNNC",
+    "Manufacturer": "Samsung Electro-Mechanics",
+    "LCSC": "C1525",
+    "ki_keywords": "cap capacitor",
+    "Sheetname": "Radar PMIC",
+    "Sheetfile": "rails.kicad_sch",
+    "ki_fp_filters": "C_*"
+   },
+   "attr": [
+    "smd"
+   ],
+   "pads": {
+    "1": "SYS_5V",
+    "2": "GND"
+   }
+  },
+  "Y300": {
+   "value": "40MHz",
+   "fp": "Crystal:Crystal_SMD_3225-4Pin_3.2x2.5mm",
+   "props": {
+    "Value": "40MHz",
+    "KiLib_Generator": "crystal_resonator_oscillator",
+    "MPN": "XL2EL89COI-111YLC-40M",
+    "Manufacturer": "YXC Crystal Oscillators",
+    "LCSC": "C18214314",
+    "ki_keywords": "quartz ceramic resonator oscillator",
+    "Sheetname": "Radar and boot",
+    "Sheetfile": "aop.kicad_sch",
+    "ki_fp_filters": "Crystal*"
+   },
+   "attr": [
+    "smd"
+   ],
+   "pads": {
+    "1": "/Radar and boot/AOP_CLKP",
+    "2": "GND",
+    "3": "/Radar and boot/AOP_CLKM",
+    "4": "GND"
+   }
+  },
+  "FB600": {
+   "value": "120R@100MHz / 3A",
+   "fp": "Inductor_SMD:L_0603_1608Metric",
+   "props": {
+    "Value": "120R@100MHz / 3A",
+    "KiLib_Generator": "SMD_2terminal_chip_molded",
+    "MPN": "BLM18KG121TH1D",
+    "Manufacturer": "Murata",
+    "LCSC": "C437404",
+    "ki_keywords": "L ferrite bead inductor filter",
+    "Sheetname": "Radar PMIC",
+    "Sheetfile": "rails.kicad_sch",
+    "ki_fp_filters": "Inductor_* L_* *Ferrite*"
+   },
+   "attr": [
+    "smd"
+   ],
+   "pads": {
+    "1": "1V0_RAW",
+    "2": "1V0_R"
+   }
+  },
+  "R404": {
+   "value": "10kR",
+   "fp": "Resistor_SMD:R_0402_1005Metric",
+   "props": {
+    "Value": "10kR",
+    "KiLib_Generator": "SMD_2terminal_chip_molded",
+    "ki_keywords": "r resistor",
+    "Sheetname": "Carrier interfaces",
+    "Sheetfile": "interfaces.kicad_sch",
+    "LCSC": "C25744",
+    "MPN": "0402WGF1002TCE",
+    "Manufacturer": "UNI-ROYAL(Uniroyal Elec)",
+    "ki_fp_filters": "R_*"
+   },
+   "attr": [
+    "smd"
+   ],
+   "pads": {
+    "1": "3V3_R",
+    "2": "AOP_SPI_CS_N"
+   }
+  },
+  "R100": {
+   "value": "5.1kR 1%",
+   "fp": "Resistor_SMD:R_0402_1005Metric",
+   "props": {
+    "Value": "5.1kR 1%",
+    "KiLib_Generator": "SMD_2terminal_chip_molded",
+    "ki_keywords": "r resistor",
+    "Sheetname": "/",
+    "Sheetfile": "IWR-AOP-MODULE.kicad_sch",
+    "LCSC": "C25905",
+    "MPN": "0402WGF5101TCE",
+    "Manufacturer": "UNI-ROYAL(Uniroyal Elec)"
+   },
+   "attr": [
+    "smd"
+   ],
+   "pads": {
+    "1": "USB_CC1",
+    "2": "GND"
+   }
+  },
+  "C325": {
+   "value": "100nF",
+   "fp": "Capacitor_SMD:C_0402_1005Metric",
+   "props": {
+    "Value": "100nF",
+    "KiLib_Generator": "SMD_2terminal_chip_molded",
+    "MPN": "CL05B104KO5NNNC",
+    "Manufacturer": "Samsung Electro-Mechanics",
+    "LCSC": "C1525",
+    "ki_keywords": "cap capacitor",
+    "Sheetname": "Radar and boot",
+    "Sheetfile": "aop.kicad_sch",
+    "ki_fp_filters": "C_*"
+   },
+   "attr": [
+    "smd"
+   ],
+   "pads": {
+    "1": "1V8_R",
+    "2": "GND"
+   }
+  },
+  "C344": {
+   "value": "100nF",
+   "fp": "Capacitor_SMD:C_0402_1005Metric",
+   "props": {
+    "Value": "100nF",
+    "KiLib_Generator": "SMD_2terminal_chip_molded",
+    "MPN": "CL05B104KO5NNNC",
+    "Manufacturer": "Samsung Electro-Mechanics",
+    "LCSC": "C1525",
+    "ki_keywords": "cap capacitor",
+    "Sheetname": "Radar and boot",
+    "Sheetfile": "aop.kicad_sch",
+    "ki_fp_filters": "C_*"
+   },
+   "attr": [
+    "smd"
+   ],
+   "pads": {
+    "1": "1V0_R",
+    "2": "GND"
+   }
+  },
+  "C343": {
+   "value": "100nF",
+   "fp": "Capacitor_SMD:C_0402_1005Metric",
+   "props": {
+    "Value": "100nF",
+    "KiLib_Generator": "SMD_2terminal_chip_molded",
+    "MPN": "CL05B104KO5NNNC",
+    "Manufacturer": "Samsung Electro-Mechanics",
+    "LCSC": "C1525",
+    "ki_keywords": "cap capacitor",
+    "Sheetname": "Radar and boot",
+    "Sheetfile": "aop.kicad_sch",
+    "ki_fp_filters": "C_*"
+   },
+   "attr": [
+    "smd"
+   ],
+   "pads": {
+    "1": "1V0_R",
+    "2": "GND"
+   }
+  },
+  "C201": {
+   "value": "100nF 16V",
+   "fp": "Capacitor_SMD:C_0402_1005Metric",
+   "props": {
+    "Value": "100nF 16V",
+    "KiLib_Generator": "SMD_2terminal_chip_molded",
+    "ki_keywords": "cap capacitor",
+    "Sheetname": "Carrier interfaces",
+    "Sheetfile": "interfaces.kicad_sch",
+    "LCSC": "C1525",
+    "MPN": "CL05B104KO5NNNC",
+    "Manufacturer": "Samsung Electro-Mechanics"
+   },
+   "attr": [
+    "smd"
+   ],
+   "pads": {
+    "1": "USB_3V45",
+    "2": "GND"
+   }
+  },
+  "R611": {
+   "value": "3.9R",
+   "fp": "Resistor_SMD:R_0603_1608Metric",
+   "props": {
+    "Value": "3.9R",
+    "KiLib_Generator": "SMD_2terminal_chip_molded",
+    "MPN": "RC0603FR-073R9L",
+    "Manufacturer": "YAGEO",
+    "LCSC": "C482845",
+    "Tolerance": "1%",
+    "ki_keywords": "r resistor",
+    "Rating": "100mW",
+    "Sheetname": "Radar PMIC",
+    "Sheetfile": "rails.kicad_sch",
+    "ki_fp_filters": "R_*"
+   },
+   "attr": [
+    "smd"
+   ],
+   "pads": {
+    "1": "PMIC_SW1",
+    "2": "Net-(C615-Pad1)"
+   }
+  },
+  "R408": {
+   "value": "22R",
+   "fp": "Resistor_SMD:R_0402_1005Metric",
+   "props": {
+    "Value": "22R",
+    "KiLib_Generator": "SMD_2terminal_chip_molded",
+    "ki_keywords": "r resistor",
+    "Sheetname": "Carrier interfaces",
+    "Sheetfile": "interfaces.kicad_sch",
+    "LCSC": "C25092",
+    "MPN": "0402WGF220JTCE",
+    "Manufacturer": "UNI-ROYAL(Uniroyal Elec)",
+    "ki_fp_filters": "R_*"
+   },
+   "attr": [
+    "smd"
+   ],
+   "pads": {
+    "1": "HOST_SPI_MOSI",
+    "2": "AOP_SPI_MOSI"
+   }
+  },
+  "R208": {
+   "value": "1kR",
+   "fp": "Resistor_SMD:R_0402_1005Metric",
+   "props": {
+    "Value": "1kR",
+    "KiLib_Generator": "SMD_2terminal_chip_molded",
+    "MPN": "0402WGF1001TCE",
+    "Manufacturer": "UNI-ROYAL(Uniroyal Elec)",
+    "LCSC": "C11702",
+    "Sheetname": "Carrier interfaces",
+    "Sheetfile": "interfaces.kicad_sch",
+    "ki_keywords": "r resistor",
+    "ki_fp_filters": "R_*"
+   },
+   "attr": [
+    "smd"
+   ],
+   "pads": {
+    "1": "USB_UART_TX",
+    "2": "AOP_UART_RX"
+   }
+  },
+  "C329": {
+   "value": "100nF",
+   "fp": "Capacitor_SMD:C_0402_1005Metric",
+   "props": {
+    "Value": "100nF",
+    "KiLib_Generator": "SMD_2terminal_chip_molded",
+    "MPN": "CL05B104KO5NNNC",
+    "Manufacturer": "Samsung Electro-Mechanics",
+    "LCSC": "C1525",
+    "ki_keywords": "cap capacitor",
+    "Sheetname": "Radar and boot",
+    "Sheetfile": "aop.kicad_sch",
+    "ki_fp_filters": "C_*"
+   },
+   "attr": [
+    "smd"
+   ],
+   "pads": {
+    "1": "1V8_R",
+    "2": "GND"
+   }
+  },
+  "C301": {
+   "value": "100nF",
+   "fp": "Capacitor_SMD:C_0402_1005Metric",
+   "props": {
+    "Value": "100nF",
+    "KiLib_Generator": "SMD_2terminal_chip_molded",
+    "MPN": "CL05B104KO5NNNC",
+    "Manufacturer": "Samsung Electro-Mechanics",
+    "LCSC": "C1525",
+    "ki_keywords": "cap capacitor",
+    "Sheetname": "Radar and boot",
+    "Sheetfile": "aop.kicad_sch",
+    "ki_fp_filters": "C_*"
+   },
+   "attr": [
+    "smd"
+   ],
+   "pads": {
+    "1": "1V2_R",
+    "2": "GND"
+   }
+  },
+  "J401": {
+   "value": "SPI / DATA",
+   "fp": "IWR-AOP-MODULE:HCTL_PM254-2-05-S-8.5",
+   "props": {
+    "Value": "SPI / DATA",
+    "MPN": "PM254-2-05-S-8.5",
+    "Manufacturer": "HCTL",
+    "LCSC": "C3975150"
+   },
+   "attr": [
+    "smd"
+   ],
+   "pads": {
+    "1": "HOST_SPI_CLK",
+    "2": "GND",
+    "3": "HOST_SPI_MOSI",
+    "4": "AOP_SPI_MISO",
+    "5": "HOST_SPI_CS_N",
+    "6": "GND",
+    "7": "AOP_HOST_INTR",
+    "8": "FRAME_START",
+    "9": "AOP_DATA_TX",
+    "10": "GND"
+   }
+  },
+  "R410": {
+   "value": "1kR",
+   "fp": "Resistor_SMD:R_0402_1005Metric",
+   "props": {
+    "Value": "1kR",
+    "KiLib_Generator": "SMD_2terminal_chip_molded",
+    "ki_keywords": "r resistor",
+    "Sheetname": "Carrier interfaces",
+    "Sheetfile": "interfaces.kicad_sch",
+    "LCSC": "C11702",
+    "MPN": "0402WGF1001TCE",
+    "Manufacturer": "UNI-ROYAL(Uniroyal Elec)",
+    "ki_fp_filters": "R_*"
+   },
+   "attr": [
+    "smd"
+   ],
+   "pads": {
+    "1": "MANUAL_BOOT",
+    "2": "AOP_SOP2"
+   }
+  },
+  "C327": {
+   "value": "100nF",
+   "fp": "Capacitor_SMD:C_0402_1005Metric",
+   "props": {
+    "Value": "100nF",
+    "KiLib_Generator": "SMD_2terminal_chip_molded",
+    "MPN": "CL05B104KO5NNNC",
+    "Manufacturer": "Samsung Electro-Mechanics",
+    "LCSC": "C1525",
+    "ki_keywords": "cap capacitor",
+    "Sheetname": "Radar and boot",
+    "Sheetfile": "aop.kicad_sch",
+    "ki_fp_filters": "C_*"
+   },
+   "attr": [
+    "smd"
+   ],
+   "pads": {
+    "1": "1V8_R",
+    "2": "GND"
+   }
+  },
+  "R409": {
+   "value": "22R",
+   "fp": "Resistor_SMD:R_0402_1005Metric",
+   "props": {
+    "Value": "22R",
+    "KiLib_Generator": "SMD_2terminal_chip_molded",
+    "ki_keywords": "r resistor",
+    "Sheetname": "Carrier interfaces",
+    "Sheetfile": "interfaces.kicad_sch",
+    "LCSC": "C25092",
+    "MPN": "0402WGF220JTCE",
+    "Manufacturer": "UNI-ROYAL(Uniroyal Elec)",
+    "ki_fp_filters": "R_*"
+   },
+   "attr": [
+    "smd"
+   ],
+   "pads": {
+    "1": "HOST_SPI_CS_N",
+    "2": "AOP_SPI_CS_N"
+   }
+  },
+  "R602": {
+   "value": "10kR",
+   "fp": "Resistor_SMD:R_0402_1005Metric",
+   "props": {
+    "Value": "10kR",
+    "KiLib_Generator": "SMD_2terminal_chip_molded",
+    "MPN": "0402WGF1002TCE",
+    "Manufacturer": "UNI-ROYAL(Uniroyal Elec)",
+    "LCSC": "C25744",
+    "ki_keywords": "r resistor",
+    "Sheetname": "Radar PMIC",
+    "Sheetfile": "rails.kicad_sch",
+    "ki_fp_filters": "R_*"
+   },
+   "attr": [
+    "smd"
+   ],
+   "pads": {
+    "1": "1V8_R",
+    "2": "PMIC_INT_N"
+   }
+  },
+  "JP300": {
+   "value": "DEBUG_MODE",
+   "fp": "Jumper:SolderJumper-2_P1.3mm_Open_RoundedPad1.0x1.5mm",
+   "props": {
+    "Value": "DEBUG_MODE"
+   },
+   "attr": [
+    "exclude_from_pos_files",
+    "exclude_from_bom",
+    "allow_soldermask_bridges"
+   ],
+   "pads": {
+    "1": "/Radar and boot/AOP_SOP1",
+    "2": "3V3_R"
+   }
+  },
+  "C706": {
+   "value": "100nF",
+   "fp": "Capacitor_SMD:C_0402_1005Metric",
+   "props": {
+    "Value": "100nF",
+    "KiLib_Generator": "SMD_2terminal_chip_molded",
+    "MPN": "CL05B104KO5NNNC",
+    "Manufacturer": "Samsung Electro-Mechanics",
+    "LCSC": "C1525",
+    "ki_keywords": "cap capacitor",
+    "Sheetname": "/",
+    "Sheetfile": "IWR-AOP-MODULE.kicad_sch",
+    "ki_fp_filters": "C_*"
+   },
+   "attr": [
+    "smd"
+   ],
+   "pads": {
+    "1": "3V3_R",
+    "2": "GND"
+   }
+  },
+  "C320": {
+   "value": "10uF",
+   "fp": "Capacitor_SMD:C_0805_2012Metric",
+   "props": {
+    "Value": "10uF",
+    "KiLib_Generator": "SMD_2terminal_chip_molded",
+    "MPN": "CL21A106KAYNNNE",
+    "Manufacturer": "Samsung Electro-Mechanics",
+    "LCSC": "C15850",
+    "ki_keywords": "cap capacitor",
+    "Sheetname": "Radar and boot",
+    "Sheetfile": "aop.kicad_sch",
+    "ki_fp_filters": "C_*"
+   },
+   "attr": [
+    "smd"
+   ],
+   "pads": {
+    "1": "1V8_R",
+    "2": "GND"
+   }
+  },
+  "R309": {
+   "value": "10kR",
+   "fp": "Resistor_SMD:R_0402_1005Metric",
+   "props": {
+    "Value": "10kR",
+    "KiLib_Generator": "SMD_2terminal_chip_molded",
+    "MPN": "0402WGF1002TCE",
+    "Manufacturer": "UNI-ROYAL(Uniroyal Elec)",
+    "LCSC": "C25744",
+    "ki_keywords": "r resistor",
+    "Sheetname": "Radar and boot",
+    "Sheetfile": "aop.kicad_sch",
+    "ki_fp_filters": "R_*"
+   },
+   "attr": [
+    "smd"
+   ],
+   "pads": {
+    "1": "3V3_R",
+    "2": "/Radar and boot/AOP_NERROR_IN"
+   }
+  },
+  "D201": {
+   "value": "H5VUT2U",
+   "fp": "Package_TO_SOT_SMD:SOT-23",
+   "props": {
+    "Value": "H5VUT2U",
+    "KiLib_Generator": "package/gullwing",
+    "MPN": "H5VUT2U",
+    "Manufacturer": "hongjiacheng",
+    "LCSC": "C20615824"
+   },
+   "attr": [
+    "smd"
+   ],
+   "pads": {
+    "1": "USB_CC1",
+    "2": "USB_CC2",
+    "3": "GND"
+   }
+  },
+  "C345": {
+   "value": "47nF",
+   "fp": "Capacitor_SMD:C_0402_1005Metric",
+   "props": {
+    "Value": "47nF",
+    "KiLib_Generator": "SMD_2terminal_chip_molded",
+    "MPN": "GRM155R71E473KA88D",
+    "Manufacturer": "Murata",
+    "LCSC": "C77017",
+    "ki_keywords": "cap capacitor",
+    "Sheetname": "Radar and boot",
+    "Sheetfile": "aop.kicad_sch",
+    "ki_fp_filters": "C_*"
+   },
+   "attr": [
+    "smd"
+   ],
+   "pads": {
+    "1": "/Radar and boot/AOP_VBGAP",
+    "2": "GND"
+   }
+  },
+  "C323": {
+   "value": "100nF",
+   "fp": "Capacitor_SMD:C_0402_1005Metric",
+   "props": {
+    "Value": "100nF",
+    "KiLib_Generator": "SMD_2terminal_chip_molded",
+    "MPN": "CL05B104KO5NNNC",
+    "Manufacturer": "Samsung Electro-Mechanics",
+    "LCSC": "C1525",
+    "ki_keywords": "cap capacitor",
+    "Sheetname": "Radar and boot",
+    "Sheetfile": "aop.kicad_sch",
+    "ki_fp_filters": "C_*"
+   },
+   "attr": [
+    "smd"
+   ],
+   "pads": {
+    "1": "1V8_R",
+    "2": "GND"
+   }
+  },
+  "R402": {
+   "value": "100kR",
+   "fp": "Resistor_SMD:R_0402_1005Metric",
+   "props": {
+    "Value": "100kR",
+    "KiLib_Generator": "SMD_2terminal_chip_molded",
+    "ki_keywords": "r resistor",
+    "Sheetname": "Carrier interfaces",
+    "Sheetfile": "interfaces.kicad_sch",
+    "LCSC": "C25741",
+    "MPN": "0402WGF1003TCE",
+    "Manufacturer": "UNI-ROYAL(Uniroyal Elec)",
+    "ki_fp_filters": "R_*"
+   },
+   "attr": [
+    "smd"
+   ],
+   "pads": {
+    "1": "AOP_SPI_CLK",
+    "2": "GND"
+   }
+  }
+ },
+ "nets": {
+  "PMIC_PGOOD": [
+   "R604.1",
+   "U600.16"
+  ],
+  "AOP_NRESET": [
+   "C605.1",
+   "J301.10",
+   "R417.2",
+   "R603.2",
+   "R604.2",
+   "SW400.1",
+   "TP603.1",
+   "U300.U11",
+   "U600.15"
+  ],
+  "PMIC_ENABLE": [
+   "Q402.3",
+   "R133.2",
+   "TP611.1",
+   "U600.7"
+  ],
+  "GND": [
+   "C100.2",
+   "C140.2",
+   "C200.2",
+   "C201.2",
+   "C202.2",
+   "C203.2",
+   "C300.2",
+   "C301.2",
+   "C302.2",
+   "C303.2",
+   "C304.2",
+   "C305.2",
+   "C306.2",
+   "C307.2",
+   "C308.2",
+   "C309.2",
+   "C310.2",
+   "C311.2",
+   "C312.2",
+   "C313.2",
+   "C314.2",
+   "C315.2",
+   "C316.2",
+   "C317.2",
+   "C318.2",
+   "C319.2",
+   "C320.2",
+   "C321.2",
+   "C322.2",
+   "C323.2",
+   "C324.2",
+   "C325.2",
+   "C326.2",
+   "C327.2",
+   "C328.2",
+   "C329.2",
+   "C330.2",
+   "C331.2",
+   "C332.2",
+   "C333.2",
+   "C334.2",
+   "C335.2",
+   "C336.2",
+   "C337.2",
+   "C338.2",
+   "C339.2",
+   "C340.2",
+   "C341.2",
+   "C342.2",
+   "C343.2",
+   "C344.2",
+   "C345.2",
+   "C346.2",
+   "C347.2",
+   "C348.2",
+   "C600.2",
+   "C601.2",
+   "C602.2",
+   "C603.2",
+   "C604.2",
+   "C605.2",
+   "C610.2",
+   "C611.2",
+   "C612.2",
+   "C613.2",
+   "C614.2",
+   "C615.2",
+   "C616.2",
+   "C617.2",
+   "C620.2",
+   "C621.2",
+   "C622.2",
+   "C623.2",
+   "C624.2",
+   "C625.2",
+   "C629.2",
+   "C706.2",
+   "D200.3",
+   "D201.3",
+   "J200.A1",
+   "J200.A12",
+   "J200.B1",
+   "J200.B12",
+   "J200.SH",
+   "J301.3",
+   "J301.5",
+   "J301.9",
+   "J400.10",
+   "J400.4",
+   "J400.9",
+   "J401.10",
+   "J401.2",
+   "J401.6",
+   "Q402.2",
+   "R100.2",
+   "R101.2",
+   "R201.2",
+   "R305.2",
+   "R306.2",
+   "R313.2",
+   "R402.2",
+   "R403.2",
+   "R414.2",
+   "SW400.2",
+   "TH300.1",
+   "TP612.1",
+   "U117.1",
+   "U117.4",
+   "U117.5",
+   "U200.10",
+   "U200.18",
+   "U200.2",
+   "U200.25",
+   "U300.A1",
+   "U300.A11",
+   "U300.A13",
+   "U300.A15",
+   "U300.A17",
+   "U300.A18",
+   "U300.A2",
+   "U300.A6",
+   "U300.A8",
+   "U300.B10",
+   "U300.B11",
+   "U300.B12",
+   "U300.B13",
+   "U300.B14",
+   "U300.B15",
+   "U300.B16",
+   "U300.B17",
+   "U300.B18",
+   "U300.B6",
+   "U300.B8",
+   "U300.B9",
+   "U300.C12",
+   "U300.C13",
+   "U300.C14",
+   "U300.C16",
+   "U300.C17",
+   "U300.C6",
+   "U300.C7",
+   "U300.C8",
+   "U300.D16",
+   "U300.D17",
+   "U300.D18",
+   "U300.E16",
+   "U300.E17",
+   "U300.E18",
+   "U300.E3",
+   "U300.F16",
+   "U300.F17",
+   "U300.F18",
+   "U300.F3",
+   "U300.K16",
+   "U300.K17",
+   "U300.K18",
+   "U300.L16",
+   "U300.L17",
+   "U300.L18",
+   "U300.N16",
+   "U300.N17",
+   "U300.N18",
+   "U300.N3",
+   "U300.P16",
+   "U300.P3",
+   "U300.R16",
+   "U300.R17",
+   "U300.R3",
+   "U300.T10",
+   "U300.T11",
+   "U300.T12",
+   "U300.T13",
+   "U300.T14",
+   "U300.T15",
+   "U300.T16",
+   "U300.T17",
+   "U300.T4",
+   "U300.T5",
+   "U300.T6",
+   "U300.T7",
+   "U300.T8",
+   "U300.T9",
+   "U300.U1",
+   "U300.U17",
+   "U300.U18",
+   "U300.V1",
+   "U300.V17",
+   "U300.V18",
+   "U301.4",
+   "U600.11",
+   "U600.17",
+   "U600.24",
+   "U600.27",
+   "U600.3",
+   "U600.4",
+   "Y300.2",
+   "Y300.4"
+  ],
+  "PMIC_INT_N": [
+   "R602.2",
+   "TP602.1",
+   "U600.19"
+  ],
+  "Q402_BASE": [
+   "Q402.1",
+   "R413.2",
+   "R414.1"
+  ],
+  "3V3_R": [
+   "C334.1",
+   "C335.1",
+   "C336.1",
+   "C348.1",
+   "C610.1",
+   "C629.1",
+   "C706.1",
+   "J301.1",
+   "JP300.2",
+   "L600.2",
+   "R205.1",
+   "R206.1",
+   "R300.1",
+   "R304.1",
+   "R307.1",
+   "R308.1",
+   "R309.1",
+   "R310.1",
+   "R311.1",
+   "R312.1",
+   "R404.1",
+   "R416.1",
+   "R603.1",
+   "SW401.1",
+   "U300.H1",
+   "U300.V9",
+   "U301.8",
+   "U600.8"
+  ],
+  "MANUAL_BOOT": [
+   "R410.1",
+   "SW401.2"
+  ],
+  "USB_VBUS": [
+   "C100.1",
+   "C202.1",
+   "F200.2",
+   "R200.1",
+   "TP610.1",
+   "U117.3",
+   "U200.7"
+  ],
+  "PWR_IN": [
+   "C140.1",
+   "J400.11",
+   "J400.12",
+   "U117.6"
+  ],
+  "1V0_RAW": [
+   "C612.1",
+   "FB600.1",
+   "L602.2",
+   "TP608.1"
+  ],
+  "1V0_R": [
+   "C312.1",
+   "C313.1",
+   "C314.1",
+   "C315.1",
+   "C316.1",
+   "C317.1",
+   "C318.1",
+   "C319.1",
+   "C341.1",
+   "C342.1",
+   "C343.1",
+   "C344.1",
+   "C620.1",
+   "C622.1",
+   "C624.1",
+   "FB600.2",
+   "TP605.1",
+   "U300.G16",
+   "U300.G17",
+   "U300.G18",
+   "U300.H16",
+   "U300.H17",
+   "U300.H18",
+   "U300.J16",
+   "U300.J17",
+   "U300.J18",
+   "U600.1"
+  ],
+  "AOP_SYNC_IN": [
+   "R313.1",
+   "R415.2",
+   "U300.U12"
+  ],
+  "unconnected-(U300B-GPIO_42_(DP11)-PadA3)": [
+   "U300.A3"
+  ],
+  "unconnected-(U300B-GPIO_44_(DP13)-PadA4)": [
+   "U300.A4"
+  ],
+  "1V2_R": [
+   "C300.1",
+   "C301.1",
+   "C302.1",
+   "C303.1",
+   "C304.1",
+   "C305.1",
+   "C306.1",
+   "C307.1",
+   "C308.1",
+   "C309.1",
+   "C310.1",
+   "C311.1",
+   "C611.1",
+   "L601.2",
+   "TP607.1",
+   "U300.A5",
+   "U300.C1",
+   "U300.E1",
+   "U300.J1",
+   "U300.V12",
+   "U300.V14",
+   "U300.V15",
+   "U300.V4",
+   "U300.V6",
+   "U300.V7",
+   "U300.V8",
+   "U600.14"
+  ],
+  "/Radar and boot/AOP_CLKP": [
+   "C346.1",
+   "U300.A7",
+   "Y300.1"
+  ],
+  "/Radar and boot/AOP_VOUT_14SYNTH": [
+   "C337.1",
+   "C338.1",
+   "U300.A9"
+  ],
+  "/Radar and boot/AOP_VOUT_14APLL": [
+   "C339.1",
+   "C340.1",
+   "U300.A10"
+  ],
+  "1V8_R": [
+   "C320.1",
+   "C321.1",
+   "C322.1",
+   "C323.1",
+   "C324.1",
+   "C325.1",
+   "C326.1",
+   "C327.1",
+   "C328.1",
+   "C329.1",
+   "C330.1",
+   "C331.1",
+   "C332.1",
+   "C333.1",
+   "C621.1",
+   "C623.1",
+   "C625.1",
+   "FB601.2",
+   "R600.1",
+   "R601.1",
+   "R602.1",
+   "TP606.1",
+   "U300.A12",
+   "U300.B1",
+   "U300.C11",
+   "U300.C15",
+   "U300.C18",
+   "U300.F1",
+   "U300.K1",
+   "U300.M16",
+   "U300.M17",
+   "U300.M18",
+   "U300.U2",
+   "U300.V11",
+   "U600.21"
+  ],
+  "unconnected-(U300B-OSC_CLKOUT-PadA14)": [
+   "U300.A14"
+  ],
+  "/Radar and boot/AOP_VBGAP": [
+   "C345.1",
+   "U300.A16"
+  ],
+  "AOP_HOST_INTR": [
+   "J401.7",
+   "R307.2",
+   "U300.B2"
+  ],
+  "unconnected-(U300B-GPIO_40_(DP9)-PadB3)": [
+   "U300.B3"
+  ],
+  "unconnected-(U300B-GPIO_43_(DP12)-PadB4)": [
+   "U300.B4"
+  ],
+  "unconnected-(U300B-GPIO_46_(DP15)-PadB5)": [
+   "U300.B5"
+  ],
+  "/Radar and boot/AOP_CLKM": [
+   "C347.1",
+   "U300.B7",
+   "Y300.3"
+  ],
+  "AOP_SPI_CS_N": [
+   "R404.2",
+   "R409.2",
+   "U300.C2"
+  ],
+  "unconnected-(U300B-GPIO_39_(DP8)-PadC3)": [
+   "U300.C3"
+  ],
+  "unconnected-(U300B-GPIO_41_(DP10)-PadC4)": [
+   "U300.C4"
+  ],
+  "unconnected-(U300B-GPIO_45_(DP14)-PadC5)": [
+   "U300.C5"
+  ],
+  "unconnected-(U300B-ANAMUX_{slash}_GPADC5-PadC9)": [
+   "U300.C9"
+  ],
+  "unconnected-(U300B-VSENSE_{slash}_GPADC6-PadC10)": [
+   "U300.C10"
+  ],
+  "AOP_SPI_MISO": [
+   "J401.4",
+   "U300.D1"
+  ],
+  "AOP_SPI_CLK": [
+   "R402.1",
+   "R407.2",
+   "U300.D2"
+  ],
+  "unconnected-(U300B-SPIB_CS_N-PadD3)": [
+   "U300.D3"
+  ],
+  "AOP_DATA_TX": [
+   "J401.9",
+   "R206.2",
+   "U200.20",
+   "U300.E2"
+  ],
+  "AOP_SPI_MOSI": [
+   "R403.1",
+   "R408.2",
+   "U300.F2"
+  ],
+  "unconnected-(U300B-SPIB_MOSI-PadG1)": [
+   "U300.G1"
+  ],
+  "/Radar and boot/AOP_QSPI_D1": [
+   "U300.G2",
+   "U301.2"
+  ],
+  "unconnected-(U300B-SPIB_MISO-PadG3)": [
+   "U300.G3"
+  ],
+  "/Radar and boot/AOP_QSPI_CLK": [
+   "U300.H2",
+   "U301.6"
+  ],
+  "/Radar and boot/AOP_QSPI_D0": [
+   "U300.H3",
+   "U301.5"
+  ],
+  "/Radar and boot/AOP_QSPI_CS_N": [
+   "R300.2",
+   "U300.J2",
+   "U301.1"
+  ],
+  "/Radar and boot/AOP_QSPI_D2": [
+   "R311.2",
+   "U300.J3",
+   "U301.3"
+  ],
+  "/Radar and boot/AOP_QSPI_D3": [
+   "R312.2",
+   "U300.K2",
+   "U301.7"
+  ],
+  "FRAME_START": [
+   "J401.8",
+   "U300.K3"
+  ],
+  "unconnected-(U300B-GPIO_38_(DP7)-PadL1)": [
+   "U300.L1"
+  ],
+  "unconnected-(U300B-GPIO_37_(DP6)-PadL2)": [
+   "U300.L2"
+  ],
+  "unconnected-(U300B-GPIO_1-PadL3)": [
+   "U300.L3"
+  ],
+  "unconnected-(U300B-GPIO_36_(DP5)-PadM1)": [
+   "U300.M1"
+  ],
+  "unconnected-(U300A-GPIO_0-PadM2)": [
+   "U300.M2"
+  ],
+  "/Radar and boot/AOP_SOP1": [
+   "JP300.1",
+   "R305.1",
+   "U300.M3"
+  ],
+  "unconnected-(U300B-LVDS_TXM[0]-PadN1)": [
+   "U300.N1"
+  ],
+  "unconnected-(U300B-LVDS_TXP[0]-PadN2)": [
+   "U300.N2"
+  ],
+  "unconnected-(U300B-LVDS_TXM[1]-PadP1)": [
+   "U300.P1"
+  ],
+  "unconnected-(U300B-LVDS_TXP[1]-PadP2)": [
+   "U300.P2"
+  ],
+  "unconnected-(U300B-Analog_Test2_{slash}_GPADC2-PadP17)": [
+   "U300.P17"
+  ],
+  "unconnected-(U300B-Analog_Test1_{slash}_GPADC1-PadP18)": [
+   "U300.P18"
+  ],
+  "unconnected-(U300B-LVDS_CLKP-PadR1)": [
+   "U300.R1"
+  ],
+  "unconnected-(U300B-LVDS_CLKM-PadR2)": [
+   "U300.R2"
+  ],
+  "unconnected-(U300B-Analog_Test3_{slash}_GPADC3-PadR18)": [
+   "U300.R18"
+  ],
+  "unconnected-(U300B-LVDS_FRCLKP-PadT1)": [
+   "U300.T1"
+  ],
+  "unconnected-(U300B-LVDS_FRCLKM-PadT2)": [
+   "U300.T2"
+  ],
+  "/Radar and boot/AOP_JTAG_TCK": [
+   "J301.4",
+   "U300.T3"
+  ],
+  "unconnected-(U300B-Analog_Test4_{slash}_GPADC4-PadT18)": [
+   "U300.T18"
+  ],
+  "unconnected-(U300B-GPIO_47_(DMM_CLK)-PadU3)": [
+   "U300.U3"
+  ],
+  "unconnected-(U300B-DMM_SYNC-PadU4)": [
+   "U300.U4"
+  ],
+  "unconnected-(U300B-GPIO_34_(DP3)-PadU5)": [
+   "U300.U5"
+  ],
+  "unconnected-(U300B-GPIO_32_(DP1)-PadU6)": [
+   "U300.U6"
+  ],
+  "unconnected-(U300B-GPIO_31_(DP0)-PadU7)": [
+   "U300.U7"
+  ],
+  "/Radar and boot/AOP_JTAG_TMS": [
+   "J301.2",
+   "U300.U8"
+  ],
+  "/Radar and boot/AOP_JTAG_TDI": [
+   "J301.8",
+   "U300.U9"
+  ],
+  "/Radar and boot/AOP_SOP0": [
+   "J301.6",
+   "R304.2",
+   "U300.U10"
+  ],
+  "/Radar and boot/AOP_WARM_RESET": [
+   "R310.2",
+   "U300.U13"
+  ],
+  "/Radar and boot/AOP_NERROR_IN": [
+   "R309.2",
+   "U300.U14"
+  ],
+  "AOP_NERROR_OUT": [
+   "J400.6",
+   "R308.2",
+   "U300.U15"
+  ],
+  "AOP_UART_TX": [
+   "J400.1",
+   "R205.2",
+   "U200.12",
+   "U300.U16"
+  ],
+  "unconnected-(U300B-VPP-PadV2)": [
+   "U300.V2"
+  ],
+  "unconnected-(U300B-GPIO_35_(DP4)-PadV3)": [
+   "U300.V3"
+  ],
+  "unconnected-(U300B-GPIO_33_(DP2)-PadV5)": [
+   "U300.V5"
+  ],
+  "AOP_SOP2": [
+   "J400.5",
+   "R306.1",
+   "R410.2",
+   "U300.V10"
+  ],
+  "unconnected-(U300B-MCU_CLKOUT-PadV13)": [
+   "U300.V13"
+  ],
+  "/Radar and boot/AOP_UART_RX_BALL": [
+   "R314.2",
+   "U300.V16"
+  ],
+  "SYS_5V": [
+   "C600.1",
+   "C601.1",
+   "C602.1",
+   "C603.1",
+   "C604.1",
+   "R133.1",
+   "TP604.1",
+   "U117.2",
+   "U117.7",
+   "U600.13",
+   "U600.18",
+   "U600.20",
+   "U600.22",
+   "U600.26",
+   "U600.9"
+  ],
+  "HOST_SYNC_IN": [
+   "J400.3",
+   "R415.1"
+  ],
+  "HOST_DISABLE": [
+   "J400.7",
+   "R413.1"
+  ],
+  "1V8_RAW": [
+   "C613.1",
+   "FB601.1",
+   "L603.2",
+   "TP609.1"
+  ],
+  "PMIC_SDA": [
+   "R601.2",
+   "U600.6"
+  ],
+  "USB_D+": [
+   "D200.1",
+   "J200.A6",
+   "J200.B6",
+   "U200.3"
+  ],
+  "USB_D-": [
+   "D200.2",
+   "J200.A7",
+   "J200.B7",
+   "U200.4"
+  ],
+  "PMIC_SW1": [
+   "L601.1",
+   "R611.1",
+   "U600.12"
+  ],
+  "HOST_UART_TX": [
+   "J400.2",
+   "R209.1"
+  ],
+  "HOST_NRESET": [
+   "J400.8",
+   "R417.1"
+  ],
+  "PMIC_SW0": [
+   "L600.1",
+   "R610.1",
+   "U600.10"
+  ],
+  "PMIC_SW3": [
+   "L603.1",
+   "R613.1",
+   "U600.23"
+  ],
+  "Net-(C617-Pad1)": [
+   "C617.1",
+   "R613.2"
+  ],
+  "PMIC_SW2": [
+   "L602.1",
+   "R612.1",
+   "U600.25"
+  ],
+  "Net-(C616-Pad1)": [
+   "C616.1",
+   "R612.2"
+  ],
+  "Net-(C614-Pad1)": [
+   "C614.1",
+   "R610.2"
+  ],
+  "unconnected-(U600-GPIO3-Pad2)": [
+   "U600.2"
+  ],
+  "PMIC_SCL": [
+   "R600.2",
+   "U600.5"
+  ],
+  "AOP_UART_RX": [
+   "R208.2",
+   "R209.2",
+   "R314.1",
+   "R416.2"
+  ],
+  "USB_CONN_VBUS": [
+   "F200.1",
+   "J200.A4",
+   "J200.A9",
+   "J200.B4",
+   "J200.B9"
+  ],
+  "USB_VBUS_SENSE": [
+   "R200.2",
+   "R201.1",
+   "U200.8"
+  ],
+  "USB_CC1": [
+   "D201.1",
+   "J200.A5",
+   "R100.1"
+  ],
+  "unconnected-(J200-SBU1-PadA8)": [
+   "J200.A8"
+  ],
+  "USB_CC2": [
+   "D201.2",
+   "J200.B5",
+   "R101.1"
+  ],
+  "unconnected-(J200-SBU2-PadB8)": [
+   "J200.B8"
+  ],
+  "unconnected-(U117-ST-Pad8)": [
+   "U117.8"
+  ],
+  "unconnected-(J301-KEY-Pad7)": [
+   "J301.7"
+  ],
+  "USB_VPP": [
+   "C203.1",
+   "U200.16"
+  ],
+  "Net-(C615-Pad1)": [
+   "C615.1",
+   "R611.2"
+  ],
+  "USB_3V45": [
+   "C200.1",
+   "C201.1",
+   "R202.1",
+   "U200.5",
+   "U200.6"
+  ],
+  "unconnected-(U200-~{SUSPEND_SCI}-Pad1)": [
+   "U200.1"
+  ],
+  "USB_BRIDGE_RESET_N": [
+   "R202.2",
+   "U200.9"
+  ],
+  "unconnected-(U200-RTS_ECI-Pad11)": [
+   "U200.11"
+  ],
+  "USB_UART_TX": [
+   "R208.1",
+   "U200.13"
+  ],
+  "unconnected-(U200-GPIO1_ECI-Pad14)": [
+   "U200.14"
+  ],
+  "unconnected-(U200-GPIO0_ECI-Pad15)": [
+   "U200.15"
+  ],
+  "unconnected-(U200-~{SUSPEND_ECI}-Pad17)": [
+   "U200.17"
+  ],
+  "unconnected-(U200-RTS_SCI-Pad19)": [
+   "U200.19"
+  ],
+  "unconnected-(U200-TXD_SCI-Pad21)": [
+   "U200.21"
+  ],
+  "unconnected-(U200-GPIO2_SCI-Pad22)": [
+   "U200.22"
+  ],
+  "unconnected-(U200-GPIO1_SCI-Pad23)": [
+   "U200.23"
+  ],
+  "unconnected-(U200-GPIO0_SCI-Pad24)": [
+   "U200.24"
+  ],
+  "HOST_SPI_CLK": [
+   "J401.1",
+   "R407.1"
+  ],
+  "HOST_SPI_MOSI": [
+   "J401.3",
+   "R408.1"
+  ],
+  "HOST_SPI_CS_N": [
+   "J401.5",
+   "R409.1"
+  ]
+ }
+}

@@ -1,0 +1,5 @@
+# generated decks and raw waveforms (re-create with the run_*.py scripts)
+spice/_*.cir
+results/*.txt
+!results/*_summary.txt
+!results/netlist_checks.txt
