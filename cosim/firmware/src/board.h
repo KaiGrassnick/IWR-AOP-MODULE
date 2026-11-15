@@ -59,14 +59,13 @@ struct pinmux_entry {
 #define SAFE_HOLD_MS_DEFAULT 20000 /* about tau/8 of the board with the heat sink */
 #define SAFE_MAX_LEVEL 2u          /* deepest throttle: frame period x4 */
 #define SAFE_TEMP_FAILS_MAX 3u
+#define SAFE_READ_MS_MIN 100
+#define SAFE_READ_MS_MAX 5000      /* worst case the radar heats 0.2 K/s: at most 1 K late */
+#define SAFE_READ_MS_DEFAULT 1000
 /* RF limits checked at sensorStart. Three TX at once does not fit the 1V0 window in the replay
- * (cosim/results/replay_summary.txt) until it is measured on hardware, so only the debug build
- * allows it. */
-#ifdef FW_DEBUG_PMIC
-#define SAFE_MAX_TX_PER_CHIRP 3u
-#else
+ * (cosim/results/replay_summary.txt) until it is measured on hardware, so it is off unless the
+ * host enables it (cfg radar.tx3_enable 1). */
 #define SAFE_MAX_TX_PER_CHIRP 2u
-#endif
 #define SAFE_MAX_DUTY_PCT 50u      /* chirping time per frame period */
 #define SAFE_MIN_PERIOD_US 10000u
 

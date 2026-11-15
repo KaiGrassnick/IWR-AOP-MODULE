@@ -62,7 +62,7 @@ The 921600 Bd data rate is marginal: the SCI has no fractional divider and makes
 
 The firmware is safe by default: the limits below are compiled in (`SAFE_*` in `firmware/src/board.h`). A host can make them stricter but never looser. No command switches the governor off.
 
-**Thermal governor.** The firmware reads the radar's temperature sensor on every frame and the PMIC status on every 10th frame.
+**Thermal governor.** The firmware reads the radar's temperature sensor and the PMIC status once per `thermal.read_ms` (default 1 s), after a frame ends. Each read is one mailbox message and a few I2C bytes between frames, so the chirps are not affected. The board heats with a time constant of minutes, so 1 s is ample.
 
 | Condition | Action |
 |---|---|
@@ -83,16 +83,18 @@ The radar's limit is 105 °C junction (SWRS237C 7.3), so the defaults keep 5 K o
 | `thermal.stop_c` | 70–100 °C | 100 |
 | `thermal.resume_c` | 50–97 °C | 90 |
 | `thermal.hold_ms` | 100 ms–600 s | 20 s |
+| `thermal.read_ms` | 100 ms–5 s | 1 s |
+| `radar.tx3_enable` | 0–1 | 0 |
 | `pmic.trim_mv` | 0–5 mV above 1000 mV | 0 |
 
 Radar settings still use the TI-style commands (`profileCfg`, `chirpCfg`, `frameCfg`). `sensorStart` checks them against these limits:
-- at most 2 TX per chirp (`-53`); three at once only in `fw_debug.elf`, until the 1V0 replay is confirmed on hardware
+- at most 2 TX per chirp (`-53`), unless the host sets `radar.tx3_enable 1`. It is off by default because three TX in one chirp did not fit the 1V0 window in the replay. TDM-MIMO, with the three TX one after another, is not affected
 - chirps take at most 50 % of the frame period (`-54`)
 - frame period at least 10 ms (`-55`)
 
-**Simulation** (`results/thermal_governor.png`). These scenarios compress the thermal time constant to 2 s and the hold time to 300 ms, in the same ratio, so a run takes seconds instead of minutes. The load is a heavy profile of 2 TX per chirp, 129 chirps every 33 ms, which is 1.49 W unthrottled.
+**Simulation** (`results/thermal_governor.png`). These scenarios compress the thermal time constant to 2 s and the hold time to 300 ms, in the same ratio, so a run takes seconds instead of minutes. The read interval is 100 ms, the minimum, which is coarser than the 1 s default would be at that speed. The load is a heavy profile of 2 TX per chirp, 129 chirps every 33 ms, which is 1.49 W unthrottled.
 - **55 °C ambient with the heat sink:** unthrottled, the radar would settle at 96 °C. The governor throttles once and it settles at 86 °C while data keeps streaming.
-- **66 °C ambient without the heat sink:** it throttles twice and stops at 100.0 °C. It stays stopped while idle heat alone keeps it at 94 °C. When the ambient drops to 55 °C it restarts at ×4 and holds at 90 °C.
+- **66 °C ambient without the heat sink:** it throttles twice and stops at 100.0 °C. It stays stopped while idle heat alone keeps it at 94 °C. When the ambient drops to 55 °C it restarts at ×4 and stays under 96 °C.
 
 Other scenarios cover a host that tightens the limits (throttle at 70 °C, stop at 74 °C), the PMIC thermal warning, failing temperature reads, a start while hot, and every out-of-bounds setting.
 

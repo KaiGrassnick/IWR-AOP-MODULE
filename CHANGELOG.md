@@ -7,7 +7,7 @@ All notable changes are documented here, following [Keep a Changelog](https://ke
 ### Added
 
 - `cosim/`: bare-metal test firmware for the radar's R4F, run on a model of the board (power tree, supervisor, PMIC over I²C, boot ROM and flash, USB bridge, carrier). Includes the co-simulation scenarios and an ngspice replay of the firmware's chirp load on 1V0 and 1V8. The replay shows a 1025 mV Buck2 trim takes 1V0 over 1.05 V at frame end, so the firmware limits the trim to 1000-1005 mV; raw PMIC writes are in the debug build only.
-- `cosim/` firmware safety layer: a thermal governor and host settings. The governor reads the radar temperature every frame and halves the frame rate from 90 °C. It stops the radar at 100 °C or on a PMIC thermal warning, and restarts it once cool. Host settings (`cfg`) have compiled-in bounds the host can tighten but not loosen. `sensorStart` checks TX per chirp, duty and frame period. Six new co-simulation scenarios cover it.
+- `cosim/` firmware safety layer: a thermal governor and host settings. The governor reads the radar temperature once per second by default (`thermal.read_ms`) and halves the frame rate from 90 °C. It stops the radar at 100 °C or on a PMIC thermal warning, and restarts it once cool. Host settings (`cfg`) have compiled-in bounds the host can tighten but not loosen. `sensorStart` checks TX per chirp (three at once only with `radar.tx3_enable`), duty and frame period. Six new co-simulation scenarios cover it.
 
 ## [1.1] - 2026-11-15
 

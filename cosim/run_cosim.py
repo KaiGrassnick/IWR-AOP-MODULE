@@ -163,8 +163,8 @@ def stress_3tx(c):
     for line in cfg:
         n.cli(line)
     out = n.cli("sensorStart", 0.3)
-    c.expect("Error -53" in out, "normal build refuses three TX at once (SAFE_MAX_TX_PER_CHIRP 2)")
-    b = _stream(c, "c_3tx_simultaneous_trim_1005", 1005, cfg, debug=True)
+    c.expect("Error -53" in out, "three TX at once refused by default (radar.tx3_enable 0)")
+    b = _stream(c, "c_3tx_simultaneous_trim_1005", 1005, ["cfg radar.tx3_enable 1"] + cfg)
     clean(c, b)
 
 
@@ -330,11 +330,13 @@ def usb_dropout(c):
 # ------------------------------------------------------------------------------ thermal and host limits
 # The board's thermal time constant is about 150 s (sim/bss.py). To keep runs short the thermal
 # scenarios compress it to 2 s and the firmware's hold time from its 20 s default to 300 ms, the
-# same ratio, so the governor sees the same dynamics 75 times faster.
+# same ratio, so the governor sees the same dynamics 75 times faster. The temperature read interval
+# goes to its minimum of 100 ms (7.5 s at real speed, coarser than the 1 s default).
 TAU_FAST = 2.0
 RTH_BARE = 37.4          # K/W, no heat sink (thermal_summary.txt: 46.7 K at 1.25 W)
 HEAVY = ["chirpReset", "chirpCfg 0 0 0 0 0 0 0 3", "chirpCfg 1 1 0 0 0 0 0 6", "chirpCfg 2 2 0 0 0 0 0 5",
-         "frameCfg 0 2 43 0 33", "cfg thermal.hold_ms 300"]   # 2 TX per chirp, 129 chirps every 33 ms: 1.49 W
+         "frameCfg 0 2 43 0 33", "cfg thermal.hold_ms 300", "cfg thermal.read_ms 100"]
+# 2 TX per chirp, 129 chirps every 33 ms: 1.49 W
 
 
 THERMAL_RUNS = {}
@@ -447,6 +449,8 @@ def host_limits(c):
                              ("cfg thermal.throttle_c 95", -51, "throttle temperature above 90 C"),
                              ("cfg thermal.hold_ms 50", -51, "hold time under 100 ms"),
                              ("cfg pmic.trim_mv 25", -51, "1V0 trim over 5 mV"),
+                             ("cfg thermal.read_ms 10000", -51, "temperature read interval over 5 s"),
+                             ("cfg radar.tx3_enable 2", -51, "tx3_enable other than 0 or 1"),
                              ("cfg thermal.throttle_c 86", -52, "throttle closer than 3 K to release (85 C)"),
                              ("cfg thermal.governor 0", -50, "unknown key (no switch to turn the governor off)")):
         c.expect(f"Error {code}" in b.cli(line), f"refused: {what}")
@@ -459,7 +463,7 @@ def host_limits(c):
     for line in ("cfg thermal.release_c 65", "cfg thermal.throttle_c 70", "cfg thermal.resume_c 71",
                  "cfg thermal.stop_c 74", "cfg thermal.hold_ms 300"):
         c.expect("Done" in b.cli(line), f"accepted: '{line}'")
-    for line in HEAVY[:-1]:
+    for line in HEAVY[:-2] + HEAVY[-1:]:
         b.cli(line)
     b.cli("sensorStart", 0.3)
     b.run(6.0)
@@ -519,7 +523,7 @@ SCENARIOS = [
     ("carrier_boot", "Carrier power (J400/J401) only, CLI over the carrier UART", carrier_boot),
     ("stream_default", "Default TDM-MIMO profile, 10 frames, no 1V0 trim", stream_default),
     ("stream_trim", "Same with the 1V0 trim to 1005 mV while running", stream_trim),
-    ("stress_3tx", "Three TX at once: refused by the normal build, run on the debug build for the replay", stress_3tx),
+    ("stress_3tx", "Three TX at once: refused by default, runs once the host enables it", stress_3tx),
     ("guards", "Firmware limits on PMIC writes", guards),
     ("bad_pmic_write", "Debug build: raw write puts Buck2 at 855 mV", bad_write),
     ("flash_uart", "UniFlash-style programming in SOP 101, then boot", flash_uart),

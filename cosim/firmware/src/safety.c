@@ -1,12 +1,13 @@
 /*
  * Thermal governor and host configuration. See safety.h.
  *
- * Governor, evaluated on every frame (radar temperature read over the mailbox each frame):
+ * Governor, evaluated after each frame once thermal.read_ms has passed (radar temperature over the
+ * mailbox, LP87524 status over I2C):
  *   T >= stop                      -> stop the radar (TX off), state HOT
  *   T >= throttle, level < 2       -> level + 1: frame period x2, x4 (fewer chirps per second)
  *   T <= release,  level > 0       -> level - 1
  *   level changes at most once per hold time, so the heat sink can respond (tau ~150 s).
- * While HOT, every 250 ms: T <= resume and no PMIC thermal warning -> restart at level 2.
+ * While HOT, every read_ms: T <= resume and no PMIC thermal warning -> restart at level 2.
  * Three failed temperature reads in a row stop the radar (state FAULT): no reading, no RF.
  * The radar's own limit is 105 C junction (SWRS237C 7.3); the defaults keep 5 K of margin.
  */
@@ -21,7 +22,7 @@
 
 safety_t safety;
 
-int32_t cfg_throttle_c, cfg_release_c, cfg_stop_c, cfg_resume_c, cfg_hold_ms, cfg_trim_mv;
+int32_t cfg_throttle_c, cfg_release_c, cfg_stop_c, cfg_resume_c, cfg_hold_ms, cfg_read_ms, cfg_trim_mv, cfg_tx3;
 
 const cfg_item_t cfg_items[] = {
     {"thermal.throttle_c", "C", "radar temperature that halves the frame rate", &cfg_throttle_c,
@@ -34,6 +35,9 @@ const cfg_item_t cfg_items[] = {
      SAFE_STOP_C_MIN - 20, SAFE_STOP_C_MAX - SAFE_HYST_C_MIN, SAFE_STOP_C_MAX - 10},
     {"thermal.hold_ms", "ms", "minimum time between throttle steps", &cfg_hold_ms,
      SAFE_HOLD_MS_MIN, SAFE_HOLD_MS_MAX, SAFE_HOLD_MS_DEFAULT},
+    {"thermal.read_ms", "ms", "time between temperature (and PMIC status) reads", &cfg_read_ms,
+     SAFE_READ_MS_MIN, SAFE_READ_MS_MAX, SAFE_READ_MS_DEFAULT},
+    {"radar.tx3_enable", "", "allow three TX in one chirp (1V0 not yet verified for it)", &cfg_tx3, 0, 1, 0},
     {"pmic.trim_mv", "mV", "Buck2 (1V0) above 1000 mV while the radar runs", &cfg_trim_mv,
      0, (int32_t)(BUCK2_MV_MAX - BUCK2_MV_MIN), 0},
 };
@@ -108,6 +112,7 @@ static void go_hot(const char *why)
 static bool read_temp(void)
 {
     int32_t mc;
+    safety.t_read_ms = time_ms();
     if (radar_get_temp(&mc)) {
         if (++safety.temp_fails >= SAFE_TEMP_FAILS_MAX) {
             radar_stop();
@@ -164,16 +169,16 @@ void safety_on_radar_error(uint32_t code)
 
 void safety_on_frame(void)
 {
-    if (safety.state != SAFE_RUN)
+    uint32_t now = time_ms();
+    if (safety.state != SAFE_RUN || now - safety.t_read_ms < (uint32_t)cfg_read_ms)
         return;
     if (!read_temp())
         return;
     int32_t t = safety.temp_mc;
-    uint32_t now = time_ms();
     bool may_step = now - safety.t_change_ms >= (uint32_t)cfg_hold_ms;
     if (t >= cfg_stop_c * 1000) {
         go_hot("stop temperature reached, radar stopped");
-    } else if ((radar.frames_done % 10u) == 0u && pmic_hot()) {
+    } else if (pmic_hot()) {
         go_hot("PMIC thermal warning, radar stopped");
     } else if (t >= cfg_throttle_c * 1000 && safety.level < SAFE_MAX_LEVEL && may_step) {
         safety.throttles++;
@@ -189,7 +194,7 @@ void safety_poll(void)
 {
     static uint32_t last;
     uint32_t now = time_ms();
-    if (safety.state != SAFE_HOT || now - last < 250u)
+    if (safety.state != SAFE_HOT || now - last < (uint32_t)cfg_read_ms)
         return;
     last = now;
     if (!read_temp() || safety.state != SAFE_HOT)

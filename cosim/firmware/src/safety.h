@@ -24,6 +24,7 @@ typedef struct {
     uint32_t level;          /* 0: host frame period, 1: x2, 2: x4 */
     int32_t temp_mc;         /* last radar temperature */
     uint32_t t_change_ms;    /* last level or state change */
+    uint32_t t_read_ms;      /* last temperature read */
     uint32_t temp_fails;     /* consecutive failed reads */
     uint32_t throttles, stops, restarts;
     bool pmic_hot;           /* LP87524 TDIE_WARN seen */
@@ -47,7 +48,7 @@ const cfg_item_t *cfg_find(const char *key);
 void cfg_defaults(void);
 
 /* thermal settings, in degC and ms; read by the governor */
-extern int32_t cfg_throttle_c, cfg_release_c, cfg_stop_c, cfg_resume_c, cfg_hold_ms, cfg_trim_mv;
+extern int32_t cfg_throttle_c, cfg_release_c, cfg_stop_c, cfg_resume_c, cfg_hold_ms, cfg_read_ms, cfg_trim_mv, cfg_tx3;
 
 /* governor ------------------------------------------------------------------------------- */
 int safety_start(void);   /* host wants the radar running */

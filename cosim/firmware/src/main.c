@@ -272,7 +272,7 @@ static void handle_event(uint32_t *ev)
             pmic_load_ma(3, &telemetry_buck3_ma);
         }
         send_frame_packet(ev);
-        safety_on_frame(); /* temperature every frame, PMIC status every 10th; may throttle or stop */
+        safety_on_frame(); /* every thermal.read_ms: temperature and PMIC status; may throttle or stop */
         break;
     case BSS_EV_ERROR:
         radar.errors++;

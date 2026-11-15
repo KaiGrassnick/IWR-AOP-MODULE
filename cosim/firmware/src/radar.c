@@ -166,7 +166,7 @@ int radar_start(void)
         uint32_t m = radar_cfg.chirp_tx_mask[i] & radar_cfg.tx_mask, n = 0;
         for (; m; m &= m - 1u)
             n++;
-        if (n > SAFE_MAX_TX_PER_CHIRP)
+        if (n > (cfg_tx3 ? 3u : SAFE_MAX_TX_PER_CHIRP))
             return SAFE_ERR_TX;
         nchirps++;
     }

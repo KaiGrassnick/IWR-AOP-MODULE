@@ -3,7 +3,7 @@ Co-simulation results: 20 scenarios, 0 failed
 === usb_boot: PASS  (USB power-up: rails, supervisor, boot ROM, firmware, PMIC over I2C)  [88 ms simulated, 9.9 M instructions, 3 s]
   [ok] boot banner and prompt on the CP2105 ECI port
   [ok] reset released at 29.64 ms (ngspice power-up run: 29.68 ms)
-  [ok] boot ROM loaded the image from QSPI: application started 6.3 ms after reset release
+  [ok] boot ROM loaded the image from QSPI: application started 6.4 ms after reset release
   [ok] firmware read the LP87524J (OTP_REV 0x72, RESET_REG set)
   [ok] pmic command: OTP voltages read over I2C at 400 kHz
   pmic output: pmic | PMIC: LP87524J OTP_REV 0x72, I2C 400 kHz | Buck0 3V3_R  3300 mV  CTRL1 0xC4 | Buck1 1V2_R  1200 mV  CTRL1 0xC4 | Buck2 1V0    1000 mV  CTRL1 0xC6 | Buck3 1V8    1800 mV  CTRL1 0xC6 | TOP_STAT 0x00  BUCK_0_1_STAT 0xCC  BUCK_2_3_STAT 0xCC | flags cleared: INT_TOP1 0x00 INT_TOP2 0x00 INT_BUCK 0x00 0x00 | Done
@@ -18,9 +18,9 @@ Co-simulation results: 20 scenarios, 0 failed
         8.855 ms  power  PMIC GPIO2 released
        29.639 ms  power  supervisor releases reset
        29.639 ms  power  AOP_NRESET high (radar runs)
-       35.977 ms  ROM    image loaded from QSPI, R4F released
+       35.993 ms  ROM    image loaded from QSPI, R4F released
 
-=== carrier_boot: PASS  (Carrier power (J400/J401) only, CLI over the carrier UART)  [62 ms simulated, 4.8 M instructions, 1 s]
+=== carrier_boot: PASS  (Carrier power (J400/J401) only, CLI over the carrier UART)  [62 ms simulated, 4.8 M instructions, 2 s]
   [ok] boot banner on the carrier's UART (J400/J401), CP2105 unpowered
   [ok] nothing reaches the unpowered CP2105
   [ok] CLI over the carrier UART
@@ -34,13 +34,13 @@ Co-simulation results: 20 scenarios, 0 failed
         8.855 ms  power  PMIC GPIO2 released
        29.639 ms  power  supervisor releases reset
        29.639 ms  power  AOP_NRESET high (radar runs)
-       35.977 ms  ROM    image loaded from QSPI, R4F released
+       35.993 ms  ROM    image loaded from QSPI, R4F released
 
-=== stream_default: PASS  (Default TDM-MIMO profile, 10 frames, no 1V0 trim)  [1185 ms simulated, 26.4 M instructions, 5 s]
+=== stream_default: PASS  (Default TDM-MIMO profile, 10 frames, no 1V0 trim)  [1185 ms simulated, 26.3 M instructions, 5 s]
   [ok] sensorStart: channel, LDO bypass, RF init, profile, chirps, frame, start
   [ok] 11 data packets parsed from the 460800 Bd port, 0 framing errors
   frame: 48 chirps of 104.1 us, TX per chirp [1], 1V0 VSET 1000 mV, average radar power 0.84 W (typ)
-  telemetry TLV: Buck2 1000 mV, Buck2 1040 mA in chirps / 40 mA idle, Buck3 440 / 100 mA, radar 25.1 C
+  telemetry TLV: Buck2 1000 mV, Buck2 1040 mA in chirps / 40 mA idle, Buck3 440 / 100 mA, radar 25.0 C
   [ok] Buck2 runs at 1000 mV while streaming
   [ok] sensorStop
   [ok] Buck2 back to 1000 mV (0x4D) after stop
@@ -54,15 +54,15 @@ Co-simulation results: 20 scenarios, 0 failed
         8.855 ms  power  PMIC GPIO2 released
        29.639 ms  power  supervisor releases reset
        29.639 ms  power  AOP_NRESET high (radar runs)
-       35.977 ms  ROM    image loaded from QSPI, R4F released
+       35.993 ms  ROM    image loaded from QSPI, R4F released
        51.924 ms  BSS    LDO bypass config: ldoBypassEnable=3 supplyMonIrDrop=1 ioSupplyIndicator=0
 
-=== stream_trim: PASS  (Same with the 1V0 trim to 1005 mV while running)  [1188 ms simulated, 26.8 M instructions, 5 s]
+=== stream_trim: PASS  (Same with the 1V0 trim to 1005 mV while running)  [1188 ms simulated, 26.7 M instructions, 5 s]
   [ok] pmicTrim 1005
   [ok] sensorStart: channel, LDO bypass, RF init, profile, chirps, frame, start
   [ok] 11 data packets parsed from the 460800 Bd port, 0 framing errors
   frame: 48 chirps of 104.1 us, TX per chirp [1], 1V0 VSET 1005 mV, average radar power 0.84 W (typ)
-  telemetry TLV: Buck2 1005 mV, Buck2 1040 mA in chirps / 40 mA idle, Buck3 440 / 100 mA, radar 25.1 C
+  telemetry TLV: Buck2 1005 mV, Buck2 1040 mA in chirps / 40 mA idle, Buck3 440 / 100 mA, radar 25.0 C
   [ok] Buck2 runs at 1005 mV while streaming
   [ok] sensorStop
   [ok] Buck2 back to 1000 mV (0x4D) after stop
@@ -77,13 +77,14 @@ Co-simulation results: 20 scenarios, 0 failed
         8.855 ms  power  PMIC GPIO2 released
        29.639 ms  power  supervisor releases reset
        29.639 ms  power  AOP_NRESET high (radar runs)
-       35.977 ms  ROM    image loaded from QSPI, R4F released
+       35.993 ms  ROM    image loaded from QSPI, R4F released
        54.924 ms  BSS    LDO bypass config: ldoBypassEnable=3 supplyMonIrDrop=1 ioSupplyIndicator=0
        85.190 ms  PMIC   BUCK2_VOUT 0x4D -> 0x4E (1005 mV)
      1186.594 ms  PMIC   BUCK2_VOUT 0x4E -> 0x4D (1000 mV)
 
-=== stress_3tx: PASS  (Three TX at once: refused by the normal build, run on the debug build for the replay)  [1199 ms simulated, 27.4 M instructions, 6 s]
-  [ok] normal build refuses three TX at once (SAFE_MAX_TX_PER_CHIRP 2)
+=== stress_3tx: PASS  (Three TX at once: refused by default, runs once the host enables it)  [1203 ms simulated, 27.6 M instructions, 6 s]
+  [ok] three TX at once refused by default (radar.tx3_enable 0)
+  [ok] 'cfg radar.tx3_enable 1' accepted
   [ok] 'chirpReset' accepted
   [ok] 'chirpCfg 0 0 0 0 0 0 0 7' accepted
   [ok] 'frameCfg 0 0 64 0 100' accepted
@@ -91,7 +92,7 @@ Co-simulation results: 20 scenarios, 0 failed
   [ok] sensorStart: channel, LDO bypass, RF init, profile, chirps, frame, start
   [ok] 11 data packets parsed from the 460800 Bd port, 0 framing errors
   frame: 64 chirps of 104.1 us, TX per chirp [3], 1V0 VSET 1005 mV, average radar power 0.88 W (typ)
-  telemetry TLV: Buck2 1005 mV, Buck2 1500 mA in chirps / 40 mA idle, Buck3 440 / 100 mA, radar 25.2 C
+  telemetry TLV: Buck2 1005 mV, Buck2 1500 mA in chirps / 40 mA idle, Buck3 440 / 100 mA, radar 25.0 C
   [ok] Buck2 runs at 1005 mV while streaming
   [ok] sensorStop
   [ok] Buck2 back to 1000 mV (0x4D) after stop
@@ -105,10 +106,10 @@ Co-simulation results: 20 scenarios, 0 failed
         8.855 ms  power  PMIC GPIO2 released
        29.639 ms  power  supervisor releases reset
        29.639 ms  power  AOP_NRESET high (radar runs)
-       36.007 ms  ROM    image loaded from QSPI, R4F released
-       65.924 ms  BSS    LDO bypass config: ldoBypassEnable=3 supplyMonIrDrop=1 ioSupplyIndicator=0
-       96.126 ms  PMIC   BUCK2_VOUT 0x4D -> 0x4E (1005 mV)
-     1197.530 ms  PMIC   BUCK2_VOUT 0x4E -> 0x4D (1000 mV)
+       35.993 ms  ROM    image loaded from QSPI, R4F released
+       69.924 ms  BSS    LDO bypass config: ldoBypassEnable=3 supplyMonIrDrop=1 ioSupplyIndicator=0
+      100.126 ms  PMIC   BUCK2_VOUT 0x4D -> 0x4E (1005 mV)
+     1201.530 ms  PMIC   BUCK2_VOUT 0x4E -> 0x4D (1000 mV)
 
 === guards: PASS  (Firmware limits on PMIC writes)  [65 ms simulated, 4.3 M instructions, 1 s]
   [ok] pmicTrim 1025 refused (window 1000-1005 mV)
@@ -125,7 +126,7 @@ Co-simulation results: 20 scenarios, 0 failed
         8.855 ms  power  PMIC GPIO2 released
        29.639 ms  power  supervisor releases reset
        29.639 ms  power  AOP_NRESET high (radar runs)
-       35.977 ms  ROM    image loaded from QSPI, R4F released
+       35.993 ms  ROM    image loaded from QSPI, R4F released
 
 === bad_pmic_write: PASS  (Debug build: raw write puts Buck2 at 855 mV)  [773 ms simulated, 5.7 M instructions, 2 s]
   [ok] supervisor holds the radar in reset (1V0 under 0.900 V)
@@ -141,7 +142,7 @@ Co-simulation results: 20 scenarios, 0 failed
         8.855 ms  power  PMIC GPIO2 released
        29.639 ms  power  supervisor releases reset
        29.639 ms  power  AOP_NRESET high (radar runs)
-       36.007 ms  ROM    image loaded from QSPI, R4F released
+       36.024 ms  ROM    image loaded from QSPI, R4F released
        54.818 ms  PMIC   BUCK2_VOUT 0x4D -> 0x30 (855 mV)
        54.818 ms  PMIC   VIOLATION: Buck2 set to 855 mV: SNVSAW2B says not under 1.0 V with VIN > 4 V
        54.818 ms  PMIC   VIOLATION: 1V0_R setpoint 855 mV outside the radar's 0.95-1.05 V
@@ -161,9 +162,9 @@ Co-simulation results: 20 scenarios, 0 failed
       731.855 ms  power  PMIC GPIO2 released
       752.639 ms  power  supervisor releases reset
       752.639 ms  power  AOP_NRESET high (radar runs)
-      759.007 ms  ROM    image loaded from QSPI, R4F released
+      759.024 ms  ROM    image loaded from QSPI, R4F released
 
-=== flash_uart: PASS  (UniFlash-style programming in SOP 101, then boot)  [2878 ms simulated, 2.7 M instructions, 1 s]
+=== flash_uart: PASS  (UniFlash-style programming in SOP 101, then boot)  [2910 ms simulated, 2.7 M instructions, 1 s]
   [ok] BOOT held at power-up: ROM in UART flashing mode (SOP 101)
   [ok] after programming + QE + RESET the image boots
   [ok] no rule violations
@@ -177,13 +178,13 @@ Co-simulation results: 20 scenarios, 0 failed
        29.639 ms  power  supervisor releases reset
        29.639 ms  power  AOP_NRESET high (radar runs)
        29.639 ms  ROM    SOP 101: UART flashing mode, waiting for the host
-     2816.138 ms  flash  26752 bytes programmed, QE set
-     2856.139 ms  power  AOP_NRESET low (radar in reset)
-     2856.139 ms  radar  held in reset
-     2857.139 ms  power  AOP_NRESET high (radar runs)
-     2863.477 ms  ROM    image loaded from QSPI, R4F released
+     2848.195 ms  flash  27084 bytes programmed, QE set
+     2888.196 ms  power  AOP_NRESET low (radar in reset)
+     2888.196 ms  radar  held in reset
+     2889.196 ms  power  AOP_NRESET high (radar runs)
+     2895.550 ms  ROM    image loaded from QSPI, R4F released
 
-=== flash_no_qe: PASS  (Programmed without the QE bit)  [2917 ms simulated, 0.0 M instructions, 0 s]
+=== flash_no_qe: PASS  (Programmed without the QE bit)  [2949 ms simulated, 0.0 M instructions, 0 s]
   [ok] programmed without setting QE: no boot (expected, spec 4.2)
   ROM: failed: QE bit clear: the ROM's quad read returns garbage (spec 4.2)
   log:
@@ -194,13 +195,13 @@ Co-simulation results: 20 scenarios, 0 failed
        29.639 ms  power  supervisor releases reset
        29.639 ms  power  AOP_NRESET high (radar runs)
        29.639 ms  ROM    SOP 101: UART flashing mode, waiting for the host
-     2816.138 ms  flash  26752 bytes programmed, QE left clear
-     2816.140 ms  power  AOP_NRESET low (radar in reset)
-     2816.140 ms  radar  held in reset
-     2817.140 ms  power  AOP_NRESET high (radar runs)
-     2817.140 ms  ROM    QSPI boot failed: QE bit clear: the ROM's quad read returns garbage (spec 4.2)
+     2848.195 ms  flash  27084 bytes programmed, QE left clear
+     2848.197 ms  power  AOP_NRESET low (radar in reset)
+     2848.197 ms  radar  held in reset
+     2849.197 ms  power  AOP_NRESET high (radar runs)
+     2849.197 ms  ROM    QSPI boot failed: QE bit clear: the ROM's quad read returns garbage (spec 4.2)
 
-=== flash_reset_wip: PASS  (RESET pressed while the QE write is still busy)  [2939 ms simulated, 2.7 M instructions, 1 s]
+=== flash_reset_wip: PASS  (RESET pressed while the QE write is still busy)  [2971 ms simulated, 2.7 M instructions, 1 s]
   [ok] RESET within tW (40 ms) of the QE write: boot fails (errata MSS#45), a second reset fixes it
   ROM: failed: flash still busy (WIP = 1) when the ROM read it (errata MSS#45)
   [ok] second reset boots
@@ -212,15 +213,15 @@ Co-simulation results: 20 scenarios, 0 failed
        29.639 ms  power  supervisor releases reset
        29.639 ms  power  AOP_NRESET high (radar runs)
        29.639 ms  ROM    SOP 101: UART flashing mode, waiting for the host
-     2816.138 ms  flash  26752 bytes programmed, QE set
-     2816.139 ms  power  AOP_NRESET low (radar in reset)
-     2816.139 ms  radar  held in reset
-     2817.139 ms  power  AOP_NRESET high (radar runs)
-     2817.139 ms  ROM    QSPI boot failed: flash still busy (WIP = 1) when the ROM read it (errata MSS#45)
-     2917.139 ms  power  AOP_NRESET low (radar in reset)
-     2917.139 ms  radar  held in reset
-     2918.139 ms  power  AOP_NRESET high (radar runs)
-     2924.477 ms  ROM    image loaded from QSPI, R4F released
+     2848.195 ms  flash  27084 bytes programmed, QE set
+     2848.196 ms  power  AOP_NRESET low (radar in reset)
+     2848.196 ms  radar  held in reset
+     2849.196 ms  power  AOP_NRESET high (radar runs)
+     2849.196 ms  ROM    QSPI boot failed: flash still busy (WIP = 1) when the ROM read it (errata MSS#45)
+     2949.196 ms  power  AOP_NRESET low (radar in reset)
+     2949.196 ms  radar  held in reset
+     2950.196 ms  power  AOP_NRESET high (radar runs)
+     2956.550 ms  ROM    image loaded from QSPI, R4F released
 
 === host_disable: PASS  (Carrier pulses HOST_DISABLE while streaming with trim)  [397 ms simulated, 15.0 M instructions, 3 s]
   [ok] HOST_DISABLE mid-stream: EN1 low, rails off, radar in reset
@@ -239,7 +240,7 @@ Co-simulation results: 20 scenarios, 0 failed
         8.855 ms  power  PMIC GPIO2 released
        29.639 ms  power  supervisor releases reset
        29.639 ms  power  AOP_NRESET high (radar runs)
-       35.977 ms  ROM    image loaded from QSPI, R4F released
+       35.993 ms  ROM    image loaded from QSPI, R4F released
        54.924 ms  BSS    LDO bypass config: ldoBypassEnable=3 supplyMonIrDrop=1 ioSupplyIndicator=0
        85.190 ms  PMIC   BUCK2_VOUT 0x4D -> 0x4E (1005 mV)
       337.000 ms  power  HOST_DISABLE asserted
@@ -252,8 +253,8 @@ Co-simulation results: 20 scenarios, 0 failed
       352.000 ms  power  PMIC GPIO2 released
       372.784 ms  power  supervisor releases reset
       372.784 ms  power  AOP_NRESET high (radar runs)
-      379.122 ms  ROM    image loaded from QSPI, R4F released
-      390.289 ms  PMIC   BUCK2_VOUT 0x4E -> 0x4D (1000 mV)
+      379.139 ms  ROM    image loaded from QSPI, R4F released
+      390.306 ms  PMIC   BUCK2_VOUT 0x4E -> 0x4D (1000 mV)
 
 === carrier_reset: PASS  (Carrier pulses HOST_NRESET while streaming with trim)  [362 ms simulated, 15.0 M instructions, 3 s]
   [ok] streaming with Buck2 at 1005 mV (0x4E)
@@ -269,16 +270,16 @@ Co-simulation results: 20 scenarios, 0 failed
         8.855 ms  power  PMIC GPIO2 released
        29.639 ms  power  supervisor releases reset
        29.639 ms  power  AOP_NRESET high (radar runs)
-       35.977 ms  ROM    image loaded from QSPI, R4F released
+       35.993 ms  ROM    image loaded from QSPI, R4F released
        54.924 ms  BSS    LDO bypass config: ldoBypassEnable=3 supplyMonIrDrop=1 ioSupplyIndicator=0
        85.190 ms  PMIC   BUCK2_VOUT 0x4D -> 0x4E (1005 mV)
       337.000 ms  power  AOP_NRESET low (radar in reset)
       337.000 ms  radar  held in reset
       338.000 ms  power  AOP_NRESET high (radar runs)
-      344.338 ms  ROM    image loaded from QSPI, R4F released
-      355.505 ms  PMIC   BUCK2_VOUT 0x4E -> 0x4D (1000 mV)
+      344.354 ms  ROM    image loaded from QSPI, R4F released
+      355.522 ms  PMIC   BUCK2_VOUT 0x4E -> 0x4D (1000 mV)
 
-=== usb_dropout: PASS  (USB dropouts of 0.1 ms and 1 ms while streaming with trim)  [756 ms simulated, 33.6 M instructions, 6 s]
+=== usb_dropout: PASS  (USB dropouts of 0.1 ms and 1 ms while streaming with trim)  [756 ms simulated, 33.6 M instructions, 7 s]
   [ok] USB dropout of 0.1 ms: radar resets and boots again
     banner: ['PMIC: LP87524J OTP 0x72, Buck2 1005 mV, registers kept from before this reset', 'PMIC: Buck2 back to 1000 mV']
   [ok] USB dropout of 1.0 ms: radar resets and boots again
@@ -293,7 +294,7 @@ Co-simulation results: 20 scenarios, 0 failed
         8.855 ms  power  PMIC GPIO2 released
        29.639 ms  power  supervisor releases reset
        29.639 ms  power  AOP_NRESET high (radar runs)
-       35.977 ms  ROM    image loaded from QSPI, R4F released
+       35.993 ms  ROM    image loaded from QSPI, R4F released
        54.924 ms  BSS    LDO bypass config: ldoBypassEnable=3 supplyMonIrDrop=1 ioSupplyIndicator=0
        85.190 ms  PMIC   BUCK2_VOUT 0x4D -> 0x4E (1005 mV)
       287.000 ms  power  5 V removed
@@ -305,10 +306,10 @@ Co-simulation results: 20 scenarios, 0 failed
       292.100 ms  power  PMIC GPIO2 released
       307.182 ms  power  supervisor releases reset
       307.182 ms  power  AOP_NRESET high (radar runs)
-      313.519 ms  ROM    image loaded from QSPI, R4F released
-      324.687 ms  PMIC   BUCK2_VOUT 0x4E -> 0x4D (1000 mV)
-      336.025 ms  BSS    LDO bypass config: ldoBypassEnable=3 supplyMonIrDrop=1 ioSupplyIndicator=0
-      366.291 ms  PMIC   BUCK2_VOUT 0x4D -> 0x4E (1005 mV)
+      313.536 ms  ROM    image loaded from QSPI, R4F released
+      324.704 ms  PMIC   BUCK2_VOUT 0x4E -> 0x4D (1000 mV)
+      336.024 ms  BSS    LDO bypass config: ldoBypassEnable=3 supplyMonIrDrop=1 ioSupplyIndicator=0
+      366.290 ms  PMIC   BUCK2_VOUT 0x4D -> 0x4E (1005 mV)
       518.100 ms  power  5 V removed
       518.267 ms  power  supervisor asserts reset: 3V3_R below threshold (unplug)
       518.267 ms  power  AOP_NRESET low (radar in reset)
@@ -320,17 +321,18 @@ Co-simulation results: 20 scenarios, 0 failed
       527.955 ms  power  PMIC GPIO2 released
       548.739 ms  power  supervisor releases reset
       548.739 ms  power  AOP_NRESET high (radar runs)
-      555.077 ms  ROM    image loaded from QSPI, R4F released
-      574.025 ms  BSS    LDO bypass config: ldoBypassEnable=3 supplyMonIrDrop=1 ioSupplyIndicator=0
-      604.291 ms  PMIC   BUCK2_VOUT 0x4D -> 0x4E (1005 mV)
+      555.093 ms  ROM    image loaded from QSPI, R4F released
+      574.024 ms  BSS    LDO bypass config: ldoBypassEnable=3 supplyMonIrDrop=1 ioSupplyIndicator=0
+      604.290 ms  PMIC   BUCK2_VOUT 0x4D -> 0x4E (1005 mV)
 
-=== thermal_throttle: PASS  (55 C ambient, heavy profile: governor halves the frame rate)  [10107 ms simulated, 147.4 M instructions, 47 s]
+=== thermal_throttle: PASS  (55 C ambient, heavy profile: governor halves the frame rate)  [10111 ms simulated, 155.2 M instructions, 50 s]
   [ok] 'chirpReset'
   [ok] 'chirpCfg 0 0 0 0 0 0 0 3'
   [ok] 'chirpCfg 1 1 0 0 0 0 0 6'
   [ok] 'chirpCfg 2 2 0 0 0 0 0 5'
   [ok] 'frameCfg 0 2 43 0 33'
   [ok] 'cfg thermal.hold_ms 300'
+  [ok] 'cfg thermal.read_ms 100'
   [ok] sensorStart
   ambient 55 C, heat sink fitted: unthrottled the radar would settle at 96 C
   firmware: thermal: throttling, frame rate halved, radar 90.0 C, level 1
@@ -348,26 +350,27 @@ Co-simulation results: 20 scenarios, 0 failed
         8.855 ms  power  PMIC GPIO2 released
        29.639 ms  power  supervisor releases reset
        29.639 ms  power  AOP_NRESET high (radar runs)
-       35.977 ms  ROM    image loaded from QSPI, R4F released
-       74.924 ms  BSS    LDO bypass config: ldoBypassEnable=3 supplyMonIrDrop=1 ioSupplyIndicator=0
-     4033.216 ms  BSS    LDO bypass config: ldoBypassEnable=3 supplyMonIrDrop=1 ioSupplyIndicator=0
+       35.993 ms  ROM    image loaded from QSPI, R4F released
+       78.924 ms  BSS    LDO bypass config: ldoBypassEnable=3 supplyMonIrDrop=1 ioSupplyIndicator=0
+     4037.218 ms  BSS    LDO bypass config: ldoBypassEnable=3 supplyMonIrDrop=1 ioSupplyIndicator=0
 
-=== thermal_stop: PASS  (66 C ambient, no heat sink: stop at 100 C, restart when cooler)  [16126 ms simulated, 135.8 M instructions, 33 s]
+=== thermal_stop: PASS  (66 C ambient, no heat sink: stop at 100 C, restart when cooler)  [16130 ms simulated, 148.7 M instructions, 38 s]
   [ok] 'chirpReset'
   [ok] 'chirpCfg 0 0 0 0 0 0 0 3'
   [ok] 'chirpCfg 1 1 0 0 0 0 0 6'
   [ok] 'chirpCfg 2 2 0 0 0 0 0 5'
   [ok] 'frameCfg 0 2 43 0 33'
   [ok] 'cfg thermal.hold_ms 300'
+  [ok] 'cfg thermal.read_ms 100'
   [ok] sensorStart
   ambient 66 C, no heat sink: even idle the radar sits at 94 C
-  firmware: thermal: throttling, frame rate halved, radar 90.5 C, level 1 | thermal: throttling, frame rate halved, radar 93.3 C, level 2 | thermal: stop temperature reached, radar stopped, radar 100.0 C, level 2
+  firmware: thermal: throttling, frame rate halved, radar 91.0 C, level 1 | thermal: throttling, frame rate halved, radar 93.7 C, level 2 | thermal: stop temperature reached, radar stopped, radar 100.0 C, level 2
   [ok] radar stopped at 100 C after throttling to level 2
-  [ok] peak 100.00 C (stop at 100, junction limit 105)
+  [ok] peak 100.06 C (stop at 100, junction limit 105)
   [ok] stays stopped while the radar is above the resume temperature (90 C)
   after ambient drops to 55 C: thermal: cool again, restarted at the lowest frame rate, radar 89.6 C, level 2
   [ok] restarts by itself once under 90 C, at level 2
-  [ok] peak after restart 95.8 C
+  [ok] peak after restart 95.9 C
   [ok] no rule violations
   [ok] firmware touched only modelled registers
   [ok] no CPU fault
@@ -378,19 +381,20 @@ Co-simulation results: 20 scenarios, 0 failed
         8.855 ms  power  PMIC GPIO2 released
        29.639 ms  power  supervisor releases reset
        29.639 ms  power  AOP_NRESET high (radar runs)
-       35.977 ms  ROM    image loaded from QSPI, R4F released
-       74.924 ms  BSS    LDO bypass config: ldoBypassEnable=3 supplyMonIrDrop=1 ioSupplyIndicator=0
-     1228.216 ms  BSS    LDO bypass config: ldoBypassEnable=3 supplyMonIrDrop=1 ioSupplyIndicator=0
-     1625.476 ms  BSS    LDO bypass config: ldoBypassEnable=3 supplyMonIrDrop=1 ioSupplyIndicator=0
-     9476.869 ms  BSS    LDO bypass config: ldoBypassEnable=3 supplyMonIrDrop=1 ioSupplyIndicator=0
+       35.993 ms  ROM    image loaded from QSPI, R4F released
+       78.924 ms  BSS    LDO bypass config: ldoBypassEnable=3 supplyMonIrDrop=1 ioSupplyIndicator=0
+     1265.218 ms  BSS    LDO bypass config: ldoBypassEnable=3 supplyMonIrDrop=1 ioSupplyIndicator=0
+     1662.478 ms  BSS    LDO bypass config: ldoBypassEnable=3 supplyMonIrDrop=1 ioSupplyIndicator=0
+     9463.884 ms  BSS    LDO bypass config: ldoBypassEnable=3 supplyMonIrDrop=1 ioSupplyIndicator=0
 
-=== thermal_hot_start: PASS  (sensorStart while the radar is already at 95 C)  [2102 ms simulated, 9.7 M instructions, 3 s]
+=== thermal_hot_start: PASS  (sensorStart while the radar is already at 95 C)  [2106 ms simulated, 10.0 M instructions, 3 s]
   [ok] 'chirpReset'
   [ok] 'chirpCfg 0 0 0 0 0 0 0 3'
   [ok] 'chirpCfg 1 1 0 0 0 0 0 6'
   [ok] 'chirpCfg 2 2 0 0 0 0 0 5'
   [ok] 'frameCfg 0 2 43 0 33'
   [ok] 'cfg thermal.hold_ms 300'
+  [ok] 'cfg thermal.read_ms 100'
   [ok] sensorStart at 95 C: waits instead of transmitting
   [ok] no frames while the radar stays over 90 C
   [ok] sensorStop cancels the wait
@@ -404,14 +408,16 @@ Co-simulation results: 20 scenarios, 0 failed
         8.855 ms  power  PMIC GPIO2 released
        29.639 ms  power  supervisor releases reset
        29.639 ms  power  AOP_NRESET high (radar runs)
-       35.977 ms  ROM    image loaded from QSPI, R4F released
+       35.993 ms  ROM    image loaded from QSPI, R4F released
 
-=== host_limits: PASS  (Host config: what it can change, what it cannot)  [6215 ms simulated, 102.9 M instructions, 23 s]
-  cfg: thermal.throttle_c       90 C   [60..90, default 90]  radar temperature that halves the frame rate | thermal.release_c        85 C   [50..87, default 85]  temperature that undoes one throttle step | thermal.stop_c          100 C   [70..100, default 100]  temperature that stops the radar | thermal.resume_c         90 C   [50..97, default 90]  temperature under which a stopped radar restarts | thermal.hold_ms       20000 ms  [100..600000, default 20000]  minimum time between throttle steps | pmic.trim_mv              0 mV  [0..5, default 0]  Buck2 (1V0) above 1000 mV while the radar runs
+=== host_limits: PASS  (Host config: what it can change, what it cannot)  [6247 ms simulated, 110.2 M instructions, 25 s]
+  cfg: thermal.throttle_c       90 C   [60..90, default 90]  radar temperature that halves the frame rate | thermal.release_c        85 C   [50..87, default 85]  temperature that undoes one throttle step | thermal.stop_c          100 C   [70..100, default 100]  temperature that stops the radar | thermal.resume_c         90 C   [50..97, default 90]  temperature under which a stopped radar restarts | thermal.hold_ms       20000 ms  [100..600000, default 20000]  minimum time between throttle steps | thermal.read_ms        1000 ms  [100..5000, default 1000]  time between temperature (and PMIC status) reads | radar.tx3_enable          0     [0..1, default 0]  allow three TX in one chirp (1V0 not yet verified for it) | pmic.trim_mv              0 mV  [0..5, default 0]  Buck2 (1V0) above 1000 mV while the radar runs
   [ok] refused: stop temperature above 100 C
   [ok] refused: throttle temperature above 90 C
   [ok] refused: hold time under 100 ms
   [ok] refused: 1V0 trim over 5 mV
+  [ok] refused: temperature read interval over 5 s
+  [ok] refused: tx3_enable other than 0 or 1
   [ok] refused: throttle closer than 3 K to release (85 C)
   [ok] refused: unknown key (no switch to turn the governor off)
   [ok] sensorStart refused: chirps over 50 % of the frame
@@ -422,9 +428,9 @@ Co-simulation results: 20 scenarios, 0 failed
   [ok] accepted: 'cfg thermal.resume_c 71'
   [ok] accepted: 'cfg thermal.stop_c 74'
   [ok] accepted: 'cfg thermal.hold_ms 300'
-  firmware: thermal: throttling, frame rate halved, radar 70.2 C, level 1 | thermal: throttling, frame rate halved, radar 71.8 C, level 2 | thermal: stop temperature reached, radar stopped, radar 74.0 C, level 2
+  firmware: thermal: throttling, frame rate halved, radar 70.3 C, level 1 | thermal: throttling, frame rate halved, radar 72.0 C, level 2 | thermal: stop temperature reached, radar stopped, radar 74.0 C, level 2
   [ok] with the host's limits it throttles at 70 C and stops at 74 C
-  [ok] peak 74.0 C
+  [ok] peak 74.1 C
   [ok] no rule violations
   [ok] firmware touched only modelled registers
   [ok] no CPU fault
@@ -435,22 +441,23 @@ Co-simulation results: 20 scenarios, 0 failed
         8.855 ms  power  PMIC GPIO2 released
        29.639 ms  power  supervisor releases reset
        29.639 ms  power  AOP_NRESET high (radar runs)
-       35.977 ms  ROM    image loaded from QSPI, R4F released
-      182.924 ms  BSS    LDO bypass config: ldoBypassEnable=3 supplyMonIrDrop=1 ioSupplyIndicator=0
-     1501.216 ms  BSS    LDO bypass config: ldoBypassEnable=3 supplyMonIrDrop=1 ioSupplyIndicator=0
-     1898.474 ms  BSS    LDO bypass config: ldoBypassEnable=3 supplyMonIrDrop=1 ioSupplyIndicator=0
+       35.993 ms  ROM    image loaded from QSPI, R4F released
+      214.924 ms  BSS    LDO bypass config: ldoBypassEnable=3 supplyMonIrDrop=1 ioSupplyIndicator=0
+     1533.218 ms  BSS    LDO bypass config: ldoBypassEnable=3 supplyMonIrDrop=1 ioSupplyIndicator=0
+     1930.478 ms  BSS    LDO bypass config: ldoBypassEnable=3 supplyMonIrDrop=1 ioSupplyIndicator=0
 
-=== pmic_thermal: PASS  (PMIC die temperature warning while streaming)  [3107 ms simulated, 60.2 M instructions, 11 s]
+=== pmic_thermal: PASS  (PMIC die temperature warning while streaming)  [3111 ms simulated, 68.1 M instructions, 13 s]
   [ok] 'chirpReset'
   [ok] 'chirpCfg 0 0 0 0 0 0 0 3'
   [ok] 'chirpCfg 1 1 0 0 0 0 0 6'
   [ok] 'chirpCfg 2 2 0 0 0 0 0 5'
   [ok] 'frameCfg 0 2 43 0 33'
   [ok] 'cfg thermal.hold_ms 300'
+  [ok] 'cfg thermal.read_ms 100'
   [ok] sensorStart
   [ok] LP87524 TDIE_WARN (die over 137 C) stops the radar within 10 frames
   [ok] restarts once the warning clears
-  firmware: thermal: PMIC thermal warning, radar stopped, radar 36.9 C, level 0 | thermal: cool again, restarted at the lowest frame rate, radar 41.5 C, level 2 | thermal: cooler, frame rate doubled, radar 43.2 C, level 1
+  firmware: thermal: PMIC thermal warning, radar stopped, radar 36.5 C, level 0 | thermal: cool again, restarted at the lowest frame rate, radar 41.1 C, level 2 | thermal: cooler, frame rate doubled, radar 42.8 C, level 1
   [ok] no rule violations
   [ok] firmware touched only modelled registers
   [ok] no CPU fault
@@ -461,18 +468,19 @@ Co-simulation results: 20 scenarios, 0 failed
         8.855 ms  power  PMIC GPIO2 released
        29.639 ms  power  supervisor releases reset
        29.639 ms  power  AOP_NRESET high (radar runs)
-       35.977 ms  ROM    image loaded from QSPI, R4F released
-       74.924 ms  BSS    LDO bypass config: ldoBypassEnable=3 supplyMonIrDrop=1 ioSupplyIndicator=0
-     2273.869 ms  BSS    LDO bypass config: ldoBypassEnable=3 supplyMonIrDrop=1 ioSupplyIndicator=0
-     2803.129 ms  BSS    LDO bypass config: ldoBypassEnable=3 supplyMonIrDrop=1 ioSupplyIndicator=0
+       35.993 ms  ROM    image loaded from QSPI, R4F released
+       78.924 ms  BSS    LDO bypass config: ldoBypassEnable=3 supplyMonIrDrop=1 ioSupplyIndicator=0
+     2144.884 ms  BSS    LDO bypass config: ldoBypassEnable=3 supplyMonIrDrop=1 ioSupplyIndicator=0
+     2674.144 ms  BSS    LDO bypass config: ldoBypassEnable=3 supplyMonIrDrop=1 ioSupplyIndicator=0
 
-=== temp_fail: PASS  (Radar temperature reads fail while streaming)  [930 ms simulated, 26.6 M instructions, 6 s]
+=== temp_fail: PASS  (Radar temperature reads fail while streaming)  [934 ms simulated, 30.9 M instructions, 8 s]
   [ok] 'chirpReset'
   [ok] 'chirpCfg 0 0 0 0 0 0 0 3'
   [ok] 'chirpCfg 1 1 0 0 0 0 0 6'
   [ok] 'chirpCfg 2 2 0 0 0 0 0 5'
   [ok] 'frameCfg 0 2 43 0 33'
   [ok] 'cfg thermal.hold_ms 300'
+  [ok] 'cfg thermal.read_ms 100'
   [ok] sensorStart
   [ok] three failed temperature reads stop the radar: no reading, no RF
   [ok] state 'stopped (fault)' until the host starts it again
@@ -487,12 +495,12 @@ Co-simulation results: 20 scenarios, 0 failed
         8.855 ms  power  PMIC GPIO2 released
        29.639 ms  power  supervisor releases reset
        29.639 ms  power  AOP_NRESET high (radar runs)
-       35.977 ms  ROM    image loaded from QSPI, R4F released
-       74.924 ms  BSS    LDO bypass config: ldoBypassEnable=3 supplyMonIrDrop=1 ioSupplyIndicator=0
-      419.840 ms  BSS    command 0x09 refused: unknown
-      453.860 ms  BSS    command 0x09 refused: unknown
-      485.840 ms  BSS    command 0x09 refused: unknown
-      927.924 ms  BSS    LDO bypass config: ldoBypassEnable=3 supplyMonIrDrop=1 ioSupplyIndicator=0
+       35.993 ms  ROM    image loaded from QSPI, R4F released
+       78.924 ms  BSS    LDO bypass config: ldoBypassEnable=3 supplyMonIrDrop=1 ioSupplyIndicator=0
+      457.860 ms  BSS    command 0x09 refused: unknown
+      588.840 ms  BSS    command 0x09 refused: unknown
+      720.840 ms  BSS    command 0x09 refused: unknown
+      931.924 ms  BSS    LDO bypass config: ldoBypassEnable=3 supplyMonIrDrop=1 ioSupplyIndicator=0
 
 === uart_baud: PASS  (UART baud rates the SCI can make)
     115200 Bd: radar makes    114679 Bd (BRS 108), CP2105    115108 Bd, error -0.37 %  ok
